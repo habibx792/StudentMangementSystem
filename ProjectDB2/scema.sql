@@ -1,8 +1,9 @@
 
-CREATE DATABASE stdMangementDB;
+CREATE DATABASE stdMangementDB2;
+
 GO
 
-USE stdMangementDB;
+USE stdMangementDB2;
 GO
 
 CREATE TABLE adminTab
@@ -16,14 +17,14 @@ GO
 
 CREATE TABLE fieldStudy
 (
-    fieldId INT IDENTITY(1,1) PRIMARY KEY,
+    fieldId int PRIMARY KEY,
     fieldName VARCHAR(40) NOT NULL UNIQUE
 );
 GO
 
 CREATE TABLE student
 (
-    stdId INT IDENTITY(1,1) PRIMARY KEY,
+    stdId int PRIMARY KEY,
     stdName VARCHAR(40) NOT NULL,
     stdUserName VARCHAR(40) NOT NULL UNIQUE,
     stdAge INT CHECK (stdAge > 0),
@@ -35,19 +36,19 @@ GO
 
 CREATE TABLE StudentFees
 (
-    feeId INT IDENTITY(1,1) PRIMARY KEY,
+    feeId INT  PRIMARY KEY,
     stdId INT NOT NULL,
     amount DECIMAL(10,2) CHECK (amount >= 0),
     paymentDate DATE DEFAULT GETDATE(),
     status VARCHAR(20) DEFAULT 'Pending',
-    FOREIGN KEY (stdId) REFERENCES student(stdId)
+    FOREIGN KEY (stdId) REFERENCES student(stdId)   
 );
 GO
 
 
 CREATE TABLE course
 (
-    courseId INT IDENTITY(1,1) PRIMARY KEY,
+    courseId INT  PRIMARY KEY,
     courseTitle VARCHAR(40) NOT NULL,
     teacherName VARCHAR(40) NOT NULL
 );
