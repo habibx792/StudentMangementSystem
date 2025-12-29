@@ -21,21 +21,16 @@ bool ok(SQLRETURN ret)
 {
     return ret == SQL_SUCCESS || ret == SQL_SUCCESS_WITH_INFO;
 }
-
 int main()
 {
     SQLHENV hEnv = NULL;
     SQLHDBC hDbc = NULL;
     SQLHSTMT hStmt = NULL;
-    // SQLHENV hEnv = NULL;
-    // SQLHDBC hHbc = NULL;
-
-    // 1. Environment
     if (!ok(SQLAllocHandle(SQL_HANDLE_ENV, SQL_NULL_HANDLE, &hEnv)))
+    {
         return 1;
+    }
     SQLSetEnvAttr(hEnv, SQL_ATTR_ODBC_VERSION, (void *)SQL_OV_ODBC3, 0);
-
-    // 2. Connection
     if (!ok(SQLAllocHandle(SQL_HANDLE_DBC, hEnv, &hDbc)))
         return 1;
 
@@ -44,7 +39,6 @@ int main()
         "Server=localhost;"
         "Database=master;"
         "Trusted_Connection=yes;";
-
     SQLRETURN ret = SQLDriverConnect(
         hDbc,
         NULL,
@@ -54,20 +48,15 @@ int main()
         0,
         NULL,
         SQL_DRIVER_COMPLETE);
-
     if (!ok(ret))
     {
         showDiag(hDbc, SQL_HANDLE_DBC);
         return 1;
     }
-
     cout << "Connected to master.\n";
-
-    // 3. Statement
     if (!ok(SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)))
         return 1;
 
-    // 4. Create table
     SQLCHAR createSQL[] =
         "IF NOT EXISTS (SELECT * FROM sys.tables WHERE name='CppTest') "
         "CREATE TABLE CppTest ("
