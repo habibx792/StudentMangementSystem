@@ -1,68 +1,44 @@
 #include <iostream>
 #include <windows.h>
-#include <string>
 #include <sqlext.h>
-
+#include <string>
 using namespace std;
 
-// Robust ODBC diagnostics
 void showDiag(SQLHANDLE handle, SQLSMALLINT type)
 {
     SQLCHAR state[6];
-    SQLCHAR msg[512];
+    SQLCHAR msg[256];
     SQLINTEGER native;
     SQLSMALLINT len;
-    SQLSMALLINT i = 1;
 
-    while (true)
+    if (SQLGetDiagRec(type, handle, 1, state, &native, msg, sizeof(msg), &len) == SQL_SUCCESS)
     {
-        SQLRETURN ret = SQLGetDiagRec(type, handle, i, state, &native, msg, sizeof(msg), &len);
-        if (ret == SQL_NO_DATA)
-            break;
-        if (ret == SQL_SUCCESS || ret == SQL_SUCCESS_WITH_INFO)
-        {
-            cout << "SQLSTATE: " << state
-                 << " | Native Error: " << native
-                 << " | Message: " << msg << endl;
-        }
-        i++;
+        cout << msg << endl;
     }
 }
 
-// Helper to check success or success-with-info
 bool ok(SQLRETURN ret)
 {
     return ret == SQL_SUCCESS || ret == SQL_SUCCESS_WITH_INFO;
 }
-
 int main()
 {
     SQLHENV hEnv = NULL;
     SQLHDBC hDbc = NULL;
     SQLHSTMT hStmt = NULL;
-
-    // 1. Allocate environment
     if (!ok(SQLAllocHandle(SQL_HANDLE_ENV, SQL_NULL_HANDLE, &hEnv)))
     {
-        cout << "Failed to allocate environment handle.\n";
         return 1;
     }
     SQLSetEnvAttr(hEnv, SQL_ATTR_ODBC_VERSION, (void *)SQL_OV_ODBC3, 0);
-
-    // 2. Allocate connection
     if (!ok(SQLAllocHandle(SQL_HANDLE_DBC, hEnv, &hDbc)))
-    {
-        cout << "Failed to allocate connection handle.\n";
         return 1;
-    }
 
-    // 3. Connect to SQL Server master DB
     SQLCHAR connStr[] =
-        "Driver={ODBC Driver 17 for SQL Server};"
+        "Driver={SQL Server};"
         "Server=localhost;"
         "Database=master;"
         "Trusted_Connection=yes;";
-
     SQLRETURN ret = SQLDriverConnect(
         hDbc,
         NULL,
@@ -72,24 +48,15 @@ int main()
         0,
         NULL,
         SQL_DRIVER_COMPLETE);
-
     if (!ok(ret))
     {
-        cout << "Connection failed:\n";
         showDiag(hDbc, SQL_HANDLE_DBC);
         return 1;
     }
-
-    cout << "Connected to master database.\n";
-
-    // 4. Allocate statement
+    cout << "Connected to master.\n";
     if (!ok(SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)))
-    {
-        cout << "Failed to allocate statement handle.\n";
         return 1;
-    }
 
-    // 5. Create table if it doesn't exist
     SQLCHAR createSQL[] =
         "IF NOT EXISTS (SELECT * FROM sys.tables WHERE name='CppTest') "
         "CREATE TABLE CppTest ("
@@ -100,14 +67,13 @@ int main()
     ret = SQLExecDirect(hStmt, createSQL, SQL_NTS);
     if (!ok(ret))
     {
-        cout << "Table creation failed:\n";
         showDiag(hStmt, SQL_HANDLE_STMT);
         return 1;
     }
 
     cout << "Table ready.\n";
 
-    // 6. Input
+    // 5. Input
     string name;
     int age;
 
@@ -116,24 +82,28 @@ int main()
     cout << "Enter age: ";
     cin >> age;
 
-    // 7. Insert data
-    string insertSQL = "INSERT INTO CppTest (name, age) VALUES ('" + name + "', " + to_string(age) + ")";
+    // 6. Insert
+    string insertSQL =
+        "INSERT INTO CppTest (name, age) VALUES ('" +
+        name + "', " + to_string(age) + ")";
 
     ret = SQLExecDirect(hStmt, (SQLCHAR *)insertSQL.c_str(), SQL_NTS);
     if (!ok(ret))
     {
-        cout << "Insert failed:\n";
         showDiag(hStmt, SQL_HANDLE_STMT);
         return 1;
     }
 
-    cout << "Data inserted successfully.\n";
+    cout << "Data inserted.\n";
 
-    // 8. Select & display all rows
-    ret = SQLExecDirect(hStmt, (SQLCHAR *)"SELECT id, name, age FROM CppTest", SQL_NTS);
+    // 7. Select
+    ret = SQLExecDirect(
+        hStmt,
+        (SQLCHAR *)"SELECT id, name, age FROM CppTest",
+        SQL_NTS);
+
     if (!ok(ret))
     {
-        cout << "Select failed:\n";
         showDiag(hStmt, SQL_HANDLE_STMT);
         return 1;
     }
@@ -153,7 +123,7 @@ int main()
         cout << id << " | " << dbName << " | " << dbAge << endl;
     }
 
-    // 9. Cleanup
+    // 8. Cleanup
     SQLFreeHandle(SQL_HANDLE_STMT, hStmt);
     SQLDisconnect(hDbc);
     SQLFreeHandle(SQL_HANDLE_DBC, hDbc);
