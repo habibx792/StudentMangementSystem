@@ -1,42 +1,19 @@
-#ifndef stdNode_H
-#define stdNode_H
+#ifndef NODE_H
+#define NODE_H
 
-#include <iostream>
-#include "student.h"
-
-using namespace std;
-
-class stdNode
+template <class T>
+class Node
 {
-    Student std;
-    stdNode *next;
+    T data;
+    Node<T>* next;
 
 public:
-    stdNode(Student std)
-    {
-        this->std = std;
-        this->next = NULL;
-    }
-    stdNode()
-    {
-        this->next = NULL;
-        ;
-    }
-    void setSTD(Student std)
-    {
-        this->std = std;
-    }
-    Student &getValue()
-    {
-        return std;
-    }
-    void setNextNode(stdNode *next)
-    {
-        this->next = next;
-    }
-    stdNode *getNext()
-    {
-        return next;
-    }
+    Node(const T& value) : data(value), next(nullptr) {}
+
+    void setNext(Node<T>* n) { next = n; }
+    Node<T>* getNext() const { return next; }
+
+    T& getValue() { return data; }
 };
+
 #endif

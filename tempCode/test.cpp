@@ -1,40 +1,55 @@
 #include <iostream>
 #include "classList.h"
-#include "stdNode.h"
 #include "student.h"
-#include <string>
+#include "course.h"
+#include "stdNode.h"
+
 using namespace std;
-stdNode *registerStd()
+
+Student registerStd()
 {
     string name;
     int age;
-    stdNode * n;
-    cout << "enter Name \n";
+
+    cout << "Enter name: ";
     getline(cin, name);
-    cout << "Enter Your Age \n";
+
+    cout << "Enter age: ";
     cin >> age;
     cin.ignore();
-    Student std(name, age, 1, "wali");
-    n=new stdNode(std);
-    return n;
-}
-class A
-{
-};
 
+    return Student(name, age, 1, "wali");
+}
+Course registerCourse()
+{
+    string title;
+    int id;
+    string teacherName;
+
+    cout << "Enter Course Title: ";
+    getline(cin, title);
+
+    cout << "Enter age: ";
+    cin >> id;
+    cin.ignore();
+    cout << "Enter teacher Name \n";
+    
+    getline(cin, teacherName);
+    return Course(title, id, teacherName);
+}
 int main()
 {
-    queue q;
+    Queue<Student> q;
+    Queue<Course> courses;
     int count;
-    cout << "How many std \n";
+    cout << "How many students? ";
     cin >> count;
     cin.ignore();
-    while (count > 0)
-    {
-       stdNode* node = registerStd();
-    q.enQue(node);
-    count--;
-    }
-    q.printQueue();
-    return 0;
+    while (count--)
+        q.enQueue(registerStd());
+    courses.enQueue(registerCourse());
+    Node<Student>* std = q.getFront();
+    std->getValue().printStd();
+    Node<Course>* co=courses.getFront();
+    co->getValue().coursePrint();
 }

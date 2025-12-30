@@ -1,76 +1,59 @@
-#ifndef list_H
-#define list_H
+#ifndef QUEUE_H
+#define QUEUE_H
 
-#include <string>
+#include <iostream>
 #include "stdNode.h"
-#include "student.h"
-using namespace std;
 
-class queue
+template <class T>
+class Queue
 {
-private:
-    stdNode *front;
-    stdNode *rear;
+    Node<T>* front;
+    Node<T>* rear;
     int count;
 
 public:
-    // constructors
-    queue()
+    Queue() : front(nullptr), rear(nullptr), count(0) {}
+
+    void enQueue(const T& value)
     {
-        this->front = rear = NULL;
-        this->count = 0;
-    }
-    void enQue(stdNode *node)
-    {
-        node->setNextNode(NULL);
-        if (rear == NULL)
-        {
-            this->rear = front = node;
-        }
+        Node<T>* node = new Node<T>(value);
+
+        if (!rear)
+            front = rear = node;
         else
         {
-            rear->setNextNode(node);
+            rear->setNext(node);
             rear = node;
         }
-
         count++;
     }
+
     void deQueue()
     {
-        if (front == NULL)
-        {
-            return;
-        }
-        stdNode *temp = front;
+        if (!front) return;
+
+        Node<T>* temp = front;
         front = front->getNext();
         delete temp;
         count--;
 
-        if (front == nullptr)
-            rear = nullptr;
+        if (!front) rear = nullptr;
     }
-    int size()
-    {
-        return count;
-    }
-    bool isEmpty()
-    {
-        return front == NULL;
-    }
-    stdNode *getFront() const
+    Node<T>* getFront()
     {
         return front;
     }
     void printQueue()
     {
-        stdNode *temp = front;
-        while (temp != nullptr)
+        Node<T>* temp = front;
+        while (temp)
         {
-            Student std = temp->getValue();
-            cout << "Name: " << std.getName() << ", Age: " << std.getAge() << endl;
+            std::cout << temp->getValue().getName()
+                      << " | Age: " << temp->getValue().getAge()
+                      << std::endl;
             temp = temp->getNext();
         }
     }
 };
 
-#endif // list_H
+#endif
