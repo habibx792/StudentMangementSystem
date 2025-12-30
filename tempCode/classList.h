@@ -7,16 +7,16 @@
 template <class T>
 class Queue
 {
-    Node<T>* front;
-    Node<T>* rear;
+    Node<T> *front;
+    Node<T> *rear;
     int count;
 
 public:
     Queue() : front(nullptr), rear(nullptr), count(0) {}
 
-    void enQueue(const T& value)
+    void enQueue(const T &value)
     {
-        Node<T>* node = new Node<T>(value);
+        Node<T> *node = new Node<T>(value);
 
         if (!rear)
             front = rear = node;
@@ -30,22 +30,24 @@ public:
 
     void deQueue()
     {
-        if (!front) return;
+        if (!front)
+            return;
 
-        Node<T>* temp = front;
+        Node<T> *temp = front;
         front = front->getNext();
         delete temp;
         count--;
 
-        if (!front) rear = nullptr;
+        if (!front)
+            rear = nullptr;
     }
-    Node<T>* getFront()
+    Node<T> *getFront() const
     {
         return front;
     }
-    void printQueue()
+    void printQueue() const
     {
-        Node<T>* temp = front;
+        Node<T> *temp = front;
         while (temp)
         {
             std::cout << temp->getValue().getName()

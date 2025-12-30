@@ -44,8 +44,6 @@ CREATE TABLE StudentFees
     FOREIGN KEY (stdId) REFERENCES student(stdId)   
 );
 GO
-
-
 CREATE TABLE course
 (
     courseId INT  PRIMARY KEY,

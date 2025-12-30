@@ -57,7 +57,22 @@ class BST
             node->setLeft(insert(node->getLeft(), value));
         else
             node->setRight(insert(node->getRight(), value));
+
         return node;
+    }
+
+    TreeNode<T>* search(TreeNode<T>* node, const T& value)
+    {
+        if (!node)
+            return nullptr;
+
+        if (node->getData().getId() == value.getId())
+            return node;
+
+        if (value.getId() < node->getData().getId())
+            return search(node->getLeft(), value);
+        else
+            return search(node->getRight(), value);
     }
 
 public:
@@ -68,43 +83,77 @@ public:
         root = insert(root, value);
     }
 
+    TreeNode<T>* searchData(const T& value)
+    {
+        return search(root, value);
+    }
+
     TreeNode<T>* getRoot() const
     {
         return root;
-    }
-    TreeNode<T> * searchData(Const T& value)
-    {
-        if(root==NULL)
-        {
-            return root;
-        }
-        T curr= id=root->getData();
-        if(curr.getId()==value.getId)
-        {
-            return root;
-        }
-        if(value.getId()<curr.)
     }
 };
 
 class DataHandle
 {
 private:
+    Queue<Student> studentQueue;
+    Queue<Course>  courseQueue;
+    BST<Student>   studentTree;
+
 public:
-    // constructors
-    DataHandle();
-    DataHandle();
-    template <class T>
-    Queue<T> getStdView()
+    // ===== Store data =====
+    void setStudentQueue(const Queue<Student>& q)
     {
-        return Queue<T>;
+        studentQueue = q;   // copy
     }
 
-    // getters
-    string getmemberName() const;
+    void setCourseQueue(const Queue<Course>& q)
+    {
+        courseQueue = q;
+    }
 
-    // setters
-    void setmemberName(const string &value);
+    // ===== Build BST from stored queue =====
+    void buildStudentBST()
+    {
+        Node<Student>* curr = studentQueue.getFront();
+        while (curr)
+        {
+            studentTree.insert(curr->getValue());
+            curr = curr->getNext();
+        }
+    }
+
+    // ===== Print functions =====
+    void printStudentsQueue() const
+    {
+        studentQueue.printQueue();
+    }
+
+    void printCoursesQueue() const
+    {
+        Node<Course>* curr = courseQueue.getFront();
+        while (curr)
+        {
+            curr->getValue().coursePrint();
+            curr = curr->getNext();
+        }
+    }
+
+    void printStudentsBST() const
+    {
+        inorder(studentTree.getRoot());
+    }
+
+private:
+    // inorder traversal helper
+    static void inorder(TreeNode<Student>* node)
+    {
+        if (!node) return;
+        inorder(node->getLeft());
+        node->getData().printStd();
+        inorder(node->getRight());
+    }
 };
 
-#endif // DataHandle_H
+#endif
