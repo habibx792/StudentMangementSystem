@@ -24,7 +24,7 @@ GO
 
 CREATE TABLE student
 (
-    stdId int PRIMARY KEY,
+    stdId UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
     stdName VARCHAR(40) NOT NULL,
     stdUserName VARCHAR(40) NOT NULL UNIQUE,
     stdAge INT CHECK (stdAge > 0),
