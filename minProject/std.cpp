@@ -159,6 +159,10 @@ public:
 };
 class operationQueue
 {
+<<<<<<< HEAD
+=======
+
+>>>>>>> 10aa9893681606f4d6d6fd7ebc99e58022a96404
 };
 class System
 {
