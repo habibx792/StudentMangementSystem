@@ -159,8 +159,7 @@ public:
 };
 class operationQueue
 {
-    
-}
+};
 class System
 {
     DB d;
@@ -259,7 +258,6 @@ class ui
         cout << "1->TO regitser a student \n";
         cout << "2->To search a studnet \n";
         cout << "3->To update student Information \n";
-
     }
     void diplay()
     {
@@ -282,6 +280,7 @@ int main()
     bst<Student> bs;
     for (auto &stu : stdList)
     {
+        stu.printStd();
         bs.buildBst(stu); // ✅ correct
     }
 
