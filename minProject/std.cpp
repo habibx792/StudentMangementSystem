@@ -159,8 +159,8 @@ public:
 };
 class operationQueue
 {
-    
-}
+
+};
 class System
 {
     DB d;
