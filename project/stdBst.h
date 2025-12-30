@@ -28,6 +28,7 @@ private:
         else
             return logSearch(node->right, id);
     }
+    
     stdNode<T> *insertRec(stdNode<T> *node, T value)
     {
         if (node == NULL)
@@ -40,6 +41,7 @@ private:
 
         return node;
     }
+
 
 
 public:
@@ -60,6 +62,7 @@ public:
     {
         return logSearch(root, id);
     }
+    
 };
 
 #endif // BST_H

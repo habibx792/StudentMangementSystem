@@ -1,9 +1,7 @@
-
-CREATE DATABASE stdMangementDB2;
-
+CREATE DATABASE stdManagementDB2;
 GO
 
-USE stdMangementDB2;
+USE stdManagementDB2;
 GO
 
 CREATE TABLE adminTab
@@ -14,21 +12,16 @@ CREATE TABLE adminTab
 );
 GO
 
-
 CREATE TABLE fieldStudy
 (
-    fieldId int PRIMARY KEY,
+    fieldId INT IDENTITY(1,1) PRIMARY KEY,
     fieldName VARCHAR(40) NOT NULL UNIQUE
 );
 GO
 
 CREATE TABLE student
 (
-<<<<<<< HEAD
-    stdId UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-=======
-    stdId int IDENTITY(1,1) PRIMARY KEY,
->>>>>>> 602ebd5bb9ce542255fc41f19b06e4a6d4f01dc2
+    stdId INT IDENTITY(1,1) PRIMARY KEY,
     stdName VARCHAR(40) NOT NULL,
     stdUserName VARCHAR(40) NOT NULL UNIQUE,
     stdAge INT CHECK (stdAge > 0),
@@ -40,21 +33,24 @@ GO
 
 CREATE TABLE StudentFees
 (
-    feeId INT  PRIMARY KEY,
+    feeId INT IDENTITY(1,1) PRIMARY KEY,
     stdId INT NOT NULL,
     amount DECIMAL(10,2) CHECK (amount >= 0),
     paymentDate DATE DEFAULT GETDATE(),
     status VARCHAR(20) DEFAULT 'Pending',
-    FOREIGN KEY (stdId) REFERENCES student(stdId)   
+    FOREIGN KEY (stdId) REFERENCES student(stdId)
 );
 GO
+
 CREATE TABLE course
 (
-    courseId INT  PRIMARY KEY,
+    courseId INT IDENTITY(1,1) PRIMARY KEY,
     courseTitle VARCHAR(40) NOT NULL,
     teacherName VARCHAR(40) NOT NULL
 );
 GO
+
+
 CREATE TABLE courseRegStd
 (
     stdId INT NOT NULL,
@@ -65,6 +61,7 @@ CREATE TABLE courseRegStd
     FOREIGN KEY (courseId) REFERENCES course(courseId)
 );
 GO
+
 CREATE TABLE Attendance 
 (
     attendanceId INT IDENTITY(1,1) PRIMARY KEY,
@@ -84,7 +81,7 @@ CREATE TABLE result
     courseId INT NOT NULL,
     gotNumber DECIMAL(5,2) CHECK (gotNumber >= 0),
     grade VARCHAR(2),
-    isPass AS (CASE WHEN gotNumber >= 50 THEN 1 ELSE 0 END),
+    isPass AS (CASE WHEN gotNumber >= 50 THEN 1 ELSE 0 END) PERSISTED,
     PRIMARY KEY (stdId, courseId),
     FOREIGN KEY (stdId) REFERENCES student(stdId),
     FOREIGN KEY (courseId) REFERENCES course(courseId)

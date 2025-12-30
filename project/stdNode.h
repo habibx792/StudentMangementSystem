@@ -1,34 +1,21 @@
-#include <iostream>
-#include <windows.h>
-#include <sql.h>
-#include <sqlext.h>
-#include <stireg.h>
-#include <sstream>
-#include <vector>
-#include <limits>
-#include <string>
-#include "student.h"
+#ifndef STDNODE_H
+#define STDNODE_H
 
-#ifndef StdNode_H
-#define StdNode_H
-
-using namespace std;
 template <class T>
 class StdNode
 {
-private:
-    // nothing added here
+protected:
+    T data;
+    StdNode<T>* left;
+    StdNode<T>* right;
 
 public:
-    T data;
-    StdNode<T> *left;
-    stdNode<T> *right;
-
-    StdNode(T d)
+    // Constructor (your style)
+    StdNode(const T& d)
     {
-        data(d);
-        this->left = left;
-        this->right = right;
+        data = d;
+        left = NULL;
+        right = NULL;
     }
 
     // ===== Getters =====
@@ -42,15 +29,15 @@ public:
         return left;
     }
 
-    stdNode<T>* getRight() const
+    StdNode<T>* getRight() const
     {
         return right;
     }
 
     // ===== Setters =====
-    void setData(const T& value)
+    void setData(const T& d)
     {
-        data = value;
+        data = d;
     }
 
     void setLeft(StdNode<T>* node)
@@ -58,9 +45,10 @@ public:
         left = node;
     }
 
-    void setRight(stdNode<T>* node)
+    void setRight(StdNode<T>* node)
     {
         right = node;
     }
 };
-#endif // CLASSNAME_H
+
+#endif
