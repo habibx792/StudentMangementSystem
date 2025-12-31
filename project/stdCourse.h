@@ -29,14 +29,36 @@ public:
     }
 
     // Getters
-    int getStdId() const { return this->stdId; }
-    int getCourseId() const { return this->courseId; }
-    string getRegDate() const { return this->regDate; }
+    int getStdId() const
+    {
+        return this->stdId;
+    }
+
+    int getCourseId() const
+    {
+        return this->courseId;
+    }
+
+    string getRegDate() const
+    {
+        return this->regDate;
+    }
 
     // Setters
-    void setStdId(int id) { this->stdId = id; }
-    void setCourseId(int id) { this->courseId = id; }
-    void setRegDate(const string &date) { this->regDate = date; }
+    void setStdId(int id)
+    {
+        this->stdId = id;
+    }
+
+    void setCourseId(int id)
+    {
+        this->courseId = id;
+    }
+
+    void setRegDate(const string &date)
+    {
+        this->regDate = date;
+    }
 
     // Print
     void print() const
@@ -46,8 +68,11 @@ public:
              << " | Registration Date: " << this->regDate << endl;
     }
 
-    // For BST
-    int getId() const { return this->stdId; } 
+    // For BST compatibility
+    int getId() const
+    {
+        return this->stdId;
+    }
 };
 
 #endif // STDCOURSE_H

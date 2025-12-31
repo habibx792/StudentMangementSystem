@@ -29,14 +29,36 @@ public:
     }
 
     // Getters
-    int getAdminId() const { return this->adminId; }
-    string getAdminName() const { return this->adminName; }
-    string getPassWord() const { return this->passWord; }
+    int getAdminId() const
+    {
+        return this->adminId;
+    }
+
+    string getAdminName() const
+    {
+        return this->adminName;
+    }
+
+    string getPassWord() const
+    {
+        return this->passWord;
+    }
 
     // Setters
-    void setAdminId(int id) { this->adminId = id; }
-    void setAdminName(const string &name) { this->adminName = name; }
-    void setPassWord(const string &pass) { this->passWord = pass; }
+    void setAdminId(int id)
+    {
+        this->adminId = id;
+    }
+
+    void setAdminName(const string &name)
+    {
+        this->adminName = name;
+    }
+
+    void setPassWord(const string &pass)
+    {
+        this->passWord = pass;
+    }
 
     // Print
     void print() const
@@ -47,7 +69,10 @@ public:
     }
 
     // For BST compatibility
-    int getId() const { return this->adminId; }
+    int getId() const
+    {
+        return this->adminId;
+    }
 };
 
 #endif // ADMIN_H

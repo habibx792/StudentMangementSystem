@@ -16,6 +16,7 @@ class printEinge
 {
 public:
     printEinge() {}
+
     // ------------------- Queue Printing -------------------
     void printUpdated(BST<T> &tree, upQueue &q)
     {
@@ -42,6 +43,7 @@ public:
             curr = curr->getNext();
         }
     }
+
     void printNewInsertions(const opQueue<T> &q)
     {
         opNode<T> *curr = q.getFront();
@@ -51,6 +53,7 @@ public:
             curr = curr->getNext();
         }
     }
+
     // ------------------- Admin Printing -------------------
     void printAdminByName(BST<Admin> &tree, const string &name)
     {
@@ -69,6 +72,7 @@ public:
         else
             cout << "Admin not found with ID: " << id << endl;
     }
+
     // Print StdCourse registrations
     void printStdCourseByStdId(BST<StdCourse> &tree, int stdId)
     {
@@ -97,6 +101,7 @@ public:
         else
             cout << "No attendance records for Student ID: " << stdId << endl;
     }
+
     void printAllAttenca(BST<Attendance> &tree)
     {
         cout << "Prinint all Attendanse : " << endl;
@@ -120,6 +125,7 @@ public:
         else
             cout << "No attendance records on Date: " << date << endl;
     }
+
     void printStudentByName(BST<Student> &tree, const string &name)
     {
         StdNode<Student> *node = searchStudentByName(tree.getRoot(), name);
@@ -128,6 +134,7 @@ public:
         else
             cout << "Student not found: " << name << endl;
     }
+
     // print add filed
     void printAllField(BST<FieldStudy> &tree)
     {

@@ -1,0 +1,23 @@
+#ifndef SMS_SYSTEM_H
+
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+class SMS_SYSTEM
+{
+private:
+    SMS_SYSTEM() : memberName("DefaultUser") {}
+    SMS_SYSTEM(const SMS_SYSTEM &) = delete;
+    SMS_SYSTEM &operator=(const SMS_SYSTEM &) = delete;
+public:
+    
+    static SMS_SYSTEM &getInstance()
+    {
+        static SMS_SYSTEM instance; 
+        return instance;
+    }
+};
+
+#endif // SMS_SYSTEM_H

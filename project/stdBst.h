@@ -2,56 +2,6 @@
 #define BST_H
 
 #include "stdNode.h"
-#include "student.h"
-#include "course.h"
-#include "stdResult.h"
-#include "stdBst.h"
-inline StdNode<Result> *searchPassRec(StdNode<Result> *node)
-{
-    if (!node)
-        return nullptr;
-
-    if (node->getData().isPass())
-        return node;
-
-    StdNode<Result> *left = searchPassRec(node->getLeft());
-    if (left)
-        return left;
-
-    return searchPassRec(node->getRight());
-}
-
-// Search Student by name
-inline StdNode<Student> *searchStudentByName(StdNode<Student> *node, const std::string &name)
-{
-    if (!node)
-        return nullptr;
-
-    if (node->getData().getName() == name)
-        return node;
-
-    StdNode<Student> *left = searchStudentByName(node->getLeft(), name);
-    if (left)
-        return left;
-
-    return searchStudentByName(node->getRight(), name);
-}
-
-// Search Course by title
-inline StdNode<Course> *searchCourseByTitle(StdNode<Course> *node, const std::string &title)
-{
-    if (!node)
-        return nullptr;
-
-    if (node->getData().getCourseTitle() == title)
-        return node;
-
-    StdNode<Course> *left = searchCourseByTitle(node->getLeft(), title);
-    if (left)
-        return left;
-
-    return searchCourseByTitle(node->getRight(), title);
-}
 
 template <class T>
 class BST
@@ -104,53 +54,6 @@ public:
     StdNode<T> *getRoot() const
     {
         return root;
-    }
-    // Search Result that is Pass
-    StdNode<Result> *searchPassRec(StdNode<Result> *node)
-    {
-        if (!node)
-            return nullptr;
-
-        if (node->getData().isPass())
-            return node;
-
-        StdNode<Result> *left = searchPassRec(node->getLeft());
-        if (left)
-            return left;
-
-        return searchPassRec(node->getRight());
-    }
-
-    // Search Student by name
-    StdNode<Student> *searchStudentByName(StdNode<Student> *node, const std::string &name)
-    {
-        if (!node)
-            return nullptr;
-
-        if (node->getData().getName() == name)
-            return node;
-
-        StdNode<Student> *left = searchStudentByName(node->getLeft(), name);
-        if (left)
-            return left;
-
-        return searchStudentByName(node->getRight(), name);
-    }
-
-    // Search Course by title
-    StdNode<Course> *searchCourseByTitle(StdNode<Course> *node, const std::string &title)
-    {
-        if (!node)
-            return nullptr;
-
-        if (node->getData().getCourseTitle() == title)
-            return node;
-
-        StdNode<Course> *left = searchCourseByTitle(node->getLeft(), title);
-        if (left)
-            return left;
-
-        return searchCourseByTitle(node->getRight(), title);
     }
 };
 

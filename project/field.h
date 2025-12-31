@@ -1,6 +1,6 @@
 #ifndef FIELDSTUDY_H
 #define FIELDSTUDY_H
-#include "stdNode.h"
+
 #include <iostream>
 #include <string>
 using namespace std;
@@ -26,12 +26,26 @@ public:
     }
 
     // Getters
-    int getFieldId() const { return this->fieldId; }
-    string getFieldName() const { return this->fieldName; }
+    int getFieldId() const
+    {
+        return this->fieldId;
+    }
+
+    string getFieldName() const
+    {
+        return this->fieldName;
+    }
 
     // Setters
-    void setFieldId(int id) { this->fieldId = id; }
-    void setFieldName(const string &name) { this->fieldName = name; }
+    void setFieldId(int id)
+    {
+        this->fieldId = id;
+    }
+
+    void setFieldName(const string &name)
+    {
+        this->fieldName = name;
+    }
 
     // Print
     void print() const
@@ -41,7 +55,10 @@ public:
     }
 
     // For BST compatibility
-    int getId() const { return this->fieldId; }
+    int getId() const
+    {
+        return this->fieldId;
+    }
 };
 
 #endif // FIELDSTUDY_H

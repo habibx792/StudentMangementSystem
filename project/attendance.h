@@ -34,18 +34,56 @@ public:
     }
 
     // Getters
-    int getAttendanceId() const { return this->attendanceId; }
-    int getStdId() const { return this->stdId; }
-    int getCourseId() const { return this->courseId; }
-    string getAttendanceDate() const { return this->attendanceDate; }
-    bool getIsPresent() const { return this->isPresent; }
+    int getAttendanceId() const
+    {
+        return this->attendanceId;
+    }
+
+    int getStdId() const
+    {
+        return this->stdId;
+    }
+
+    int getCourseId() const
+    {
+        return this->courseId;
+    }
+
+    string getAttendanceDate() const
+    {
+        return this->attendanceDate;
+    }
+
+    bool getIsPresent() const
+    {
+        return this->isPresent;
+    }
 
     // Setters
-    void setAttendanceId(int id) { this->attendanceId = id; }
-    void setStdId(int id) { this->stdId = id; }
-    void setCourseId(int id) { this->courseId = id; }
-    void setAttendanceDate(const string &date) { this->attendanceDate = date; }
-    void setIsPresent(bool present) { this->isPresent = present; }
+    void setAttendanceId(int id)
+    {
+        this->attendanceId = id;
+    }
+
+    void setStdId(int id)
+    {
+        this->stdId = id;
+    }
+
+    void setCourseId(int id)
+    {
+        this->courseId = id;
+    }
+
+    void setAttendanceDate(const string &date)
+    {
+        this->attendanceDate = date;
+    }
+
+    void setIsPresent(bool present)
+    {
+        this->isPresent = present;
+    }
 
     // Print
     void print() const
@@ -57,8 +95,11 @@ public:
              << " | Present: " << (this->isPresent ? "Yes" : "No") << endl;
     }
 
-    // For BST use
-    int getId() const { return this->attendanceId; }
+    // For BST compatibility
+    int getId() const
+    {
+        return this->attendanceId;
+    }
 };
 
 #endif // ATTENDANCE_H

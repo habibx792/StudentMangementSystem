@@ -1,6 +1,5 @@
 #ifndef BSTSEARCH_H
 #define BSTSEARCH_H
-
 #include "stdNode.h"
 #include "student.h"
 #include "course.h"
