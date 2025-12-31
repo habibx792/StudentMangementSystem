@@ -1,3 +1,5 @@
+#ifndef Course_H
+#define Course_H
 #include <iostream>
 #include <windows.h>
 #include <sql.h>
@@ -7,27 +9,54 @@
 #include <vector>
 #include <limits>
 
-#ifndef CLASSNAME_H
-#define CLASSNAME_H
 
 #include <string>
 using namespace std;
 
-class CLASSNAME {
+class  Course{
 private:
-    // member variables
-    string memberName;
+    
+    int courseId;
+    string courseTitle;
+    string teacherName;
 
 public:
     // constructors
-    CLASSNAME();
-    CLASSNAME(params);
+    Course(string title,string  Tname){
+        this->courseTitle=title;
+        this->teacherName=Tname;
+        this->courseId=-1;
 
-    // getters
-    string getmemberName() const;
+    }
+    
+    Course(int id,string title,string tName)
+    {
+        this->teacherName=tName;
+        this->courseId=id;
+        this->courseTitle=title;
+    }
+    void setId(int id)
+    {
+        this->courseId=id;
+    }
+    void print()
+    {
+        cout<<"courseID : "<<courseId<<endl;
+        cout<<"Course Title : "<<courseTitle<<endl;
+        cout<<"Teacher Name : "<<teacherName<<endl;
+    }
+    int getId()
+    {
+        return courseId;
+    }
+    string getCourseTitle()
+    {
+        return courseTitle;
+    }
+    string teacherName(){
+        return teacherName;
+    }
 
-    // setters
-    void setmemberName(const string& value);
 };
 
 #endif // CLASSNAME_H

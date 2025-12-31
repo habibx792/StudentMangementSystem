@@ -1,0 +1,53 @@
+#ifndef STDCOURSE_H
+#define STDCOURSE_H
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+class StdCourse
+{
+private:
+    int stdId;
+    int courseId;
+    string regDate;
+
+public:
+    // Constructors
+    StdCourse()
+    {
+        this->stdId = -1;
+        this->courseId = -1;
+        this->regDate = "1970-01-01";
+    }
+
+    StdCourse(int stdId, int courseId, const string &regDate)
+    {
+        this->stdId = stdId;
+        this->courseId = courseId;
+        this->regDate = regDate;
+    }
+
+    // Getters
+    int getStdId() const { return this->stdId; }
+    int getCourseId() const { return this->courseId; }
+    string getRegDate() const { return this->regDate; }
+
+    // Setters
+    void setStdId(int id) { this->stdId = id; }
+    void setCourseId(int id) { this->courseId = id; }
+    void setRegDate(const string &date) { this->regDate = date; }
+
+    // Print
+    void print() const
+    {
+        cout << "Student ID: " << this->stdId
+             << " | Course ID: " << this->courseId
+             << " | Registration Date: " << this->regDate << endl;
+    }
+
+    // For BST
+    int getId() const { return this->stdId; } 
+};
+
+#endif // STDCOURSE_H
