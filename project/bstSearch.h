@@ -1,6 +1,5 @@
 #ifndef BSTSEARCH_H
 #define BSTSEARCH_H
-
 #include "stdNode.h"
 #include "student.h"
 #include "course.h"
@@ -20,13 +19,13 @@ inline StdNode<Result> *searchPassRec(StdNode<Result> *node)
         return left;
     return searchPassRec(node->getRight());
 }
-inline stdNode<FieldStudy> *searchFieldStudyById(StdNode<FieldStudy> *node, int fieldId)        
+inline StdNode<FieldStudy> *searchFieldStudyById(StdNode<FieldStudy> *node, int fieldId)
 {
     if (!node)
         return nullptr;
     if (node->getData().getFieldId() == fieldId)
         return node;
-    stdNode<FieldStudy> *left = searchFieldStudyById(node->getLeft(), fieldId);
+    StdNode<FieldStudy> *left = searchFieldStudyById(node->getLeft(), fieldId);
     if (left)
         return left;
     return searchFieldStudyById(node->getRight(), fieldId);

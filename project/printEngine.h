@@ -6,7 +6,7 @@
 #include "stdBst.h"
 #include "deleteQueue.h"
 #include "updationQueue.h"
-#include "bstSearch.h"
+#include "searchEngine.h"
 #include "stdCourse.h"
 #include "attendance.h"
 using namespace std;
@@ -16,7 +16,6 @@ class printEinge
 {
 public:
     printEinge() {}
-
     // ------------------- Queue Printing -------------------
     void printUpdated(BST<T> &tree, upQueue &q)
     {
@@ -43,7 +42,6 @@ public:
             curr = curr->getNext();
         }
     }
-
     void printNewInsertions(const opQueue<T> &q)
     {
         opNode<T> *curr = q.getFront();
@@ -52,6 +50,24 @@ public:
             curr->getData().print();
             curr = curr->getNext();
         }
+    }
+    // ------------------- Admin Printing -------------------
+    void printAdminByName(BST<Admin> &tree, const string &name)
+    {
+        StdNode<Admin> *node = searchAdminByName(tree.getRoot(), name);
+        if (node)
+            node->getData().print();
+        else
+            cout << "Admin not found: " << name << endl;
+    }
+
+    void printAdminById(BST<Admin> &tree, int id)
+    {
+        StdNode<Admin> *node = searchAdminById(tree.getRoot(), id);
+        if (node)
+            node->getData().print();
+        else
+            cout << "Admin not found with ID: " << id << endl;
     }
     // Print StdCourse registrations
     void printStdCourseByStdId(BST<StdCourse> &tree, int stdId)
