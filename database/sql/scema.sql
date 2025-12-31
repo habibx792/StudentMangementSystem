@@ -1,7 +1,6 @@
-CREATE DATABASE stdManagementDB2;
+CREATE DATABASE SM_System;
 GO
-
-USE stdManagementDB2;
+USE SM_System;
 GO
 
 CREATE TABLE adminTab
@@ -21,7 +20,7 @@ GO
 
 CREATE TABLE student
 (
-    stdId INT IDENTITY(1,1) PRIMARY KEY,
+    stdId INT not null PRIMARY KEY,
     stdName VARCHAR(40) NOT NULL,
     stdUserName VARCHAR(40) NOT NULL UNIQUE,
     stdAge INT CHECK (stdAge > 0),
@@ -44,7 +43,7 @@ GO
 
 CREATE TABLE course
 (
-    courseId INT IDENTITY(1,1) PRIMARY KEY,
+    courseId INT not null PRIMARY KEY,
     courseTitle VARCHAR(40) NOT NULL,
     teacherName VARCHAR(40) NOT NULL
 );
