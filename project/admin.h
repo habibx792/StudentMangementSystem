@@ -13,7 +13,6 @@ private:
     string passWord;
 
 public:
-    // Constructors
     Admin()
     {
         this->adminId = -1;
@@ -28,7 +27,6 @@ public:
         this->passWord = pass;
     }
 
-    // Getters
     int getAdminId() const
     {
         return this->adminId;
@@ -44,7 +42,6 @@ public:
         return this->passWord;
     }
 
-    // Setters
     void setAdminId(int id)
     {
         this->adminId = id;
@@ -60,7 +57,6 @@ public:
         this->passWord = pass;
     }
 
-    // Print
     void print() const
     {
         cout << "Admin ID: " << this->adminId
@@ -68,7 +64,6 @@ public:
              << " | Password: " << this->passWord << endl;
     }
 
-    // For BST compatibility
     int getId() const
     {
         return this->adminId;

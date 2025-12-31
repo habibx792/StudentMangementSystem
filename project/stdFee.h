@@ -15,7 +15,6 @@ private:
     string status;
 
 public:
-    // Constructors
     StudentFees()
     {
         this->feeId = -1;
@@ -34,7 +33,6 @@ public:
         this->status = stat;
     }
 
-    // Getters
     int getFeeId() const
     {
         return this->feeId;
@@ -60,7 +58,6 @@ public:
         return this->status;
     }
 
-    // Setters
     void setFeeId(int id)
     {
         this->feeId = id;
@@ -86,7 +83,6 @@ public:
         this->status = stat;
     }
 
-    // Print
     void print() const
     {
         cout << "Fee ID: " << this->feeId
@@ -96,7 +92,6 @@ public:
              << " | Status: " << this->status << endl;
     }
 
-    // For BST 
     int getId() const
     {
         return this->feeId;

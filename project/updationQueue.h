@@ -1,61 +1,12 @@
-#ifndef DELETEQUEUE_H
-#define DELETEQUEUE_H
+#ifndef UPDATIONQUEUE_H
+#define UPDATIONQUEUE_H
+
 #include <string>
 #include <utility>
 #include <iostream>
+#include "upNode.h"
 using namespace std;
 
-// ================== Node ==================
-class upNode
-{
-private:
-    int id;
-    string table;
-
-public:
-    upNode *next;
-
-    // Parameterized constructor
-    upNode(int id, const string &table)
-    {
-        this->id = id;
-        this->table = table;
-        this->next = NULL; // must initialize next
-    }
-
-    // Default constructor
-    upNode()
-    {
-        this->id = -1;
-        this->table = "NULL";
-        this->next = NULL;
-    }
-
-    // ===== Getters =====
-    upNode *getNext() const
-    {
-        return next;
-    }
-
-    pair<int, string> getMetaData() const
-    {
-        return {id, table};
-    }
-
-    // ===== Setters =====
-    void setNext(upNode *n)
-    {
-        next = n;
-    }
-
-    void setMetaData(int id, const string &table)
-    {
-        this->id = id;
-        this->table = table;
-    }
-};
-
-// ================== Queue ==================
 class upQueue
 {
 private:
@@ -64,7 +15,6 @@ private:
     int count;
 
 public:
-    // ===== Constructors =====
     upQueue()
     {
         fr = rear = NULL;
@@ -79,7 +29,6 @@ public:
             node->setNext(NULL);
     }
 
-    // ===== Queue Operations =====
     void enqueue(upNode *node)
     {
         if (node == NULL)
@@ -117,7 +66,7 @@ public:
             rear = NULL;
 
         count--;
-        temp->setNext(NULL); // detach node
+        temp->setNext(NULL);
         return temp;
     }
 
@@ -141,7 +90,6 @@ public:
         return rear;
     }
 
-       // ===== Print Queue =====
     void printQueue() const
     {
         upNode *curr = fr;
@@ -154,4 +102,4 @@ public:
     }
 };
 
-#endif // DELETEQUEUE_H
+#endif // UPDATIONQUEUE_H

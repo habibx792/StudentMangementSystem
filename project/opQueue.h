@@ -1,9 +1,11 @@
 #ifndef OPQUEUE_H
 #define OPQUEUE_H
+
 #include <iostream>
 #include <string>
 #include "stdNode.h"
 using namespace std;
+
 template <class T>
 class opNode : public StdNode<T>
 {
@@ -11,13 +13,11 @@ private:
     opNode<T> *next;
 
 public:
-    // Constructor
     opNode(const T &value) : StdNode<T>(value)
     {
         next = NULL;
     }
 
-    // ===== Getters =====
     opNode<T> *getNext() const
     {
         return next;
@@ -28,7 +28,6 @@ public:
         return this->data;
     }
 
-    // ===== Setters =====
     void setNext(opNode<T> *n)
     {
         next = n;
@@ -65,6 +64,7 @@ public:
         if (node != NULL)
             node->setNext(NULL);
     }
+
     void enqueueNewStd(const T &value)
     {
         opNode<T> *node = new opNode<T>(value);
@@ -80,6 +80,7 @@ public:
         }
         count++;
     }
+
     void dequeueNewStd()
     {
         if (front == NULL)
@@ -94,6 +95,7 @@ public:
         delete temp;
         count--;
     }
+
     bool isEmpty() const
     {
         return front == NULL;
@@ -103,6 +105,7 @@ public:
     {
         return count;
     }
+
     opNode<T> *getFrontNewStd() const
     {
         return front;

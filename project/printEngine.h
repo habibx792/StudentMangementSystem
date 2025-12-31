@@ -1,23 +1,37 @@
 #ifndef PRINTEINGE_H
 #define PRINTEINGE_H
 
+#include <iostream>
 #include <string>
-#include "stdQueue.h"
-#include "stdBst.h"
-#include "deleteQueue.h"
-#include "updationQueue.h"
-#include "searchEngine.h"
-#include "stdCourse.h"
-#include "attendance.h"
 using namespace std;
 
+// Include the actual headers instead of forward declarations
+#include "stdBst.h"
+#include "stdNode.h"
+#include "deleteQueues.h"  // Includes deleteQueue and deleteNode
+#include "updationQueue.h" // Includes upQueue and upNode
+#include "opQueue.h"       // Includes opQueue and opNode
+
+// Include data classes
+#include "admin.h"
+#include "student.h"
+#include "course.h"
+#include "stdResult.h"
+#include "attendance.h"
+#include "stdCourse.h"
+#include "field.h"
+
+// Include search functions - USE searchEngine.h instead of bstSearch.h
+#include "searchEngine.h" // CHANGED THIS LINE
+
 template <class T>
+
+
 class printEinge
 {
 public:
     printEinge() {}
 
-    // ------------------- Queue Printing -------------------
     void printUpdated(BST<T> &tree, upQueue &q)
     {
         upNode *curr = q.getFront();
@@ -54,7 +68,6 @@ public:
         }
     }
 
-    // ------------------- Admin Printing -------------------
     void printAdminByName(BST<Admin> &tree, const string &name)
     {
         StdNode<Admin> *node = searchAdminByName(tree.getRoot(), name);
@@ -73,7 +86,6 @@ public:
             cout << "Admin not found with ID: " << id << endl;
     }
 
-    // Print StdCourse registrations
     void printStdCourseByStdId(BST<StdCourse> &tree, int stdId)
     {
         StdNode<StdCourse> *node = searchStdCourseByStdId(tree.getRoot(), stdId);
@@ -92,7 +104,6 @@ public:
             cout << "No course registrations found for Course ID: " << courseId << endl;
     }
 
-    // ------------------- Attendance Printing -------------------
     void printAttendanceByStdId(BST<Attendance> &tree, int stdId)
     {
         StdNode<Attendance> *node = searchAttendanceByStdId(tree.getRoot(), stdId);
@@ -104,7 +115,7 @@ public:
 
     void printAllAttenca(BST<Attendance> &tree)
     {
-        cout << "Prinint all Attendanse : " << endl;
+        cout << "Printing all Attendance: " << endl;
         printAllBST(tree.getRoot());
     }
 
@@ -135,7 +146,6 @@ public:
             cout << "Student not found: " << name << endl;
     }
 
-    // print add filed
     void printAllField(BST<FieldStudy> &tree)
     {
         printAllBST(tree.getRoot());
@@ -177,7 +187,6 @@ public:
             cout << "No results found for Course ID: " << courseId << endl;
     }
 
-    // ------------------- Generic BST Print -------------------
     void printAllBST(StdNode<T> *node)
     {
         if (!node)

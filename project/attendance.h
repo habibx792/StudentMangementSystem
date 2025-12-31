@@ -33,7 +33,6 @@ public:
         this->isPresent = present;
     }
 
-    // Getters
     int getAttendanceId() const
     {
         return this->attendanceId;
@@ -59,7 +58,6 @@ public:
         return this->isPresent;
     }
 
-    // Setters
     void setAttendanceId(int id)
     {
         this->attendanceId = id;
@@ -85,7 +83,6 @@ public:
         this->isPresent = present;
     }
 
-    // Print
     void print() const
     {
         cout << "Attendance ID: " << this->attendanceId
@@ -95,7 +92,6 @@ public:
              << " | Present: " << (this->isPresent ? "Yes" : "No") << endl;
     }
 
-    // For BST compatibility
     int getId() const
     {
         return this->attendanceId;

@@ -14,7 +14,6 @@ private:
     string grade;
 
 public:
-    // Constructors
     Result()
     {
         this->stdId = -1;
@@ -31,7 +30,6 @@ public:
         this->grade = grade;
     }
 
-    // Getters
     int getStdId() const
     {
         return this->stdId;
@@ -57,7 +55,6 @@ public:
         return this->gotNumber >= 50;
     }
 
-    // Setters
     void setStdId(int id)
     {
         this->stdId = id;
@@ -78,7 +75,6 @@ public:
         this->grade = g;
     }
 
-    // Print
     void print() const
     {
         cout << "Student ID: " << this->stdId
@@ -88,10 +84,9 @@ public:
              << " | Pass: " << (this->isPass() ? "Yes" : "No") << endl;
     }
 
-    // For BST compatibility
     int getId() const
     {
-        return this->stdId * 10000 + this->courseId;
+        return this->stdId ;
     }
 };
 

@@ -1,62 +1,12 @@
-#ifndef DELETEQUEUE_H
-#define DELETEQUEUE_H
+#ifndef DELETEQUEUES_H
+#define DELETEQUEUES_H
 
 #include <string>
 #include <utility>
 #include <iostream>
+#include "delNod.h"
 using namespace std;
 
-// ================== Node ==================
-class deleteNode
-{
-private:
-    int id;
-    string table;
-
-public:
-    deleteNode *next;
-
-    // Parameterized constructor
-    deleteNode(int id, const string &table)
-    {
-        this->id = id;
-        this->table = table;
-        this->next = NULL; // must initialize next
-    }
-
-    // Default constructor
-    deleteNode()
-    {
-        this->id = -1;
-        this->table = "NULL";
-        this->next = NULL;
-    }
-
-    // ===== Getters =====
-    deleteNode *getNext() const
-    {
-        return next;
-    }
-
-    pair<int, string> getMetaData() const
-    {
-        return {id, table};
-    }
-
-    // ===== Setters =====
-    void setNext(deleteNode *n)
-    {
-        next = n;
-    }
-
-    void setMetaData(int id, const string &table)
-    {
-        this->id = id;
-        this->table = table;
-    }
-};
-
-// ================== Queue ==================
 class deleteQueue
 {
 private:
@@ -65,7 +15,6 @@ private:
     int count;
 
 public:
-    // ===== Constructors =====
     deleteQueue()
     {
         fr = rear = NULL;
@@ -80,7 +29,6 @@ public:
             node->setNext(NULL);
     }
 
-    // ===== Queue Operations =====
     void enqueue(deleteNode *node)
     {
         if (node == NULL)
@@ -118,7 +66,7 @@ public:
             rear = NULL;
 
         count--;
-        temp->setNext(NULL); // detach node
+        temp->setNext(NULL);
         return temp;
     }
 
@@ -142,9 +90,6 @@ public:
         return rear;
     }
 
-   
-
-    // ===== Print Queue =====
     void printQueue() const
     {
         deleteNode *curr = fr;
@@ -157,4 +102,4 @@ public:
     }
 };
 
-#endif // DELETEQUEUE_H
+#endif // DELETEQUEUES_H

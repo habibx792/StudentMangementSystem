@@ -1,5 +1,5 @@
-#ifndef BSTSEARCH_H
-#define BSTSEARCH_H
+#ifndef searchEngine_H
+#define searchEngine_H
 #include "stdNode.h"
 #include "student.h"
 #include "course.h"

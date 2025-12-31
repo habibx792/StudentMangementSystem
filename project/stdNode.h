@@ -6,46 +6,43 @@ class StdNode
 {
 protected:
     T data;
-    StdNode<T>* left;
-    StdNode<T>* right;
+    StdNode<T> *left;
+    StdNode<T> *right;
 
 public:
-    // Constructor (your style)
-    StdNode(const T& d)
+    StdNode(const T &d)
     {
         data = d;
         left = NULL;
         right = NULL;
     }
 
-    // ===== Getters =====
     T getData() const
     {
         return data;
     }
 
-    StdNode<T>* getLeft() const
+    StdNode<T> *getLeft() const
     {
         return left;
     }
 
-    StdNode<T>* getRight() const
+    StdNode<T> *getRight() const
     {
         return right;
     }
 
-    // ===== Setters =====
-    void setData(const T& d)
+    void setData(const T &d)
     {
         data = d;
     }
 
-    void setLeft(StdNode<T>* node)
+    void setLeft(StdNode<T> *node)
     {
         left = node;
     }
 
-    void setRight(StdNode<T>* node)
+    void setRight(StdNode<T> *node)
     {
         right = node;
     }

@@ -13,7 +13,6 @@ private:
     string regDate;
 
 public:
-    // Constructors
     StdCourse()
     {
         this->stdId = -1;
@@ -28,7 +27,6 @@ public:
         this->regDate = regDate;
     }
 
-    // Getters
     int getStdId() const
     {
         return this->stdId;
@@ -44,7 +42,6 @@ public:
         return this->regDate;
     }
 
-    // Setters
     void setStdId(int id)
     {
         this->stdId = id;
@@ -60,7 +57,6 @@ public:
         this->regDate = date;
     }
 
-    // Print
     void print() const
     {
         cout << "Student ID: " << this->stdId
@@ -68,7 +64,6 @@ public:
              << " | Registration Date: " << this->regDate << endl;
     }
 
-    // For BST compatibility
     int getId() const
     {
         return this->stdId;

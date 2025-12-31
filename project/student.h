@@ -1,20 +1,13 @@
-#ifndef CLASSNAME_H
-#define CLASSNAME_H
-#include <iostream>
-#include <windows.h>
-#include <sql.h>
-#include <sqlext.h>
-#include <stireg.h>
-#include <sstream>
-#include <vector>
-#include <limits>
+#ifndef STUDENT_H
+#define STUDENT_H
 
+#include <iostream>
+#include <string>
 using namespace std;
 
 class Student
 {
 private:
-    // member variables
     string name;
     int age;
     int fieldId;
@@ -24,7 +17,6 @@ private:
     string field;
 
 public:
-    // constructors
     Student()
     {
     }
@@ -34,55 +26,57 @@ public:
         this->name = name;
         this->age = age;
         this->id = -1;
-        this->field="NULL";
+        this->field = "NULL";
         this->fatherName = fatherName;
         this->userName = userName;
         this->fieldId = fieldId;
     }
 
-    // ===== Getters =====
     void setField(string field)
     {
-        this->field=field;
+        this->field = field;
     }
+
     string getField()
     {
         return field;
     }
-    int getId()const
+
+    int getId() const
     {
         return id;
     }
+
     void setId(int id)
     {
         this->id = id;
     }
-    string getName()const
+
+    string getName() const
     {
         return name;
     }
 
-    string getUserName()const
+    string getUserName() const
     {
         return userName;
     }
 
-    int getAge()const
+    int getAge() const
     {
         return age;
     }
 
-    int getFieldId()const
+    int getFieldId() const
     {
         return fieldId;
     }
 
-    string getFatherName()const
+    string getFatherName() const
     {
         return fatherName;
     }
 
-    // ===== Setters =====
     void setName(string name)
     {
         this->name = name;
@@ -107,14 +101,15 @@ public:
     {
         this->fatherName = fatherName;
     }
+
     void print()
     {
-        cout<<"Name : "<<name<<endl;
-        cout<<"Age : "<<age<<endl;
-        cout<<"UserName : "<<userName<<endl;
-        cout<<"FatherName : "<<fatherName<<endl;
-        cout<<"Field Id : "<<endl;
+        cout << "Name : " << name << endl;
+        cout << "Age : " << age << endl;
+        cout << "UserName : " << userName << endl;
+        cout << "FatherName : " << fatherName << endl;
+        cout << "Field Id : " << fieldId << endl;
     }
 };
 
-#endif // CLASSNAME_H
+#endif // STUDENT_H

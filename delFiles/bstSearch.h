@@ -1,13 +1,17 @@
 #ifndef BSTSEARCH_H
 #define BSTSEARCH_H
+
 #include "stdNode.h"
-#include "student.h"
-#include "course.h"
-#include "stdResult.h"
-#include "attendance.h"
-#include "stdCourse.h"
-#include "admin.h"
-#include "field.h"
+#include <string>
+// Forward declarations
+class Result;
+class Admin;
+class FieldStudy;
+class StdCourse;
+class Attendance;
+class Student;
+class Course;
+
 inline StdNode<Result> *searchPassRec(StdNode<Result> *node)
 {
     if (!node)
@@ -19,6 +23,37 @@ inline StdNode<Result> *searchPassRec(StdNode<Result> *node)
         return left;
     return searchPassRec(node->getRight());
 }
+
+inline StdNode<Admin> *searchAdminByName(StdNode<Admin> *node, const std::string &name)
+{
+    if (!node)
+        return nullptr;
+
+    if (node->getData().getAdminName() == name)
+        return node;
+
+    StdNode<Admin> *left = searchAdminByName(node->getLeft(), name);
+    if (left)
+        return left;
+
+    return searchAdminByName(node->getRight(), name);
+}
+
+inline StdNode<Admin> *searchAdminById(StdNode<Admin> *node, int id)
+{
+    if (!node)
+        return nullptr;
+
+    if (node->getData().getId() == id)
+        return node;
+
+    StdNode<Admin> *left = searchAdminById(node->getLeft(), id);
+    if (left)
+        return left;
+
+    return searchAdminById(node->getRight(), id);
+}
+
 inline StdNode<FieldStudy> *searchFieldStudyById(StdNode<FieldStudy> *node, int fieldId)
 {
     if (!node)
@@ -30,7 +65,7 @@ inline StdNode<FieldStudy> *searchFieldStudyById(StdNode<FieldStudy> *node, int 
         return left;
     return searchFieldStudyById(node->getRight(), fieldId);
 }
-// ------------------- StdCourse Searches -------------------
+
 inline StdNode<StdCourse> *searchStdCourseByStdId(StdNode<StdCourse> *node, int stdId)
 {
     if (!node)
@@ -67,7 +102,6 @@ inline StdNode<Attendance> *searchAttendanceByStdId(StdNode<Attendance> *node, i
     return searchAttendanceByStdId(node->getRight(), stdId);
 }
 
-// Search by Course ID
 inline StdNode<Attendance> *searchAttendanceByCourseId(StdNode<Attendance> *node, int courseId)
 {
     if (!node)
@@ -80,7 +114,6 @@ inline StdNode<Attendance> *searchAttendanceByCourseId(StdNode<Attendance> *node
     return searchAttendanceByCourseId(node->getRight(), courseId);
 }
 
-// Search by Date
 inline StdNode<Attendance> *searchAttendanceByDate(StdNode<Attendance> *node, const string &date)
 {
     if (!node)
@@ -93,7 +126,6 @@ inline StdNode<Attendance> *searchAttendanceByDate(StdNode<Attendance> *node, co
     return searchAttendanceByDate(node->getRight(), date);
 }
 
-// Search by Student ID
 inline StdNode<Result> *searchResultByStdId(StdNode<Result> *node, int stdId)
 {
     if (!node)
@@ -106,7 +138,6 @@ inline StdNode<Result> *searchResultByStdId(StdNode<Result> *node, int stdId)
     return searchResultByStdId(node->getRight(), stdId);
 }
 
-// Search by Course ID
 inline StdNode<Result> *searchResultByCourseId(StdNode<Result> *node, int courseId)
 {
     if (!node)
@@ -119,7 +150,6 @@ inline StdNode<Result> *searchResultByCourseId(StdNode<Result> *node, int course
     return searchResultByCourseId(node->getRight(), courseId);
 }
 
-// ------------------- Student Searches -------------------
 inline StdNode<Student> *searchStudentByName(StdNode<Student> *node, const std::string &name)
 {
     if (!node)
@@ -132,7 +162,6 @@ inline StdNode<Student> *searchStudentByName(StdNode<Student> *node, const std::
     return searchStudentByName(node->getRight(), name);
 }
 
-// ------------------- Course Searches -------------------
 inline StdNode<Course> *searchCourseByTitle(StdNode<Course> *node, const std::string &title)
 {
     if (!node)

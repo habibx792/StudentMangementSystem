@@ -1,5 +1,5 @@
-#ifndef BST_H
-#define BST_H
+#ifndef STDBST_H
+#define STDBST_H
 
 #include "stdNode.h"
 
@@ -9,7 +9,6 @@ class BST
 private:
     StdNode<T> *root;
 
-    // Insert recursively based on getId()
     StdNode<T> *insertRec(StdNode<T> *node, const T &value)
     {
         if (!node)
@@ -23,7 +22,6 @@ private:
         return node;
     }
 
-    // Search recursively by ID
     StdNode<T> *searchRec(StdNode<T> *node, int id) const
     {
         if (!node)

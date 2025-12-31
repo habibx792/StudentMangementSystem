@@ -12,7 +12,6 @@ private:
     string fieldName;
 
 public:
-    // Constructors
     FieldStudy()
     {
         this->fieldId = -1;
@@ -25,7 +24,6 @@ public:
         this->fieldName = name;
     }
 
-    // Getters
     int getFieldId() const
     {
         return this->fieldId;
@@ -36,7 +34,6 @@ public:
         return this->fieldName;
     }
 
-    // Setters
     void setFieldId(int id)
     {
         this->fieldId = id;
@@ -47,14 +44,12 @@ public:
         this->fieldName = name;
     }
 
-    // Print
     void print() const
     {
         cout << "Field ID: " << this->fieldId
              << " | Field Name: " << this->fieldName << endl;
     }
 
-    // For BST compatibility
     int getId() const
     {
         return this->fieldId;

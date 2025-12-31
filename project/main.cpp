@@ -1,17 +1,11 @@
 #include <iostream>
-#include <windows.h>
-#include <sql.h>
-#include <sqlext.h>
-#include <stireg.h>
-#include <sstream>
-#include <vector>
-#include <limits>
+#include "sm_systen.h"
+#include "searchEngine.h"
 using namespace std;
 
-class A {
-};
-
-int main() {
-    
+int main()
+{
+    SmsSytem &s = SmsSytem::getInstance();
+    s.run();
     return 0;
 }
