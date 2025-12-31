@@ -1,3 +1,4 @@
+#define _HAS_STD_BYTE 0
 #ifndef UPNODE_H
 #define UPNODE_H
 

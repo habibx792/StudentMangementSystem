@@ -1,6 +1,6 @@
 #ifndef ADMIN_H
 #define ADMIN_H
-
+#define _HAS_STD_BYTE 0
 #include <iostream>
 #include <string>
 using namespace std;

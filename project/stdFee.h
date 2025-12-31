@@ -1,3 +1,4 @@
+#define _HAS_STD_BYTE 0
 #ifndef STUDENTFEES_H
 #define STUDENTFEES_H
 
@@ -15,6 +16,7 @@ private:
     string status;
 
 public:
+    // Constructors
     StudentFees()
     {
         this->feeId = -1;
@@ -33,6 +35,7 @@ public:
         this->status = stat;
     }
 
+    // Getters
     int getFeeId() const
     {
         return this->feeId;
@@ -47,8 +50,13 @@ public:
     {
         return this->amount;
     }
+    void setId(int id)
+    {
+        this->feeId=id;
+    }
 
-    string getPaymentDate() const
+        string
+        getPaymentDate() const
     {
         return this->paymentDate;
     }
@@ -58,6 +66,7 @@ public:
         return this->status;
     }
 
+    // Setters
     void setFeeId(int id)
     {
         this->feeId = id;
@@ -83,6 +92,7 @@ public:
         this->status = stat;
     }
 
+    // Print
     void print() const
     {
         cout << "Fee ID: " << this->feeId
@@ -92,9 +102,21 @@ public:
              << " | Status: " << this->status << endl;
     }
 
+    // For BST / generic handling
     int getId() const
     {
         return this->feeId;
+    }
+
+    // Optional: BST sorting support
+    bool operator<(const StudentFees &other) const
+    {
+        return this->feeId < other.feeId;
+    }
+
+    bool operator>(const StudentFees &other) const
+    {
+        return this->feeId > other.feeId;
     }
 };
 

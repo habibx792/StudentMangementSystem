@@ -8,107 +8,123 @@ using namespace std;
 class Student
 {
 private:
-    string name;
-    int age;
+    int stdId;
+    string stdName;
+    string stdUserName;
+    int stdAge;
     int fieldId;
-    string fatherName;
-    string userName;
-    int id;
-    string field;
+    string stdFatherName;
 
 public:
+    // Constructors
     Student()
     {
+        this->stdId = -1;
+        this->stdName = "";
+        this->stdUserName = "";
+        this->stdAge = 0;
+        this->fieldId = -1;
+        this->stdFatherName = "";
     }
 
-    Student(string name, string userName, int age, int fieldId, string fatherName)
+    Student(int id, string name, string userName, int age, int fId, string fatherName)
     {
-        this->name = name;
-        this->age = age;
-        this->id = -1;
-        this->field = "NULL";
-        this->fatherName = fatherName;
-        this->userName = userName;
-        this->fieldId = fieldId;
+        this->stdId = id;
+        this->stdName = name;
+        this->stdUserName = userName;
+        this->stdAge = age;
+        this->fieldId = fId;
+        this->stdFatherName = fatherName;
     }
 
-    void setField(string field)
+    // ===== Getters =====
+    int getStdId() const
     {
-        this->field = field;
+        return this->stdId;
     }
 
-    string getField()
+    string getStdName() const
     {
-        return field;
+        return this->stdName;
     }
 
-    int getId() const
+    string getStdUserName() const
     {
-        return id;
+        return this->stdUserName;
     }
 
-    void setId(int id)
+    int getStdAge() const
     {
-        this->id = id;
-    }
-
-    string getName() const
-    {
-        return name;
-    }
-
-    string getUserName() const
-    {
-        return userName;
-    }
-
-    int getAge() const
-    {
-        return age;
+        return this->stdAge;
     }
 
     int getFieldId() const
     {
-        return fieldId;
+        return this->fieldId;
     }
 
-    string getFatherName() const
+    string getStdFatherName() const
     {
-        return fatherName;
+        return this->stdFatherName;
     }
 
-    void setName(string name)
+    // ===== Setters =====
+    void setStdId(int id)
     {
-        this->name = name;
+        this->stdId = id;
     }
 
-    void setUserName(string userName)
+    void setStdName(const string &name)
     {
-        this->userName = userName;
+        this->stdName = name;
     }
 
-    void setAge(int age)
+    void setStdUserName(const string &userName)
     {
-        this->age = age;
+        this->stdUserName = userName;
     }
 
-    void setFieldId(int fieldId)
+    void setStdAge(int age)
     {
-        this->fieldId = fieldId;
+        this->stdAge = age;
     }
 
-    void setFatherName(string fatherName)
+    void setFieldId(int fId)
     {
-        this->fatherName = fatherName;
+        this->fieldId = fId;
     }
 
-    void print()
+    void setStdFatherName(const string &fatherName)
     {
-        cout << "Name : " << name << endl;
-        cout << "Age : " << age << endl;
-        cout << "UserName : " << userName << endl;
-        cout << "FatherName : " << fatherName << endl;
-        cout << "Field Id : " << fieldId << endl;
+        this->stdFatherName = fatherName;
+    }
+
+    // ===== Print =====
+    void print() const
+    {
+        cout << "Student ID: " << this->stdId << endl;
+        cout << "Name: " << this->stdName << endl;
+        cout << "Username: " << this->stdUserName << endl;
+        cout << "Age: " << this->stdAge << endl;
+        cout << "Field ID: " << this->fieldId << endl;
+        cout << "Father's Name: " << this->stdFatherName << endl;
+    }
+
+    // For BST compatibility
+    int getId() const
+    {
+        return this->stdId;
+    }
+
+    // For BST sorting
+    bool operator<(const Student &other) const
+    {
+        return this->stdId < other.stdId;
+    }
+
+    bool operator>(const Student &other) const
+    {
+        return this->stdId > other.stdId;
     }
 };
 

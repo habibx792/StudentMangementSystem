@@ -1,5 +1,8 @@
+
+#define _HAS_STD_BYTE 0
 #ifndef searchEngine_H
 #define searchEngine_H
+
 #include "stdNode.h"
 #include "student.h"
 #include "course.h"
@@ -155,7 +158,7 @@ inline StdNode<Student> *searchStudentByName(StdNode<Student> *node, const std::
 {
     if (!node)
         return nullptr;
-    if (node->getData().getName() == name)
+    if (node->getData().getStdName() == name)
         return node;
     StdNode<Student> *left = searchStudentByName(node->getLeft(), name);
     if (left)

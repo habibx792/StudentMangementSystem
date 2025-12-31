@@ -1,3 +1,4 @@
+#define _HAS_STD_BYTE 0
 #ifndef PRINTEINGE_H
 #define PRINTEINGE_H
 

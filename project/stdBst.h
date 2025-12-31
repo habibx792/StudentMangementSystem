@@ -1,3 +1,4 @@
+#define _HAS_STD_BYTE 0
 #ifndef STDBST_H
 #define STDBST_H
 

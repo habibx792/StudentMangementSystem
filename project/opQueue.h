@@ -1,3 +1,4 @@
+#define _HAS_STD_BYTE 0
 #ifndef OPQUEUE_H
 #define OPQUEUE_H
 
@@ -115,15 +116,31 @@ public:
     {
         return rear;
     }
+
+    // ADDED: Search method that was missing
+    opNode<T> *search(int id) const
+    {
+        opNode<T> *current = front;
+        while (current != NULL)
+        {
+            if (current->getData().getId() == id)
+                return current;
+            current = current->getNext();
+        }
+        return NULL; // Not found
+    }
+
     void printQueue()
     {
         opNode<T> *current = front;
         while (current != NULL)
         {
-            std::cout << current->getData() << " ";
+            // Assuming T has a print() method
+            current->getData().print();
+            cout << " -> ";
             current = current->getNext();
         }
-        std::cout << std::endl;
+        cout << "NULL" << endl;
     }
 };
 

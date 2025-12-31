@@ -1,3 +1,4 @@
+#define _HAS_STD_BYTE 0
 #ifndef UI_H
 #define UI_H
 
@@ -5,7 +6,9 @@
 #include <limits>
 #include <string>
 #include <iomanip>
-#include <windows.h> // For system("cls")
+#include <thread>
+#include <chrono>
+#include <cstdlib>
 
 using namespace std;
 
@@ -39,6 +42,12 @@ public:
     void clearScreen()
     {
         system("cls");
+    }
+
+    // Cross-platform sleep function
+    void sleep(int milliseconds)
+    {
+        this_thread::sleep_for(chrono::milliseconds(milliseconds));
     }
 
     void pressEnterToContinue()

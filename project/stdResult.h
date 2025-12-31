@@ -1,3 +1,4 @@
+#define _HAS_STD_BYTE 0
 #ifndef RESULT_H
 #define RESULT_H
 
@@ -86,7 +87,8 @@ public:
 
     int getId() const
     {
-        return this->stdId ;
+        // Create unique ID for BST (stdId * 1000 + courseId)
+        return (this->stdId * 1000) + this->courseId;
     }
 };
 

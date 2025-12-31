@@ -1,3 +1,4 @@
+#define _HAS_STD_BYTE 0
 #ifndef DELETEQUEUES_H
 #define DELETEQUEUES_H
 
@@ -88,7 +89,18 @@ public:
     {
         return rear;
     }
-
+    deleteNode * searchQueue(int id)
+    {
+        deleteNode* curr = fr;
+        while (curr != NULL)
+        {
+            auto [searchId, table] = curr->getMetaData();
+            if (searchId == id)
+                return curr;
+            curr = curr->getNext();
+        }
+        return NULL;
+    }
     void printQueue() const
     {
         deleteNode *curr = fr;

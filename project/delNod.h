@@ -1,6 +1,6 @@
+#define _HAS_STD_BYTE 0
 #ifndef DELETENODE_H
 #define DELETENODE_H
-
 #include <string>
 using namespace std;
 

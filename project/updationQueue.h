@@ -1,3 +1,4 @@
+#define _HAS_STD_BYTE 0
 #ifndef UPDATIONQUEUE_H
 #define UPDATIONQUEUE_H
 
@@ -99,6 +100,18 @@ public:
             cout << "Id: " << id << ", Table: " << table << endl;
             curr = curr->getNext();
         }
+    }
+    upNode * searchQueue(int id)
+    {
+        upNode *curr = fr;
+        while (curr != NULL)
+        {
+            auto [searchId, table] = curr->getMetaData();
+            if (searchId == id)
+                return curr;
+            curr = curr->getNext();
+        }
+        return NULL;
     }
 };
 

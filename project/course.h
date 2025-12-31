@@ -1,3 +1,4 @@
+#define _HAS_STD_BYTE 0
 #ifndef COURSE_H
 #define COURSE_H
 
@@ -13,6 +14,14 @@ private:
     string teacherName;
 
 public:
+    // Default constructor
+    Course()
+    {
+        this->courseId = -1;
+        this->courseTitle = "";
+        this->teacherName = "";
+    }
+
     Course(string title, string Tname)
     {
         this->courseTitle = title;
@@ -32,24 +41,34 @@ public:
         this->courseId = id;
     }
 
-    void print()
+    void setCourseTitle(const string &title)
+    {
+        this->courseTitle = title;
+    }
+
+    void setTeacherName(const string &teacher)
+    {
+        this->teacherName = teacher;
+    }
+
+    void print() const
     {
         cout << "courseID : " << courseId << endl;
         cout << "Course Title : " << courseTitle << endl;
         cout << "Teacher Name : " << teacherName << endl;
     }
 
-    int getId()
+    int getId() const
     {
         return courseId;
     }
 
-    string getCourseTitle()
+    string getCourseTitle() const
     {
         return courseTitle;
     }
 
-    string getTeacherName()
+    string getTeacherName() const
     {
         return teacherName;
     }

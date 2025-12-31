@@ -1,6 +1,6 @@
 #ifndef CLASSNAME_H
 #define CLASSNAME_H
-
+#define _HAS_STD_BYTE 0
 #include <string>
 using namespace std;
 

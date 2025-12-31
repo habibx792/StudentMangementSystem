@@ -1,6 +1,6 @@
+#define _HAS_STD_BYTE 0
 #ifndef FIELDSTUDY_H
 #define FIELDSTUDY_H
-
 #include <iostream>
 #include <string>
 using namespace std;
