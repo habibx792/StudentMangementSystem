@@ -1,19 +1,17 @@
 #define _HAS_STD_BYTE 0
-#ifndef PRINTEINGE_H
-#define PRINTEINGE_H
+#ifndef PRINTENGINE_H
+#define PRINTENGINE_H
 
 #include <iostream>
 #include <string>
 using namespace std;
 
-// Include the actual headers instead of forward declarations
 #include "stdBst.h"
 #include "stdNode.h"
-#include "deleteQueues.h"  // Includes deleteQueue and deleteNode
-#include "updationQueue.h" // Includes upQueue and upNode
-#include "opQueue.h"       // Includes opQueue and opNode
+#include "deleteQueues.h"
+#include "updationQueue.h"
+#include "opQueue.h"
 
-// Include data classes
 #include "admin.h"
 #include "student.h"
 #include "course.h"
@@ -21,18 +19,28 @@ using namespace std;
 #include "attendance.h"
 #include "stdCourse.h"
 #include "field.h"
+#include "stdFee.h"
 
-// Include search functions - USE searchEngine.h instead of bstSearch.h
-#include "searchEngine.h" // CHANGED THIS LINE
+#include "searchEngine.h"
 
-template <class T>
-
-
-class printEinge
+class PrintEngine
 {
-public:
-    printEinge() {}
+private:
+    template <class T>
+    void printAllNodes(StdNode<T> *node)
+    {
+        if (!node)
+            return;
+        printAllNodes(node->getLeft());
+        node->getData().print();
+        printAllNodes(node->getRight());
+    }
 
+public:
+    PrintEngine() {}
+
+    // Generic template methods
+    template <class T>
     void printUpdated(BST<T> &tree, upQueue &q)
     {
         upNode *curr = q.getFront();
@@ -46,6 +54,7 @@ public:
         }
     }
 
+    template <class T>
     void printDeleted(BST<T> &tree, deleteQueue &q)
     {
         deleteNode *curr = q.getFront();
@@ -59,6 +68,7 @@ public:
         }
     }
 
+    template <class T>
     void printNewInsertions(const opQueue<T> &q)
     {
         opNode<T> *curr = q.getFront();
@@ -69,6 +79,17 @@ public:
         }
     }
 
+    template <class T>
+    void printAllBST(BST<T> &tree, const string &title = "")
+    {
+        if (!title.empty())
+            cout << "\n=== " << title << " ===" << endl;
+        else
+            cout << "\n=== All Records ===" << endl;
+        printAllNodes(tree.getRoot());
+    }
+
+    // Admin printing methods
     void printAdminByName(BST<Admin> &tree, const string &name)
     {
         StdNode<Admin> *node = searchAdminByName(tree.getRoot(), name);
@@ -87,6 +108,84 @@ public:
             cout << "Admin not found with ID: " << id << endl;
     }
 
+    void printAllAdmins(BST<Admin> &tree)
+    {
+        printAllBST(tree, "All Admins");
+    }
+
+    // Student printing methods
+    void printStudentByName(BST<Student> &tree, const string &name)
+    {
+        StdNode<Student> *node = searchStudentByName(tree.getRoot(), name);
+        if (node)
+            node->getData().print();
+        else
+            cout << "Student not found: " << name << endl;
+    }
+
+    void printStudentById(BST<Student> &tree, int id)
+    {
+        StdNode<Student> *node = searchStudentById(tree.getRoot(), id);
+        if (node)
+            node->getData().print();
+        else
+            cout << "Student not found with ID: " << id << endl;
+    }
+
+    void printAllStudents(BST<Student> &tree)
+    {
+        printAllBST(tree, "All Students");
+    }
+
+    // Course printing methods
+    void printCourseByTitle(BST<Course> &tree, const string &title)
+    {
+        StdNode<Course> *node = searchCourseByTitle(tree.getRoot(), title);
+        if (node)
+            node->getData().print();
+        else
+            cout << "Course not found: " << title << endl;
+    }
+
+    void printCourseById(BST<Course> &tree, int id)
+    {
+        StdNode<Course> *node = searchCourseById(tree.getRoot(), id);
+        if (node)
+            node->getData().print();
+        else
+            cout << "Course not found with ID: " << id << endl;
+    }
+
+    void printAllCourses(BST<Course> &tree)
+    {
+        printAllBST(tree, "All Courses");
+    }
+
+    // Field printing methods
+    void printFieldByName(BST<FieldStudy> &tree, const string &name)
+    {
+        StdNode<FieldStudy> *node = searchFieldByName(tree.getRoot(), name);
+        if (node)
+            node->getData().print();
+        else
+            cout << "Field not found: " << name << endl;
+    }
+
+    void printFieldById(BST<FieldStudy> &tree, int id)
+    {
+        StdNode<FieldStudy> *node = searchFieldById(tree.getRoot(), id);
+        if (node)
+            node->getData().print();
+        else
+            cout << "Field not found with ID: " << id << endl;
+    }
+
+    void printAllFields(BST<FieldStudy> &tree)
+    {
+        printAllBST(tree, "All Fields");
+    }
+
+    // StdCourse printing methods
     void printStdCourseByStdId(BST<StdCourse> &tree, int stdId)
     {
         StdNode<StdCourse> *node = searchStdCourseByStdId(tree.getRoot(), stdId);
@@ -105,6 +204,12 @@ public:
             cout << "No course registrations found for Course ID: " << courseId << endl;
     }
 
+    void printAllStdCourses(BST<StdCourse> &tree)
+    {
+        printAllBST(tree, "All Student Course Registrations");
+    }
+
+    // Attendance printing methods
     void printAttendanceByStdId(BST<Attendance> &tree, int stdId)
     {
         StdNode<Attendance> *node = searchAttendanceByStdId(tree.getRoot(), stdId);
@@ -112,12 +217,6 @@ public:
             node->getData().print();
         else
             cout << "No attendance records for Student ID: " << stdId << endl;
-    }
-
-    void printAllAttenca(BST<Attendance> &tree)
-    {
-        cout << "Printing all Attendance: " << endl;
-        printAllBST(tree.getRoot());
     }
 
     void printAttendanceByCourseId(BST<Attendance> &tree, int courseId)
@@ -138,34 +237,20 @@ public:
             cout << "No attendance records on Date: " << date << endl;
     }
 
-    void printStudentByName(BST<Student> &tree, const string &name)
+    void printAllAttendance(BST<Attendance> &tree)
     {
-        StdNode<Student> *node = searchStudentByName(tree.getRoot(), name);
-        if (node)
-            node->getData().print();
-        else
-            cout << "Student not found: " << name << endl;
+        printAllBST(tree, "All Attendance Records");
     }
 
-    void printAllField(BST<FieldStudy> &tree)
-    {
-        printAllBST(tree.getRoot());
-    }
-
-    void printCourseByTitle(BST<Course> &tree, const string &title)
-    {
-        StdNode<Course> *node = searchCourseByTitle(tree.getRoot(), title);
-        if (node)
-            node->getData().print();
-        else
-            cout << "Course not found: " << title << endl;
-    }
-
+    // Result printing methods
     void printPassResults(BST<Result> &tree)
     {
         StdNode<Result> *node = searchPassRec(tree.getRoot());
         if (node)
+        {
+            cout << "\n=== Passing Results ===" << endl;
             node->getData().print();
+        }
         else
             cout << "No passing results found." << endl;
     }
@@ -188,14 +273,50 @@ public:
             cout << "No results found for Course ID: " << courseId << endl;
     }
 
-    void printAllBST(StdNode<T> *node)
+    void printAllResults(BST<Result> &tree)
     {
-        if (!node)
-            return;
-        printAllBST(node->getLeft());
-        node->getData().print();
-        printAllBST(node->getRight());
+        printAllBST(tree, "All Results");
+    }
+
+    // StudentFees printing methods
+    void printStudentFeesByStdId(BST<StudentFees> &tree, int stdId)
+    {
+        StdNode<StudentFees> *node = searchStdFeeByStdId(tree.getRoot(), stdId);
+        if (node)
+            node->getData().print();
+        else
+            cout << "No fee records found for Student ID: " << stdId << endl;
+    }
+
+    void printAllStudentFees(BST<StudentFees> &tree)
+    {
+        printAllBST(tree, "All Student Fees");
+    }
+
+    // Utility methods
+    void printSeparator(const string &title = "")
+    {
+        cout << "\n========================================" << endl;
+        if (!title.empty())
+            cout << title << endl;
+        cout << "========================================\n"
+             << endl;
+    }
+
+    void printMessage(const string &message)
+    {
+        cout << ">> " << message << endl;
+    }
+
+    void printError(const string &error)
+    {
+        cout << "ERROR: " << error << endl;
+    }
+
+    void printSuccess(const string &message)
+    {
+        cout << "SUCCESS: " << message << endl;
     }
 };
 
-#endif // PRINTEINGE_H
+#endif // PRINTENGINE_H

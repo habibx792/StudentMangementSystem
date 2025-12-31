@@ -11,7 +11,7 @@
 #include "stdBst.h"
 #include "opQueue.h"
 #include "updationQueue.h"
-#include "deleteQueueS.h"
+#include "deleteQueues.h"
 
 // ================= Domain Models =================
 #include "student.h"
@@ -33,28 +33,30 @@
 class SMSSystem
 {
 private:
-    DB db;
-    UI ui;
-    BST<Student> studentBST;
-    BST<Admin> adminBST;
-    BST<Student> newRegStdBst;
-    BST<Course> courseBST;
-    BST<FieldStudy> fieldBST;
-    BST<Attendance> attendanceBST;
-    BST<StdCourse> stdCourseBST;
-    BST<StudentFees> stdFeeBST;
-    BST<Result> stdResultBST;
+    DB db;                   // Database connection handler
+    UI ui;                   // User interface handler
+    PrintEngine printEngine; // Printing engine - FIXED: Changed from 'engine' to 'printEngine'
 
-    opQueue<Student> newStudentOpQueue;
-    opQueue<Course> newRegCourseOpQueue;
-    opQueue<FieldStudy> newFieldOpQueue;
-    opQueue<Attendance> newStdAttendanceOpQueue;
-    opQueue<StdCourse> newStdCourseOpQueue;
-    opQueue<StudentFees> newStdFeeOpQueue;
-    opQueue<Result> newStdResultOpQueue;
+    BST<Student> studentBST;       // Binary Search Tree for storing students
+    BST<Admin> adminBST;           // Binary Search Tree for storing admins
+    BST<Student> newRegStdBst;     // BST for newly registered students
+    BST<Course> courseBST;         // BST for storing courses
+    BST<FieldStudy> fieldBST;      // BST for storing fields of study
+    BST<Attendance> attendanceBST; // BST for storing attendance records
+    BST<StdCourse> stdCourseBST;   // BST for student-course registrations
+    BST<StudentFees> stdFeeBST;    // BST for storing student fees
+    BST<Result> stdResultBST;      // BST for storing student results
 
-    upQueue updateQueue;
-    deleteQueue delQueue;
+    opQueue<Student> newStudentOpQueue;          // Queue for new student registrations
+    opQueue<Course> newRegCourseOpQueue;         // Queue for new course registrations
+    opQueue<FieldStudy> newFieldOpQueue;         // Queue for new field registrations
+    opQueue<Attendance> newStdAttendanceOpQueue; // Queue for new attendance records
+    opQueue<StdCourse> newStdCourseOpQueue;      // Queue for new course registrations
+    opQueue<StudentFees> newStdFeeOpQueue;       // Queue for new fee records
+    opQueue<Result> newStdResultOpQueue;         // Queue for new result records
+
+    upQueue updateQueue;  // Queue for tracking updates
+    deleteQueue delQueue; // Queue for deletions
 
     // Private constructor for Singleton pattern
     SMSSystem() = default;
@@ -531,10 +533,15 @@ public:
 
         db.printStatus();
         loadAllDataFromDB();
+
+        // Test print engine
+        printEngine.printAllStudents(studentBST);
+        printEngine.printAllCourses(courseBST);
+
         ui.displayAdminMenu();
     }
 
-    // Public getter methods for accessing components
+    // Public getter methods
     BST<Student> &getStudentBST() { return studentBST; }
     BST<Admin> &getAdminBST() { return adminBST; }
     BST<Course> &getCourseBST() { return courseBST; }
@@ -546,11 +553,9 @@ public:
 
     DB &getDB() { return db; }
     UI &getUI() { return ui; }
+    PrintEngine &getPrintEngine() { return printEngine; }
 
-    // Public queue operation methods
-    void updateStudent(upNode *node) { updateStudentInfo(node); }
-    void deleteStudent(deleteNode *node) { deleteStudentInformation(node); }
-
+    // Public registration methods
     void addNewStudent(Student &student) { registerNewStudent(student); }
     void addNewCourse(Course &course) { registerNewCourse(course); }
     void addNewField(FieldStudy &field) { registerNewField(field); }
