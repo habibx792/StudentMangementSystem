@@ -28,7 +28,6 @@ public:
         if (node != NULL)
             node->setNext(NULL);
     }
-
     void enqueue(deleteNode *node)
     {
         if (node == NULL)

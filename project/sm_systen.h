@@ -28,6 +28,7 @@
 #include "db.h"
 
 // ================= System Class =================
+template <class T>
 class SmsSytem
 {
 private:
@@ -55,9 +56,79 @@ private:
     SmsSytem()
     {
     }
+    void updateStudentInfor(upNode *&node)
+    {
+        // Implementation for updating student information
+        upDateQueue.enqueue(node);
+    }
+    void DeleteStudentInformation(deleteNode *&node)
+    {
+        // Implementation for deleting student information
+        deleteQueue.enqueue(node);
+    }
+    void searchDeletionStdentInfo(int id)
+    {
+        // Implementation for searching deleted student information
+        StdNode<Student> *nod = studentBST.searchRec(id);
+        if (nod != nullptr)
+        {
+            return;
+        }
+        else
+        {
+            Student Data = nod->getData();
+            Data.print();
+        }
+    }
+    void searchDeletionCourseInfo(int id)
+    {
+        // Implementation for searching deleted course information
+        StdNode<Course> *nod = courseBST.searchRec(id);
+        if (nod != nullptr)
+        {
+            return;
+        }
+        else
+        {
+            Course Data = nod->getData();
+            Data.print();
+        }
+    }
+    void searchDeletionFeeInfo(int id)
+    {
+        // Implementation for searching deleted fee information
+        StdNode<StudentFees> *nod = stdFeeBST.searchRec(id);
+        if (nod != nullptr)
+        {
+            return;
+        }
+        else
+        {
+            StudentFees Data = nod->getData();
+            Data.print();
+        }
+    }
+    void searchDeletionResultInfo(int id)
+    {
+        // Implementation for searching deleted result information
+        StdNode<Result> *nod = stdResultBST.searchRec(id);
+        if (nod != nullptr)
+        {
+            return;
+        }
+        else
+        {
+            Result Data = nod->getData();
+            Data.print();
+        }
+    }
+    void searchDeletionRE
+    void searchUpdationStdInfo(int id)
+    {
+        // Implementation for searching updated student information
+    }
     void registeNewStudent(Student &student)
     {
-
         newstudentOpQueue.enqueueNewStd(student);
         studentBST.insert(student);
     }

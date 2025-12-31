@@ -162,6 +162,18 @@ inline StdNode<Student> *searchStudentByName(StdNode<Student> *node, const std::
         return left;
     return searchStudentByName(node->getRight(), name);
 }
+// ------------------- Student Searches -------------------
+inline StdNode<Student> *searchStudentById(StdNode<Student> *node, const int &id)
+{
+    if (!node)
+        return nullptr;
+    if (node->getData().getId() == id)
+        return node;
+    StdNode<Student> *left = searchStudentById(node->getLeft(), id  );
+    if (left)
+        return left;
+    return searchStudentById(node->getRight(), id);
+}
 
 // ------------------- Course Searches -------------------
 inline StdNode<Course> *searchCourseByTitle(StdNode<Course> *node, const std::string &title)
