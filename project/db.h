@@ -26,7 +26,7 @@ public:
     }
     ~DB()
     { 
-        
+
         SQLDisconnect(hDbc);
         SQLFreeHandle(SQL_HANDLE_DBC, hDbc);
         SQLFreeHandle(SQL_HANDLE_ENV, hEnv);
@@ -34,6 +34,7 @@ public:
     }
     SQLHDBC &returnDb() { return hDbc; }
     void connect()
+
     {
         SQLCHAR connStr[] =
             "DRIVER={ODBC Driver 17 for SQL Server};"
