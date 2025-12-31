@@ -289,6 +289,7 @@ public:
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         return (choice == 'y' || choice == 'Y');
     }
+    
 };
 
 #endif // UI_H
