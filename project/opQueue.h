@@ -115,6 +115,16 @@ public:
     {
         return rear;
     }
+    void printQueue()
+    {
+        opNode<T> *current = front;
+        while (current != NULL)
+        {
+            std::cout << current->getData() << " ";
+            current = current->getNext();
+        }
+        std::cout << std::endl;
+    }
 };
 
 #endif // OPQUEUE_H
