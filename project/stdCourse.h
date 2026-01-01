@@ -20,6 +20,7 @@ public:
         this->courseId = -1;
         this->regDate = "1970-01-01";
     }
+    
 
     StdCourse(int stdId, int courseId, const string &regDate)
     {

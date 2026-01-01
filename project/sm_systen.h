@@ -1253,6 +1253,194 @@ private:
         // Reload data
         loadAllDataFromDB();
     }
+    // implemeting insertion into tables
+    void addNewStudent()
+    {
+        int stdId;
+        string stdName;
+        string fatherName;
+        string userName;
+        int fieldId;
+
+        int age;
+        cout << "Enter A random Student Id Between 10000 t to 999999999 \n";
+        cin >> stdId;
+        cout << "Enter Student Name: ";
+        getline(cin, stdName);
+        cout << "Enter Student Age: ";
+        cin >> age;
+        cout << "Enter Student Father Name: ";
+        getline(cin, fatherName);
+        cout << "Enter Student User Name: ";
+        getline(cin, userName);
+        cout << "Enter Student Field Id: ";
+        cin >> fieldId;
+        //     Student(int id, string name, string userName, int age, int fId, string fatherName)
+
+        Student student(stdId, stdName, userName, age, fieldId, fatherName);
+        registerNewStudent(student);
+    }
+    void addNewCourse()
+    {
+        string courseTitle;
+        string teacherName;
+        cout << "Enter Course Title: \n";
+        getline(cin, courseTitle);
+        cout << "Enter Teacher Name: \n";
+        getline(cin, teacherName);
+        Course course(courseTitle, teacherName);
+        registerNewCourse(course);
+    }
+    void addNewField()
+    {
+        string fieldName;
+        int  fieldId;
+        cout<<"Enter Field Id: \n";
+        cin>>fieldId;
+        cout << "Enter Field Name: \n";
+        getline(cin, fieldName);
+        FieldStudy field(fieldId, fieldName);
+
+        registerNewField(field);
+    }
+    void addNewAttendance() {
+        int attendanceId;
+        int stdId;
+        int courseId;
+        string attendanceDate;
+        bool isPresent;
+        cout<<"Enter Attendance Id: \n";
+        cin>>attendanceId;
+        cout<<"Enter Student Id: \n";
+        cin>>stdId;
+        cout<<"Enter Course Id: \n";
+        cin>>courseId;
+        cout<<"Enter Attendance Date (YYYY-MM-DD): \n";
+        getline(cin, attendanceDate);
+        cout<<"Enter Present Status (1 for Present, 0 for Absent): \n";
+        cin>>isPresent;
+        Attendance attendance(attendanceId, stdId, courseId, attendanceDate, isPresent);
+        registerNewAttendance(attendance);
+     }
+    void addNewStdCourse() {
+        int stdId;
+        int courseId;
+        string regDate;
+        cout<<"Enter Student Id: \n";
+        cin>>stdId;
+        cout<<"Enter Course Id: \n";
+        cin>>courseId;
+        cout<<"Enter Registration Date (YYYY-MM-DD): \n";
+        getline(cin, regDate);
+        StdCourse stdCourse(stdId, courseId, regDate);
+        registerNewStdCourse(stdCourse); }
+    void addNewStudentFees() {
+        int feeId;
+        int stdId;
+        double amount;
+        string paymentDate;
+        string status;
+        cout<<"Enter Fee Id: \n";
+        cin>>feeId;
+        cout<<"Enter Student Id: \n";
+        cin>>stdId;
+        cout<<"Enter Amount: \n";
+        cin>>amount;
+        cout<<"Enter Payment Date (YYYY-MM-DD): \n";
+        getline(cin, paymentDate);
+        cout<<"Enter Status:->Pending<->Paid \n";
+        cout<<"1 For Pending,\n 2 For Paid \n";
+        int st;
+        cin>>st;
+        if(st == 1) {
+            status = "Pending";
+        } else {
+            status = "Paid";
+        }
+        StudentFees stdFee(feeId, stdId, amount, paymentDate, status);
+        registerNewStudentFees(stdFee); 
+    }
+    void addNewResult() {
+        int stdId;
+        int courseId;
+        double gotNumber;
+        string grade;
+        cout<<"Enter Student Id: \n";
+        cin>>stdId;
+        cout<<"Enter Course Id: \n";
+        cin>>courseId;
+        cout<<"Enter Got Number: \n";
+        cin>>gotNumber;
+        cout<<"Enter Grade:->A->A+ \n";
+        getline(cin, grade);
+        Result stdResult(stdId, courseId, gotNumber, grade);
+        registerNewResult(stdResult); 
+    }
+    void addNewAdmin() {
+        int adminId;
+        string adminName;
+        string passWord;
+        cout<<"Enter Admin Id: \n";
+        cin>>adminId;
+        cout<<"Enter Admin Name: \n";
+        getline(cin, adminName);
+        cout<<"Enter Admin Password: \n";
+        getline(cin, passWord);
+        Admin admin(adminId, adminName, passWord);
+        registerNewAdmin(admin); 
+
+    }
+    void UniVersalInsertionMethod()
+    {
+        cout<<"Welcome to Student Management System Insertion ";
+        int insetChoise=0;
+        while(insetChoise != 11)
+        {
+            cout << "\n=== INSERTION MENU ===" << std::endl;
+            cout << "1. Add Student" << std::endl;
+            cout << "2. Add Course" << std::endl;
+            cout << "3. Add Field Study" << std::endl;
+            cout << "4. Add Attendance" << std::endl;
+            cout << "5. Add Student Course Registration" << std::endl;
+            cout << "6. Add Student Fee Information" << std::endl;
+            cout << "7. Add Result Information" << std::endl;
+            cout << "8. Add Admin Information" << std::endl;
+            cout << "9. Back to Main Menu" << std::endl;
+
+            insetChoise = getChoice(1, 9);
+
+            switch (insetChoise)
+            {
+                case 1:
+                    addNewStudent();
+                    break;
+                case 2:
+                    addNewCourse();
+                    break;
+                case 3:
+                    addNewField();
+                    break;
+                case 4:
+                    addNewAttendance();
+                    break;
+                case 5:
+                    addNewStdCourse();
+                    break;
+                case 6:
+                    addNewStudentFees();
+                    break;
+                case 7:
+                    addNewResult();
+                    break;
+                case 8:
+                    addNewAdmin();
+                    break;
+                default:
+                    break; // No action needed for default
+            }
+        }
+
+    }
 
 public:
     // Static method to get the single instance
@@ -1611,13 +1799,13 @@ public:
                         int adminId;
                         cout << "Enter Admin ID to search: ";
                         cin >> adminId;
-                        StdNode<Admin>* node = adminBST.search(adminId);
-                        if(node)
+                        StdNode<Admin> *node = adminBST.search(adminId);
+                        if (node)
                         {
-                           Admin searched=node->getData();
-                           cout << "Admin Found!" << endl;
-                           cout << "Admin ID: " << searched.getAdminId() << endl;
-                           cout << "Admin Name: " << searched.getAdminName() << endl;
+                            Admin searched = node->getData();
+                            cout << "Admin Found!" << endl;
+                            cout << "Admin ID: " << searched.getAdminId() << endl;
+                            cout << "Admin Name: " << searched.getAdminName() << endl;
                         }
                         // Add search logic here
                         pause();
@@ -2001,14 +2189,6 @@ public:
     PrintEngine &getPrintEngine() { return printEngine; }
 
     // Public registration methods
-    void addNewStudent(Student &student) { registerNewStudent(student); }
-    void addNewCourse(Course &course) { registerNewCourse(course); }
-    void addNewField(FieldStudy &field) { registerNewField(field); }
-    void addNewAttendance(Attendance &attendance) { registerNewAttendance(attendance); }
-    void addNewStdCourse(StdCourse &stdCourse) { registerNewStdCourse(stdCourse); }
-    void addNewStudentFees(StudentFees &stdFee) { registerNewStudentFees(stdFee); }
-    void addNewResult(Result &stdResult) { registerNewResult(stdResult); }
-    void addNewAdmin(Admin &admin) { registerNewAdmin(admin); }
 };
 
 #endif // SMSSYSTEM_H

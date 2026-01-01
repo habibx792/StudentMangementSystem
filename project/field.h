@@ -23,6 +23,11 @@ public:
         this->fieldId = id;
         this->fieldName = name;
     }
+    FieldStudy(const string &name)
+    {
+        this->fieldId = -1;
+        this->fieldName = name;
+    }
 
     int getFieldId() const
     {

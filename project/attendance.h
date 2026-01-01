@@ -24,6 +24,14 @@ public:
         this->attendanceDate = "1970-01-01";
         this->isPresent = false;
     }
+    Attendance(int attendanceId, int stdId, int courseId, const string &date, bool present)
+    {
+        this->attendanceId = attendanceId;
+        this->stdId = stdId;
+        this->courseId = courseId;
+        this->attendanceDate = date;
+        this->isPresent = present;
+    }
 
     Attendance(int stdId, int courseId, const string &date, bool present)
     {
