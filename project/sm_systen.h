@@ -7,6 +7,8 @@
 #include <memory>
 #include <vector>
 #include <iomanip>
+#include <limits>
+#include <cstdlib>
 #include <sstream>
 #include <cstring>
 #include <locale>
@@ -17,7 +19,8 @@
 #include "opQueue.h"
 #include "updationQueue.h"
 #include "deleteQueues.h"
-
+// #include "opNode.h"
+// #include "InsertionQueue.h"
 // ================= Domain Models =================
 #include "student.h"
 #include "course.h"
@@ -32,15 +35,14 @@
 // ================= Engines / Services =================
 #include "searchEngine.h"
 #include "printEngine.h"
-#include "UI.h"
+
 #include "db.h"
 
 // ================= System Class =================
 class SMSSystem
 {
 private:
-    DB db;                   // Database connection handler
-    UI ui;                   // User interface handler
+    DB db;                   // Database connection handler                  // User interface handler
     PrintEngine printEngine; // Printing engine
 
     BST<Student> studentBST;       // Binary Search Tree for storing students
@@ -60,9 +62,9 @@ private:
     opQueue<StdCourse> newStdCourseOpQueue;      // Queue for new course registrations
     opQueue<StudentFees> newStdFeeOpQueue;       // Queue for new fee records
     opQueue<Result> newStdResultOpQueue;         // Queue for new result records
-
-    upQueue updateQueue;  // Queue for tracking updates
-    deleteQueue delQueue; // Queue for deletions
+    opQueue<Admin> newAdminOpQueue;              // Queue for new admin records
+    upQueue updateQueue;                         // Queue for tracking updates
+    deleteQueue delQueue;                        // Queue for deletions
 
     // Private constructor for Singleton pattern
     SMSSystem() = default;
@@ -1261,13 +1263,54 @@ public:
     }
 
     // Main method to run the system
+    void clearScreen()
+    {
+#ifdef _WIN32
+        system("cls");
+#else
+        system("clear");
+#endif
+    }
+
+    // Pause execution until Enter is pressed
+    void pause()
+    {
+        cout << "\nPress Enter to continue...";
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cin.get();
+    }
+
+    // Get validated integer input within a range
+    int getChoice(int min, int max)
+    {
+        int choice;
+        while (true)
+        {
+            cout << "Enter choice (" << min << "-" << max << "): ";
+            cin >> choice;
+
+            if (cin.fail() || choice < min || choice > max)
+            {
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                cout << "Invalid input. Try again.\n";
+            }
+            else
+            {
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                return choice;
+            }
+        }
+    }
     void run()
     {
+        clearScreen();
         std::cout << "\n=== Student Management System ===" << std::endl;
 
         if (!db.connect())
         {
             std::cout << "Failed to connect to database. Exiting..." << std::endl;
+            pause();
             return;
         }
 
@@ -1277,155 +1320,618 @@ public:
         // Test print engine
         printEngine.printAllStudents(studentBST);
         printEngine.printAllCourses(courseBST);
+        pause();
 
-        int mainChoice = 0;
-        while (mainChoice != 6)
+        int choice = 0;
+        while (choice != 8) // Changed to 8 for exit
         {
-            std::cout << "\n======================================" << std::endl;
-            std::cout << "        MAIN MENU" << std::endl;
-            std::cout << "======================================" << std::endl;
-            std::cout << "1. Update System Records" << std::endl;
-            std::cout << "2. Process Update Queue (" << updateQueue.size() << " pending)" << std::endl;
-            std::cout << "3. Reload Data from Database" << std::endl;
-            std::cout << "4. Print All Data" << std::endl;
-            std::cout << "5. Fix Corrupted Data" << std::endl;
-            std::cout << "6. Exit" << std::endl;
-            std::cout << "Enter your choice: ";
-            std::cin >> mainChoice;
-            std::cin.ignore();
+            clearScreen();
+            cout << "\n=== MAIN MENU ===" << std::endl;
+            cout << "1. Student Information" << std::endl;
+            cout << "2. Course Information" << std::endl;
+            cout << "3. Admin Information" << std::endl;
+            cout << "4. Fee Information" << std::endl;
+            cout << "5. Search System" << std::endl;
+            cout << "6. Update Data" << std::endl;
+            cout << "7. Delete Data" << std::endl;
+            cout << "9. Print All Data" << std::endl;
+            cout << "8. Exit" << std::endl;
 
-            switch (mainChoice)
+            choice = getChoice(1, 9);
+
+            if (choice == 1)
             {
-            case 1: // Update System Records
-            {
-                std::cout << "\n======================================" << std::endl;
-                std::cout << "    SELECT TABLE TO UPDATE" << std::endl;
-                std::cout << "======================================" << std::endl;
-                std::cout << "1. student" << std::endl;
-                std::cout << "2. course" << std::endl;
-                std::cout << "3. adminTab" << std::endl;
-                std::cout << "Enter table number: ";
-
-                int tableChoice;
-                std::cin >> tableChoice;
-                std::cin.ignore();
-
-                std::string tableName;
-                switch (tableChoice)
+                // Student Information Menu
+                int stdChoice = 0;
+                while (stdChoice != 7)
                 {
-                case 1:
-                    tableName = "student";
-                    break;
-                case 2:
-                    tableName = "course";
-                    break;
-                case 3:
-                    tableName = "adminTab";
-                    break;
-                default:
-                    std::cout << "Invalid choice! Returning to main menu." << std::endl;
-                    continue;
+                    clearScreen();
+                    cout << "\n=== STUDENT MENU ===" << std::endl;
+                    cout << "1. Add Student" << std::endl;
+                    cout << "2. Update Student" << std::endl;
+                    cout << "3. Delete Student" << std::endl;
+                    cout << "4. Search Student" << std::endl;
+                    cout << "5. Check Student Fee Information" << std::endl;
+                    cout << "6. View All Students" << std::endl;
+                    cout << "7. Back to Main Menu" << std::endl;
+
+                    stdChoice = getChoice(1, 7);
+
+                    if (stdChoice == 1)
+                    {
+                        clearScreen();
+                        cout << "=== ADD STUDENT ===" << endl;
+                        // Add Student
+                        int stdId, fieldId, stdAge;
+                        string stdName, fatherName;
+
+                        cout << "Enter Student ID: ";
+                        cin >> stdId;
+                        cin.ignore();
+                        cout << "Enter Student Name: ";
+                        getline(cin, stdName);
+                        cout << "Enter Student Father Name: ";
+                        getline(cin, fatherName);
+                        cout << "Enter Student Age: ";
+                        cin >> stdAge;
+                        cout << "Enter Field ID: ";
+                        cin >> fieldId;
+
+                        Student std(stdName, "", stdAge, fieldId, fatherName);
+                        newStudentOpQueue.enqueueNewStd(std);
+                        cout << "\nStudent Added Successfully!" << std::endl;
+                        pause();
+                    }
+                    else if (stdChoice == 2)
+                    {
+                        clearScreen();
+                        cout << "=== UPDATE STUDENT ===" << endl;
+                        // Update Student
+                        int stdId;
+                        cout << "Enter Student ID to update: ";
+                        cin >> stdId;
+                        // Add update logic here
+                        pause();
+                    }
+                    else if (stdChoice == 3)
+                    {
+                        clearScreen();
+                        cout << "=== DELETE STUDENT ===" << endl;
+                        // Delete Student
+                        int stdId;
+                        cout << "Enter Student ID to delete: ";
+                        cin >> stdId;
+                        // Add delete logic here
+                        pause();
+                    }
+                    else if (stdChoice == 4)
+                    {
+                        clearScreen();
+                        cout << "=== SEARCH STUDENT ===" << endl;
+                        // Search Student
+                        int stdId;
+                        cout << "Enter Student ID to search: ";
+                        cin >> stdId;
+                        StdNode<Student> *node = studentBST.search(stdId);
+                        if (node)
+                        {
+                            Student std = node->getData();
+                            printEngine.printStudentById(studentBST, stdId);
+                        }
+                        else
+                        {
+                            cout << "Student not found!" << std::endl;
+                        }
+                        pause();
+                    }
+                    else if (stdChoice == 5)
+                    {
+                        clearScreen();
+                        cout << "=== STUDENT FEE INFORMATION ===" << endl;
+                        // Check Student Fee Information
+                        int stdId;
+                        cout << "Enter Student ID to check fee: ";
+                        cin >> stdId;
+                        // Add fee check logic here
+                        pause();
+                    }
+                    else if (stdChoice == 6)
+                    {
+                        clearScreen();
+                        cout << "=== ALL STUDENTS ===" << endl;
+                        // View All Students
+                        printEngine.printAllStudents(studentBST);
+                        pause();
+                    }
+                    else if (stdChoice == 7)
+                    {
+                        cout << "Returning to Main Menu..." << std::endl;
+                    }
                 }
-
-                int recordId;
-                std::cout << "Enter record ID for " << tableName << ": ";
-                std::cin >> recordId;
-                std::cin.ignore();
-
-                // Create and add to queue
-                upNode *updateNode = new upNode(recordId, tableName);
-                updateQueue.enqueue(updateNode);
-
-                std::cout << "\n✓ Update request added to queue!" << std::endl;
-                std::cout << "Table: " << tableName << ", ID: " << recordId << std::endl;
-
-                // Ask if user wants to add more
-                char more;
-                std::cout << "\nAdd another update request? (y/n): ";
-                std::cin >> more;
-                std::cin.ignore();
-
-                if (more == 'y' || more == 'Y')
-                {
-                    mainChoice = 1; // Stay in update mode
-                }
-                break;
             }
-
-            case 2: // Process Update Queue
+            else if (choice == 2)
             {
-                if (updateQueue.isEmpty())
+                // Course Information Menu
+                int courseChoice = 0;
+                while (courseChoice != 6)
                 {
-                    std::cout << "\nUpdate queue is empty. Nothing to process." << std::endl;
+                    clearScreen();
+                    cout << "\n=== COURSE MENU ===" << std::endl;
+                    cout << "1. Add Course" << std::endl;
+                    cout << "2. Update Course" << std::endl;
+                    cout << "3. Delete Course" << std::endl;
+                    cout << "4. Search Course" << std::endl;
+                    cout << "5. View All Courses" << std::endl;
+                    cout << "6. Back to Main Menu" << std::endl;
+
+                    courseChoice = getChoice(1, 6);
+
+                    if (courseChoice == 1)
+                    {
+                        clearScreen();
+                        cout << "=== ADD COURSE ===" << endl;
+                        // Add Course
+                        int courseId;
+                        string courseName, teacherName;
+
+                        cout << "Enter Course ID: ";
+                        cin >> courseId;
+                        cin.ignore();
+                        cout << "Enter Course Title: ";
+                        getline(cin, courseName);
+                        cout << "Enter Teacher Name: ";
+                        getline(cin, teacherName);
+
+                        Course course(courseId, courseName, teacherName);
+                        newRegCourseOpQueue.enqueueNewStd(course);
+                        cout << "\nCourse Added Successfully!" << std::endl;
+                        pause();
+                    }
+                    else if (courseChoice == 2)
+                    {
+                        clearScreen();
+                        cout << "=== UPDATE COURSE ===" << endl;
+                        // Update Course
+                        int courseId;
+                        cout << "Enter Course ID to update: ";
+                        cin >> courseId;
+                        // Add update logic here
+                        pause();
+                    }
+                    else if (courseChoice == 3)
+                    {
+                        clearScreen();
+                        cout << "=== DELETE COURSE ===" << endl;
+                        // Delete Course
+                        int courseId;
+                        cout << "Enter Course ID to delete: ";
+                        cin >> courseId;
+                        // Add delete logic here
+                        pause();
+                    }
+                    else if (courseChoice == 4)
+                    {
+                        clearScreen();
+                        cout << "=== SEARCH COURSE ===" << endl;
+                        // Search Course
+                        int courseId;
+                        cout << "Enter Course ID to search: ";
+                        cin >> courseId;
+                        StdNode<Course> *node = courseBST.search(courseId);
+                        if (node)
+                        {
+                            Course course = node->getData();
+                            printEngine.printCourseById(courseBST, courseId);
+                        }
+                        else
+                        {
+                            cout << "Course not found!" << std::endl;
+                        }
+                        pause();
+                    }
+                    else if (courseChoice == 5)
+                    {
+                        clearScreen();
+                        cout << "=== ALL COURSES ===" << endl;
+                        // View All Courses
+                        printEngine.printAllCourses(courseBST);
+                        pause();
+                    }
+                    else if (courseChoice == 6)
+                    {
+                        cout << "Returning to Main Menu..." << std::endl;
+                    }
                 }
-                else
+            }
+            else if (choice == 3)
+            {
+                // Admin Information Menu
+                int adminChoice = 0;
+                while (adminChoice != 6)
                 {
-                    std::cout << "\n======================================" << std::endl;
-                    std::cout << "    PROCESSING UPDATE QUEUE" << std::endl;
-                    std::cout << "======================================" << std::endl;
-                    std::cout << "Queue size: " << updateQueue.size() << " requests" << std::endl;
+                    clearScreen();
+                    cout << "\n=== ADMIN MENU ===" << std::endl;
+                    cout << "1. Add Admin" << std::endl;
+                    cout << "2. Update Admin" << std::endl;
+                    cout << "3. Delete Admin" << std::endl;
+                    cout << "4. Search Admin" << std::endl;
+                    cout << "5. View All Admins" << std::endl;
+                    cout << "6. Back to Main Menu" << std::endl;
 
-                    std::cout << "\nProcessing update requests..." << std::endl;
-                    universalUPdation(updateQueue);
+                    adminChoice = getChoice(1, 6);
+
+                    if (adminChoice == 1)
+                    {
+                        clearScreen();
+                        cout << "=== ADD ADMIN ===" << endl;
+                        // Add Admin
+                        int adminId;
+                        string adminName, adminPassword;
+
+                        cout << "Enter Admin ID: ";
+                        cin >> adminId;
+                        cin.ignore();
+                        cout << "Enter Admin Name: ";
+                        getline(cin, adminName);
+                        cout << "Enter Admin Password: ";
+                        getline(cin, adminPassword);
+
+                        Admin admin(adminId, adminName, adminPassword);
+                        newAdminOpQueue.enqueueNewStd(admin);
+                        cout << "\nAdmin Added Successfully!" << std::endl;
+                        pause();
+                    }
+                    else if (adminChoice == 2)
+                    {
+                        clearScreen();
+                        cout << "=== UPDATE ADMIN ===" << endl;
+                        // Update Admin
+                        int adminId;
+                        cout << "Enter Admin ID to update: ";
+                        cin >> adminId;
+                        // Add update logic here
+                        pause();
+                    }
+                    else if (adminChoice == 3)
+                    {
+                        clearScreen();
+                        cout << "=== DELETE ADMIN ===" << endl;
+                        // Delete Admin
+                        int adminId;
+                        cout << "Enter Admin ID to delete: ";
+                        cin >> adminId;
+                        // Add delete logic here
+                        pause();
+                    }
+                    else if (adminChoice == 4)
+                    {
+                        clearScreen();
+                        cout << "=== SEARCH ADMIN ===" << endl;
+                        // Search Admin
+                        int adminId;
+                        cout << "Enter Admin ID to search: ";
+                        cin >> adminId;
+                        // Add search logic here
+                        pause();
+                    }
+                    else if (adminChoice == 5)
+                    {
+                        clearScreen();
+                        cout << "=== ALL ADMINS ===" << endl;
+                        // View All Admins
+                        printEngine.printAllAdmins(adminBST);
+                        pause();
+                    }
+                    else if (adminChoice == 6)
+                    {
+                        cout << "Returning to Main Menu..." << std::endl;
+                    }
                 }
-                break;
             }
-
-            case 3: // Reload Data from Database
+            else if (choice == 4)
             {
-                std::cout << "\n======================================" << std::endl;
-                std::cout << "    RELOADING DATA FROM DATABASE" << std::endl;
-                std::cout << "======================================" << std::endl;
-                loadAllDataFromDB();
-                break;
+                // Fee Information Menu
+                int feeChoice = 0;
+                while (feeChoice != 5)
+                {
+                    clearScreen();
+                    cout << "\n=== FEE MENU ===" << std::endl;
+                    cout << "1. Add Fee Record" << std::endl;
+                    cout << "2. Update Fee Record" << std::endl;
+                    cout << "3. Delete Fee Record" << std::endl;
+                    cout << "4. View All Fee Records" << std::endl;
+                    cout << "5. Back to Main Menu" << std::endl;
+
+                    feeChoice = getChoice(1, 5);
+
+                    if (feeChoice == 1)
+                    {
+                        clearScreen();
+                        cout << "=== ADD FEE RECORD ===" << endl;
+                        // Add Fee Record
+                        cout << "Add Fee Record functionality" << std::endl;
+                        // Add fee record logic here
+                        pause();
+                    }
+                    else if (feeChoice == 2)
+                    {
+                        clearScreen();
+                        cout << "=== UPDATE FEE RECORD ===" << endl;
+                        // Update Fee Record
+                        cout << "Update Fee Record functionality" << std::endl;
+                        // Add update logic here
+                        pause();
+                    }
+                    else if (feeChoice == 3)
+                    {
+                        clearScreen();
+                        cout << "=== DELETE FEE RECORD ===" << endl;
+                        // Delete Fee Record
+                        cout << "Delete Fee Record functionality" << std::endl;
+                        // Add delete logic here
+                        pause();
+                    }
+                    else if (feeChoice == 4)
+                    {
+                        clearScreen();
+                        cout << "=== ALL FEE RECORDS ===" << endl;
+                        // View All Fee Records
+                        printEngine.printAllStudentFees(stdFeeBST);
+                        pause();
+                    }
+                    else if (feeChoice == 5)
+                    {
+                        cout << "Returning to Main Menu..." << std::endl;
+                    }
+                }
             }
-
-            case 4: // Print All Data
+            else if (choice == 5)
             {
+                // Search System Menu
+                int searchChoice = 0;
+                while (searchChoice != 5)
+                {
+                    clearScreen();
+                    cout << "\n=== SEARCH SYSTEM ===" << std::endl;
+                    cout << "1. Search Student" << std::endl;
+                    cout << "2. Search Course" << std::endl;
+                    cout << "3. Search Admin" << std::endl;
+                    cout << "4. Search Field Study" << std::endl;
+                    cout << "5. Back to Main Menu" << std::endl;
+
+                    searchChoice = getChoice(1, 5);
+
+                    if (searchChoice == 1)
+                    {
+                        clearScreen();
+                        cout << "=== SEARCH STUDENT ===" << endl;
+                        // Search Student
+                        int searchType = 0;
+                        cout << "\nSearch Student by:" << endl;
+                        cout << "1. By ID" << endl;
+                        cout << "2. By Name" << endl;
+                        cout << "Enter choice: ";
+                        searchType = getChoice(1, 2);
+
+                        if (searchType == 1)
+                        {
+                            int stdId;
+                            cout << "Enter Student ID: ";
+                            cin >> stdId;
+                            StdNode<Student> *node = studentBST.search(stdId);
+                            if (node)
+                            {
+                                printEngine.printStudentById(studentBST, stdId);
+                            }
+                            else
+                            {
+                                cout << "Student not found!" << std::endl;
+                            }
+                        }
+                        else if (searchType == 2)
+                        {
+                            string stdName;
+                            cin.ignore();
+                            cout << "Enter Student Name: ";
+                            getline(cin, stdName);
+                            printEngine.printStudentByName(studentBST, stdName);
+                        }
+                        pause();
+                    }
+                    else if (searchChoice == 2)
+                    {
+                        clearScreen();
+                        cout << "=== SEARCH COURSE ===" << endl;
+                        // Search Course
+                        int courseId;
+                        cout << "Enter Course ID: ";
+                        cin >> courseId;
+                        printEngine.printCourseById(courseBST, courseId);
+                        pause();
+                    }
+                    else if (searchChoice == 3)
+                    {
+                        clearScreen();
+                        cout << "=== SEARCH ADMIN ===" << endl;
+                        // Search Admin
+                        int adminId;
+                        cout << "Enter Admin ID: ";
+                        cin >> adminId;
+                        // Add admin search logic here
+                        pause();
+                    }
+                    else if (searchChoice == 4)
+                    {
+                        clearScreen();
+                        cout << "=== SEARCH FIELD STUDY ===" << endl;
+                        // Search Field Study
+                        int fieldId;
+                        cout << "Enter Field ID: ";
+                        cin >> fieldId;
+                        printEngine.printFieldById(fieldBST, fieldId);
+                        pause();
+                    }
+                    else if (searchChoice == 5)
+                    {
+                        cout << "Returning to Main Menu..." << std::endl;
+                    }
+                }
+            }
+            else if (choice == 6)
+            {
+                // Update Data Menu
+                int updateChoice = 0;
+                while (updateChoice != 6)
+                {
+                    clearScreen();
+                    cout << "\n=== UPDATE DATA ===" << std::endl;
+                    cout << "1. Update Student" << std::endl;
+                    cout << "2. Update Course" << std::endl;
+                    cout << "3. Update Admin" << std::endl;
+                    cout << "4. Update Fee Record" << std::endl;
+                    cout << "5. View Pending Updates" << std::endl;
+                    cout << "6. Back to Main Menu" << std::endl;
+
+                    updateChoice = getChoice(1, 6);
+
+                    // Add update functionality here
+                    if (updateChoice == 1)
+                    {
+                        clearScreen();
+                        cout << "Update Student functionality" << std::endl;
+                        pause();
+                    }
+                    else if (updateChoice == 2)
+                    {
+                        clearScreen();
+                        cout << "Update Course functionality" << std::endl;
+                        pause();
+                    }
+                    else if (updateChoice == 3)
+                    {
+                        clearScreen();
+                        cout << "Update Admin functionality" << std::endl;
+                        pause();
+                    }
+                    else if (updateChoice == 4)
+                    {
+                        clearScreen();
+                        cout << "Update Fee Record functionality" << std::endl;
+                        pause();
+                    }
+                    else if (updateChoice == 5)
+                    {
+                        clearScreen();
+                        cout << "View Pending Updates functionality" << std::endl;
+                        pause();
+                    }
+                    else if (updateChoice == 6)
+                    {
+                        cout << "Returning to Main Menu..." << std::endl;
+                    }
+                }
+            }
+            else if (choice == 7)
+            {
+                // Delete Data Menu
+                int deleteChoice = 0;
+                while (deleteChoice != 6)
+                {
+                    clearScreen();
+                    cout << "\n=== DELETE DATA ===" << std::endl;
+                    cout << "1. Delete Student" << std::endl;
+                    cout << "2. Delete Course" << std::endl;
+                    cout << "3. Delete Admin" << std::endl;
+                    cout << "4. Delete Fee Record" << std::endl;
+                    cout << "5. View Deletion Queue" << std::endl;
+                    cout << "6. Back to Main Menu" << std::endl;
+
+                    deleteChoice = getChoice(1, 6);
+
+                    // Add delete functionality here
+                    if (deleteChoice == 1)
+                    {
+                        clearScreen();
+                        cout << "Delete Student functionality" << std::endl;
+                        pause();
+                    }
+                    if (deleteChoice == 2)
+                    {
+                        clearScreen();
+                        cout << "Delete Course functionality" << std::endl;
+                        pause();
+                    }
+                    else if (deleteChoice == 3)
+                    {
+                        clearScreen();
+                        cout << "Delete Admin functionality" << std::endl;
+                        pause();
+                    }
+                    else if (deleteChoice == 4)
+                    {
+                        clearScreen();
+                        cout << "Delete Fee Record functionality" << std::endl;
+                        pause();
+                    }
+                    else if (deleteChoice == 5)
+                    {
+                        clearScreen();
+                        cout << "View Deletion Queue functionality" << std::endl;
+                        pause();
+                    }
+                    else if (deleteChoice == 6)
+                    {
+                        cout << "Returning to Main Menu..." << std::endl;
+                    }
+                }
+            }
+            else if (choice == 9)
+            {
+                clearScreen();
+                // Print All Data
                 std::cout << "\n======================================" << std::endl;
                 std::cout << "        PRINTING ALL DATA" << std::endl;
                 std::cout << "======================================" << std::endl;
-
                 std::cout << "\n=== All Students ===" << std::endl;
                 printEngine.printAllStudents(studentBST);
-
                 std::cout << "\n=== All Courses ===" << std::endl;
                 printEngine.printAllCourses(courseBST);
-
                 std::cout << "\n=== All Fields ===" << std::endl;
                 printEngine.printAllFields(fieldBST);
-
-                break;
+                std::cout << "\n=== All Admins ===" << std::endl;
+                printEngine.printAllAdmins(adminBST);
+                std::cout << "\n=== All Attendance ===" << std::endl;
+                printEngine.printAllAttendance(attendanceBST);
+                std::cout << "\n=== All Student Courses ===" << std::endl;
+                printEngine.printAllStdCourses(stdCourseBST);
+                std::cout << "\n=== All Student Fees ===" << std::endl;
+                printEngine.printAllStudentFees(stdFeeBST);
+                std::cout << "\n=== All Results ===" << std::endl;
+                printEngine.printAllResults(stdResultBST);
+                pause();
             }
-
-            case 5: // Fix Corrupted Data
+            else if (choice == 8)
             {
-                fixCorruptedData();
-                break;
-            }
-
-            case 6: // Exit
-            {
-                // Clean up any remaining nodes in the queue
-                while (!updateQueue.isEmpty())
-                {
-                    upNode *node = updateQueue.dequeue();
-                    delete node;
-                }
-
-                std::cout << "\nExiting Student Management System..." << std::endl;
-                db.disconnect();
-                return;
-            }
-
-            default:
-                std::cout << "Invalid choice! Please try again." << std::endl;
+                clearScreen();
+                cout << "Exiting program..." << std::endl;
             }
         }
+
+        // Process any pending updates before exiting
+        universalUPdation(updateQueue);
+        loadAllDataFromDB();
+
+        db.disconnect();
+
+        cout << "\nThank you for using Student Management System!" << endl;
+        pause();
     }
 
     // Public getter methods
-    BST<Student> &getStudentBST() { return studentBST; }
+    BST<Student> &getStudentBST()
+    {
+        return studentBST;
+    }
     BST<Admin> &getAdminBST() { return adminBST; }
     BST<Course> &getCourseBST() { return courseBST; }
     BST<FieldStudy> &getFieldBST() { return fieldBST; }
@@ -1435,7 +1941,6 @@ public:
     BST<Result> &getStdResultBST() { return stdResultBST; }
 
     DB &getDB() { return db; }
-    UI &getUI() { return ui; }
     PrintEngine &getPrintEngine() { return printEngine; }
 
     // Public registration methods

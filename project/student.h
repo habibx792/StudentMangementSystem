@@ -26,7 +26,15 @@ public:
         this->fieldId = -1;
         this->stdFatherName = "";
     }
-
+    Student(string name, string userName, int age, int fId, string fatherName)
+    {
+        this->stdId = -1;
+        this->stdName = name;
+        this->stdUserName = userName;
+        this->stdAge = age;
+        this->fieldId = fId;
+        this->stdFatherName = fatherName;
+    }
     Student(int id, string name, string userName, int age, int fId, string fatherName)
     {
         this->stdId = id;

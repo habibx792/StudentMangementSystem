@@ -39,7 +39,10 @@ private:
 public:
     PrintEngine() {}
 
-    // Generic template methods
+    // =========================
+    // Generic Template Printers
+    // =========================
+
     template <class T>
     void printUpdated(BST<T> &tree, upQueue &q)
     {
@@ -89,7 +92,10 @@ public:
         printAllNodes(tree.getRoot());
     }
 
-    // Admin printing methods
+    // =========================
+    // Admin Printers
+    // =========================
+
     void printAdminByName(BST<Admin> &tree, const string &name)
     {
         StdNode<Admin> *node = searchAdminByName(tree.getRoot(), name);
@@ -113,7 +119,10 @@ public:
         printAllBST(tree, "All Admins");
     }
 
-    // Student printing methods
+    // =========================
+    // Student Printers
+    // =========================
+
     void printStudentByName(BST<Student> &tree, const string &name)
     {
         StdNode<Student> *node = searchStudentByName(tree.getRoot(), name);
@@ -137,7 +146,10 @@ public:
         printAllBST(tree, "All Students");
     }
 
-    // Course printing methods
+    // =========================
+    // Course Printers
+    // =========================
+
     void printCourseByTitle(BST<Course> &tree, const string &title)
     {
         StdNode<Course> *node = searchCourseByTitle(tree.getRoot(), title);
@@ -161,7 +173,10 @@ public:
         printAllBST(tree, "All Courses");
     }
 
-    // Field printing methods
+    // =========================
+    // Field Printers
+    // =========================
+
     void printFieldByName(BST<FieldStudy> &tree, const string &name)
     {
         StdNode<FieldStudy> *node = searchFieldByName(tree.getRoot(), name);
@@ -185,7 +200,10 @@ public:
         printAllBST(tree, "All Fields");
     }
 
-    // StdCourse printing methods
+    // =========================
+    // StdCourse Printers
+    // =========================
+
     void printStdCourseByStdId(BST<StdCourse> &tree, int stdId)
     {
         StdNode<StdCourse> *node = searchStdCourseByStdId(tree.getRoot(), stdId);
@@ -209,7 +227,10 @@ public:
         printAllBST(tree, "All Student Course Registrations");
     }
 
-    // Attendance printing methods
+    // =========================
+    // Attendance Printers
+    // =========================
+
     void printAttendanceByStdId(BST<Attendance> &tree, int stdId)
     {
         StdNode<Attendance> *node = searchAttendanceByStdId(tree.getRoot(), stdId);
@@ -217,6 +238,10 @@ public:
             node->getData().print();
         else
             cout << "No attendance records for Student ID: " << stdId << endl;
+    }
+    void printAllAttendance(BST<Attendance> &tree)
+    {
+        printAllBST(tree, "All Attendance Records");
     }
 
     void printAttendanceByCourseId(BST<Attendance> &tree, int courseId)
@@ -237,12 +262,10 @@ public:
             cout << "No attendance records on Date: " << date << endl;
     }
 
-    void printAllAttendance(BST<Attendance> &tree)
-    {
-        printAllBST(tree, "All Attendance Records");
-    }
+    // =========================
+    // Result Printers
+    // =========================
 
-    // Result printing methods
     void printPassResults(BST<Result> &tree)
     {
         StdNode<Result> *node = searchPassRec(tree.getRoot());
@@ -272,13 +295,15 @@ public:
         else
             cout << "No results found for Course ID: " << courseId << endl;
     }
-
     void printAllResults(BST<Result> &tree)
     {
         printAllBST(tree, "All Results");
     }
 
-    // StudentFees printing methods
+    // =========================
+    // Student Fees Printers
+    // =========================
+
     void printStudentFeesByStdId(BST<StudentFees> &tree, int stdId)
     {
         StdNode<StudentFees> *node = searchStdFeeByStdId(tree.getRoot(), stdId);
@@ -287,13 +312,15 @@ public:
         else
             cout << "No fee records found for Student ID: " << stdId << endl;
     }
-
     void printAllStudentFees(BST<StudentFees> &tree)
     {
         printAllBST(tree, "All Student Fees");
     }
 
-    // Utility methods
+    // =========================
+    // Utility Printers
+    // =========================
+
     void printSeparator(const string &title = "")
     {
         cout << "\n========================================" << endl;
