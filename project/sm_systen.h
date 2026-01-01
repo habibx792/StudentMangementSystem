@@ -1318,12 +1318,11 @@ public:
         loadAllDataFromDB();
 
         // Test print engine
-        printEngine.printAllStudents(studentBST);
-        printEngine.printAllCourses(courseBST);
+      
         pause();
 
         int choice = 0;
-        while (choice != 8) // Changed to 8 for exit
+        while (choice != 10) // Changed to 8 for exit
         {
             clearScreen();
             cout << "\n=== MAIN MENU ===" << std::endl;
@@ -1331,13 +1330,14 @@ public:
             cout << "2. Course Information" << std::endl;
             cout << "3. Admin Information" << std::endl;
             cout << "4. Fee Information" << std::endl;
-            cout << "5. Search System" << std::endl;
-            cout << "6. Update Data" << std::endl;
-            cout << "7. Delete Data" << std::endl;
-            cout << "9. Print All Data" << std::endl;
-            cout << "8. Exit" << std::endl;
+            cout << "5. Field Information" << std::endl;
+            cout << "6. Search Engine System" << std::endl;
+            cout << "7. Update Data" << std::endl;
+            cout << "8. Delete Data" << std::endl;
+            cout << "9. Print Engine" << std::endl;
+            cout << "10. Exit" << std::endl;
 
-            choice = getChoice(1, 9);
+            choice = getChoice(1, 10 );
 
             if (choice == 1)
             {
@@ -1685,7 +1685,7 @@ public:
                     }
                 }
             }
-            else if (choice == 5)
+            else if (choice == 6)
             {
                 // Search System Menu
                 int searchChoice = 0;
@@ -1777,7 +1777,7 @@ public:
                     }
                 }
             }
-            else if (choice == 6)
+            else if (choice == 7)
             {
                 // Update Data Menu
                 int updateChoice = 0;
@@ -1831,7 +1831,7 @@ public:
                     }
                 }
             }
-            else if (choice == 7)
+            else if (choice == 8)
             {
                 // Delete Data Menu
                 int deleteChoice = 0;
@@ -1892,25 +1892,69 @@ public:
                 std::cout << "\n======================================" << std::endl;
                 std::cout << "        PRINTING ALL DATA" << std::endl;
                 std::cout << "======================================" << std::endl;
-                std::cout << "\n=== All Students ===" << std::endl;
-                printEngine.printAllStudents(studentBST);
-                std::cout << "\n=== All Courses ===" << std::endl;
-                printEngine.printAllCourses(courseBST);
-                std::cout << "\n=== All Fields ===" << std::endl;
-                printEngine.printAllFields(fieldBST);
-                std::cout << "\n=== All Admins ===" << std::endl;
-                printEngine.printAllAdmins(adminBST);
-                std::cout << "\n=== All Attendance ===" << std::endl;
-                printEngine.printAllAttendance(attendanceBST);
-                std::cout << "\n=== All Student Courses ===" << std::endl;
-                printEngine.printAllStdCourses(stdCourseBST);
-                std::cout << "\n=== All Student Fees ===" << std::endl;
-                printEngine.printAllStudentFees(stdFeeBST);
-                std::cout << "\n=== All Results ===" << std::endl;
-                printEngine.printAllResults(stdResultBST);
+                int printChoice=0;
+                while(printChoice != 4)
+                {
+                    cout<<"1 For Print all Students\n";
+                    cout<<"2 For Print all Courses\n";
+                    cout<<"3 For Print all Fields\n";
+                    cout<<"4 For Print all Fee Records\n";
+                    cout<<"5 For Print all Attendance\n";
+                    cout<<"6 For Print all Student Courses\n";
+                    cout<<"7 For Print all Results\n";
+                    cout<<"8 For Print all Admins\n";
+                    cout<<"9 Return Back to Main Menu\n";
+                    printChoice = getChoice(1, 9);
+                    if (printChoice == 1)
+                    {
+                        clearScreen();
+                        std::cout << "\n=== All Students ===" << std::endl;
+                        printEngine.printAllStudents(studentBST);
+                        pause();
+                    }
+                    else if (printChoice == 2)
+                    {
+                        clearScreen();
+                        std::cout << "\n=== All Courses ===" << std::endl;
+                        printEngine.printAllCourses(courseBST);
+                        pause();
+                    }
+                    else if (printChoice == 3)
+                    {
+                        clearScreen();
+                        std::cout << "\n=== All Fields ===" << std::endl;
+                        printEngine.printAllFields(fieldBST);
+                        pause();
+                    }
+                    else if (printChoice == 4){
+                        std::cout << "\n=== All Fee Records ===" << std::endl;
+                        printEngine.printAllFeeRecords(stdFeeBST);
+                    }
+                    else if(printChoice == 5){
+                        std::cout << "\n=== All Attendance ===" << std::endl;
+                        printEngine.printAllAttendance(attendanceBST);
+                    }
+                    else if(printChoice == 6){
+                        std::cout << "\n=== All Student Courses ===" << std::endl;
+                        printEngine.printAllStdCourses(stdCourseBST);
+                    }
+                    else if(printChoice == 7){
+                        std::cout << "\n=== All Results ===" << std::endl;
+                        printEngine.printAllResults(stdResultBST);
+                    }
+                    else if(printChoice == 8){
+                        std::cout << "\n=== All Admins ===" << std::endl;
+                        printEngine.printAllAdmins(adminBST);
+                    }
+                    else if(printChoice == 9){
+                        cout<<"Return Back to Main \n";
+
+                    }
+                }
+               
                 pause();
             }
-            else if (choice == 8)
+            else if (choice == 10)
             {
                 clearScreen();
                 cout << "Exiting program..." << std::endl;
