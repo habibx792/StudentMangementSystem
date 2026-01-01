@@ -1,4 +1,4 @@
-use stdMangementDB2 ;
+use SM_System; 
 SELECT * FROM adminTab;
 GO
 

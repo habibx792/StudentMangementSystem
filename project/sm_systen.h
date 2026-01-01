@@ -450,463 +450,455 @@ private:
     }
 
     // ================= Queue Operations =================
-    void updateStudentInfo(upNode *node)
+    void universalUPdation(upQueue &que)
     {
-        updateQueue.enqueue(node);
-    }
-
-    void deleteStudentInformation(deleteNode *node)
-    {
-        delQueue.enqueue(node);
-    }
-
-    // ================= Registration Functions =================
-    void registerNewStudent(Student &student)
-    {
-        newStudentOpQueue.enqueueNewStd(student);
-        studentBST.insert(student);
-        insertStudentToDB(student); // Save to database
-    }
-
-    void registerNewCourse(Course &course)
-    {
-        newRegCourseOpQueue.enqueueNewStd(course);
-        courseBST.insert(course);
-        insertCourseToDB(course); // Save to database
-    }
-
-    void registerNewField(FieldStudy &field)
-    {
-        newFieldOpQueue.enqueueNewStd(field);
-        fieldBST.insert(field);
-        insertFieldToDB(field); // Save to database
-    }
-
-    void registerNewAttendance(Attendance &attendance)
-    {
-        newStdAttendanceOpQueue.enqueueNewStd(attendance);
-        attendanceBST.insert(attendance);
-        insertAttendanceToDB(attendance); // Save to database
-    }
-
-    void registerNewStdCourse(StdCourse &stdCourse)
-    {
-        newStdCourseOpQueue.enqueueNewStd(stdCourse);
-        stdCourseBST.insert(stdCourse);
-        insertStdCourseToDB(stdCourse); // Save to database
-    }
-
-    void registerNewStudentFees(StudentFees &stdFee)
-    {
-        newStdFeeOpQueue.enqueueNewStd(stdFee);
-        stdFeeBST.insert(stdFee);
-        insertStudentFeesToDB(stdFee); // Save to database
-    }
-
-    void registerNewResult(Result &stdResult)
-    {
-        newStdResultOpQueue.enqueueNewStd(stdResult);
-        stdResultBST.insert(stdResult);
-        insertResultToDB(stdResult); // Save to database
-    }
-
-    void registerNewAdmin(Admin &admin)
-    {
-        adminBST.insert(admin);
-        insertAdminToDB(admin); // Save to database
-    }
-
-    // ================= Database Loading Functions =================
-    void loadAdminsFromDB()
-    {
-        if (!db.connected())
+        // Use the existing database connection from db object
+        if (!db.isConnected())
         {
-            std::cout << "Database not connected!" << std::endl;
+            cout << "Database is not connected. Cannot process updates." << endl;
             return;
         }
 
-        SQLHSTMT hStmt = nullptr;
-        SQLRETURN ret = SQLAllocHandle(SQL_HANDLE_STMT, db.returnDb(), &hStmt);
+        cout << "\nStarting update processing..." << endl;
 
-        if (ret != SQL_SUCCESS && ret != SQL_SUCCESS_WITH_INFO)
+        // Implementation for updating student data
+        while (!que.isEmpty())
         {
-            std::cout << "Failed to allocate statement handle!" << std::endl;
-            return;
-        }
-
-        const char *query = "SELECT adminId, adminName, passWord FROM adminTab";
-
-        if (SQLExecDirect(hStmt, (SQLCHAR *)query, SQL_NTS) == SQL_SUCCESS)
-        {
-            SQLINTEGER adminId;
-            SQLCHAR name[41];
-            SQLCHAR password[256];
-            SQLLEN idInd = 0, nameInd = 0, passInd = 0;
-
-            while (SQLFetch(hStmt) == SQL_SUCCESS)
+            upNode *nod = que.dequeue();
+            if (!nod)
             {
-                SQLGetData(hStmt, 1, SQL_C_SLONG, &adminId, 0, &idInd);
-                SQLGetData(hStmt, 2, SQL_C_CHAR, name, sizeof(name), &nameInd);
-                SQLGetData(hStmt, 3, SQL_C_CHAR, password, sizeof(password), &passInd);
-
-                Admin admin;
-                admin.setAdminId(adminId);
-                admin.setAdminName(std::string(reinterpret_cast<char *>(name)));
-                admin.setPassWord(std::string(reinterpret_cast<char *>(password)));
-
-                adminBST.insert(admin);
+                cerr << "Error: Null node dequeued" << endl;
+                continue;
             }
-        }
 
-        SQLFreeHandle(SQL_HANDLE_STMT, hStmt);
-        std::cout << "Loaded admins from database into BST" << std::endl;
-    }
+            pair<int, string> meta = nod->getMetaData();
+            int id = meta.first;
+            string table = meta.second;
 
-    void loadFieldsFromDB()
-    {
-        if (!db.connected())
-        {
-            std::cout << "Database not connected!" << std::endl;
-            return;
-        }
+            cout << "\n--------------------------------------" << endl;
+            cout << "Processing: " << table << " (ID: " << id << ")" << endl;
+            cout << "--------------------------------------" << endl;
 
-        SQLHSTMT hStmt = nullptr;
-        SQLRETURN ret = SQLAllocHandle(SQL_HANDLE_STMT, db.returnDb(), &hStmt);
-
-        if (ret != SQL_SUCCESS && ret != SQL_SUCCESS_WITH_INFO)
-        {
-            std::cout << "Failed to allocate statement handle!" << std::endl;
-            return;
-        }
-
-        const char *query = "SELECT fieldId, fieldName FROM fieldStudy";
-
-        if (SQLExecDirect(hStmt, (SQLCHAR *)query, SQL_NTS) == SQL_SUCCESS)
-        {
-            SQLINTEGER fieldId;
-            SQLCHAR name[41];
-            SQLLEN idInd = 0, nameInd = 0;
-
-            while (SQLFetch(hStmt) == SQL_SUCCESS)
+            if (table == "student")
             {
-                SQLGetData(hStmt, 1, SQL_C_SLONG, &fieldId, 0, &idInd);
-                SQLGetData(hStmt, 2, SQL_C_CHAR, name, sizeof(name), &nameInd);
+                int choice;
+                cout << "\nSelect field to update:" << endl;
+                cout << "1. stdName" << endl;
+                cout << "2. stdFatherName" << endl;
+                cout << "3. stdUserName" << endl;
+                cout << "4. stdAge" << endl;
+                cout << "5. fieldId" << endl;
+                cout << "6. stdId (Update ID itself)" << endl;
+                cout << "Enter choice: ";
+                cin >> choice;
+                cin.ignore();
 
-                FieldStudy field;
-                field.setFieldId(fieldId);
-                field.setFieldName(std::string(reinterpret_cast<char *>(name)));
+                string newValue;
+                string sqlQuery;
+                bool validChoice = true;
 
-                fieldBST.insert(field);
+                if (choice == 1)
+                {
+                    cout << "Enter new stdName: ";
+                    getline(cin, newValue);
+                    sqlQuery = "UPDATE student SET stdName = ? WHERE stdId = ?";
+                    db.executeUpdate(sqlQuery, newValue, id);
+                }
+                else if (choice == 2)
+                {
+                    cout << "Enter new stdFatherName: ";
+                    getline(cin, newValue);
+                    sqlQuery = "UPDATE student SET stdFatherName = ? WHERE stdId = ?";
+                    db.executeUpdate(sqlQuery, newValue, id);
+                }
+                else if (choice == 3)
+                {
+                    cout << "Enter new stdUserName: ";
+                    getline(cin, newValue);
+                    sqlQuery = "UPDATE student SET stdUserName = ? WHERE stdId = ?";
+                    db.executeUpdate(sqlQuery, newValue, id);
+                }
+                else if (choice == 4)
+                {
+                    cout << "Enter new stdAge: ";
+                    getline(cin, newValue);
+                    int age = stoi(newValue);
+                    sqlQuery = "UPDATE student SET stdAge = ? WHERE stdId = ?";
+                    db.executeUpdate(sqlQuery, age, id);
+                }
+                else if (choice == 5)
+                {
+                    cout << "Enter new fieldId: ";
+                    getline(cin, newValue);
+                    int fieldId = stoi(newValue);
+                    sqlQuery = "UPDATE student SET fieldId = ? WHERE stdId = ?";
+                    db.executeUpdate(sqlQuery, fieldId, id);
+                }
+                else if (choice == 6)
+                {
+                    cout << "Enter new stdId: ";
+                    getline(cin, newValue);
+                    int newId = stoi(newValue);
+                    sqlQuery = "UPDATE student SET stdId = ? WHERE stdId = ?";
+                    db.executeUpdate(sqlQuery, newId, id);
+                }
+                else
+                {
+                    cout << "Invalid choice! Skipping this update." << endl;
+                    validChoice = false;
+                }
+
+                if (validChoice)
+                {
+                    cout << "✓ Student update processed for ID: " << id << endl;
+                }
             }
-        }
-
-        SQLFreeHandle(SQL_HANDLE_STMT, hStmt);
-        std::cout << "Loaded fields from database into BST" << std::endl;
-    }
-
-    void loadStudentsFromDB()
-    {
-        if (!db.connected())
-        {
-            std::cout << "Database not connected!" << std::endl;
-            return;
-        }
-
-        SQLHSTMT hStmt = nullptr;
-        SQLRETURN ret = SQLAllocHandle(SQL_HANDLE_STMT, db.returnDb(), &hStmt);
-
-        if (ret != SQL_SUCCESS && ret != SQL_SUCCESS_WITH_INFO)
-        {
-            std::cout << "Failed to allocate statement handle!" << std::endl;
-            return;
-        }
-
-        const char *query = "SELECT stdId, stdName, stdUserName, stdAge, fieldId, stdFatherName FROM student";
-
-        if (SQLExecDirect(hStmt, (SQLCHAR *)query, SQL_NTS) == SQL_SUCCESS)
-        {
-            SQLINTEGER stdId, stdAge, fieldId;
-            SQLCHAR stdName[41], stdUserName[41], stdFatherName[41];
-            SQLLEN idInd = 0, nameInd = 0, userInd = 0, ageInd = 0, fieldInd = 0, fatherInd = 0;
-
-            while (SQLFetch(hStmt) == SQL_SUCCESS)
+            else if (table == "adminTab")
             {
-                SQLGetData(hStmt, 1, SQL_C_SLONG, &stdId, 0, &idInd);
-                SQLGetData(hStmt, 2, SQL_C_CHAR, stdName, sizeof(stdName), &nameInd);
-                SQLGetData(hStmt, 3, SQL_C_CHAR, stdUserName, sizeof(stdUserName), &userInd);
-                SQLGetData(hStmt, 4, SQL_C_SLONG, &stdAge, 0, &ageInd);
-                SQLGetData(hStmt, 5, SQL_C_SLONG, &fieldId, 0, &fieldInd);
-                SQLGetData(hStmt, 6, SQL_C_CHAR, stdFatherName, sizeof(stdFatherName), &fatherInd);
+                int choice;
+                cout << "\nSelect field to update:" << endl;
+                cout << "1. adminName" << endl;
+                cout << "2. passWord" << endl;
+                cout << "Enter choice: ";
+                cin >> choice;
+                cin.ignore();
 
-                Student student;
-                student.setStdId(stdId);
-                student.setStdName(std::string(reinterpret_cast<char *>(stdName)));
-                student.setStdUserName(std::string(reinterpret_cast<char *>(stdUserName)));
-                student.setStdAge(stdAge);
-                student.setFieldId(fieldId);
-                student.setStdFatherName(std::string(reinterpret_cast<char *>(stdFatherName)));
+                string newValue;
+                string sqlQuery;
+                bool validChoice = true;
 
-                studentBST.insert(student);
+                if (choice == 1)
+                {
+                    cout << "Enter new adminName: ";
+                    getline(cin, newValue);
+                    sqlQuery = "UPDATE adminTab SET adminName = ? WHERE adminId = ?";
+                    db.executeUpdate(sqlQuery, newValue, id);
+                }
+                else if (choice == 2)
+                {
+                    cout << "Enter new passWord: ";
+                    getline(cin, newValue);
+                    sqlQuery = "UPDATE adminTab SET passWord = ? WHERE adminId = ?";
+                    db.executeUpdate(sqlQuery, newValue, id);
+                }
+                else
+                {
+                    cout << "Invalid choice! Skipping this update." << endl;
+                    validChoice = false;
+                }
+
+                if (validChoice)
+                {
+                    cout << "✓ Admin update processed for ID: " << id << endl;
+                }
             }
-        }
-
-        SQLFreeHandle(SQL_HANDLE_STMT, hStmt);
-        std::cout << "Loaded students from database into BST" << std::endl;
-    }
-
-    void loadCoursesFromDB()
-    {
-        if (!db.connected())
-        {
-            std::cout << "Database not connected!" << std::endl;
-            return;
-        }
-
-        SQLHSTMT hStmt = nullptr;
-        SQLRETURN ret = SQLAllocHandle(SQL_HANDLE_STMT, db.returnDb(), &hStmt);
-
-        if (ret != SQL_SUCCESS && ret != SQL_SUCCESS_WITH_INFO)
-        {
-            std::cout << "Failed to allocate statement handle!" << std::endl;
-            return;
-        }
-
-        const char *query = "SELECT courseId, courseTitle, teacherName FROM course";
-
-        if (SQLExecDirect(hStmt, (SQLCHAR *)query, SQL_NTS) == SQL_SUCCESS)
-        {
-            SQLINTEGER courseId;
-            SQLCHAR courseTitle[41], teacherName[41];
-            SQLLEN idInd = 0, titleInd = 0, teacherInd = 0;
-
-            while (SQLFetch(hStmt) == SQL_SUCCESS)
+            else if (table == "StudentFees")
             {
-                SQLGetData(hStmt, 1, SQL_C_SLONG, &courseId, 0, &idInd);
-                SQLGetData(hStmt, 2, SQL_C_CHAR, courseTitle, sizeof(courseTitle), &titleInd);
-                SQLGetData(hStmt, 3, SQL_C_CHAR, teacherName, sizeof(teacherName), &teacherInd);
+                int choice;
+                cout << "\nSelect field to update:" << endl;
+                cout << "1. amount" << endl;
+                cout << "2. status" << endl;
+                cout << "3. paymentDate" << endl;
+                cout << "4. stdId" << endl;
+                cout << "Enter choice: ";
+                cin >> choice;
+                cin.ignore();
 
-                Course course;
-                course.setId(courseId);
-                course.setCourseTitle(std::string(reinterpret_cast<char *>(courseTitle)));
-                course.setTeacherName(std::string(reinterpret_cast<char *>(teacherName)));
+                string newValue;
+                string sqlQuery;
+                bool validChoice = true;
 
-                courseBST.insert(course);
+                if (choice == 1)
+                {
+                    cout << "Enter new amount: ";
+                    getline(cin, newValue);
+                    double amount = stod(newValue);
+                    sqlQuery = "UPDATE StudentFees SET amount = ? WHERE feeId = ?";
+                    db.executeUpdate(sqlQuery, amount, id);
+                }
+                else if (choice == 2)
+                {
+                    cout << "Enter new status (Paid/Pending): ";
+                    getline(cin, newValue);
+                    sqlQuery = "UPDATE StudentFees SET status = ? WHERE feeId = ?";
+                    db.executeUpdate(sqlQuery, newValue, id);
+                }
+                else if (choice == 3)
+                {
+                    cout << "Enter new paymentDate (YYYY-MM-DD): ";
+                    getline(cin, newValue);
+                    sqlQuery = "UPDATE StudentFees SET paymentDate = ? WHERE feeId = ?";
+                    db.executeUpdate(sqlQuery, newValue, id);
+                }
+                else if (choice == 4)
+                {
+                    cout << "Enter new stdId: ";
+                    getline(cin, newValue);
+                    int stdId = stoi(newValue);
+                    sqlQuery = "UPDATE StudentFees SET stdId = ? WHERE feeId = ?";
+                    db.executeUpdate(sqlQuery, stdId, id);
+                }
+                else
+                {
+                    cout << "Invalid choice! Skipping this update." << endl;
+                    validChoice = false;
+                }
+
+                if (validChoice)
+                {
+                    cout << "✓ StudentFees update processed for ID: " << id << endl;
+                }
             }
-        }
-
-        SQLFreeHandle(SQL_HANDLE_STMT, hStmt);
-        std::cout << "Loaded courses from database into BST" << std::endl;
-    }
-
-    void loadCourseRegistrationsFromDB()
-    {
-        if (!db.connected())
-        {
-            std::cout << "Database not connected!" << std::endl;
-            return;
-        }
-
-        SQLHSTMT hStmt = nullptr;
-        SQLRETURN ret = SQLAllocHandle(SQL_HANDLE_STMT, db.returnDb(), &hStmt);
-
-        if (ret != SQL_SUCCESS && ret != SQL_SUCCESS_WITH_INFO)
-        {
-            std::cout << "Failed to allocate statement handle!" << std::endl;
-            return;
-        }
-
-        const char *query = "SELECT stdId, courseId, regDate FROM courseRegStd";
-
-        if (SQLExecDirect(hStmt, (SQLCHAR *)query, SQL_NTS) == SQL_SUCCESS)
-        {
-            SQLINTEGER stdId, courseId;
-            SQLCHAR regDate[20];
-            SQLLEN stdInd = 0, courseInd = 0, dateInd = 0;
-
-            while (SQLFetch(hStmt) == SQL_SUCCESS)
+            else if (table == "Attendance")
             {
-                SQLGetData(hStmt, 1, SQL_C_SLONG, &stdId, 0, &stdInd);
-                SQLGetData(hStmt, 2, SQL_C_SLONG, &courseId, 0, &courseInd);
-                SQLGetData(hStmt, 3, SQL_C_CHAR, regDate, sizeof(regDate), &dateInd);
+                int choice;
+                cout << "\nSelect field to update:" << endl;
+                cout << "1. isPresent (1=Present, 0=Absent)" << endl;
+                cout << "2. attendanceDate" << endl;
+                cout << "3. stdId" << endl;
+                cout << "4. courseId" << endl;
+                cout << "Enter choice: ";
+                cin >> choice;
+                cin.ignore();
 
-                StdCourse reg;
-                reg.setStdId(stdId);
-                reg.setCourseId(courseId);
-                reg.setRegDate(std::string(reinterpret_cast<char *>(regDate)));
+                string newValue;
+                string sqlQuery;
+                bool validChoice = true;
 
-                stdCourseBST.insert(reg);
+                if (choice == 1)
+                {
+                    cout << "Enter new isPresent (1 for Present, 0 for Absent): ";
+                    getline(cin, newValue);
+                    int isPresent = stoi(newValue);
+                    sqlQuery = "UPDATE Attendance SET isPresent = ? WHERE attendanceId = ?";
+                    db.executeUpdate(sqlQuery, isPresent, id);
+                }
+                else if (choice == 2)
+                {
+                    cout << "Enter new attendanceDate (YYYY-MM-DD): ";
+                    getline(cin, newValue);
+                    sqlQuery = "UPDATE Attendance SET attendanceDate = ? WHERE attendanceId = ?";
+                    db.executeUpdate(sqlQuery, newValue, id);
+                }
+                else if (choice == 3)
+                {
+                    cout << "Enter new stdId: ";
+                    getline(cin, newValue);
+                    int stdId = stoi(newValue);
+                    sqlQuery = "UPDATE Attendance SET stdId = ? WHERE attendanceId = ?";
+                    db.executeUpdate(sqlQuery, stdId, id);
+                }
+                else if (choice == 4)
+                {
+                    cout << "Enter new courseId: ";
+                    getline(cin, newValue);
+                    int courseId = stoi(newValue);
+                    sqlQuery = "UPDATE Attendance SET courseId = ? WHERE attendanceId = ?";
+                    db.executeUpdate(sqlQuery, courseId, id);
+                }
+                else
+                {
+                    cout << "Invalid choice! Skipping this update." << endl;
+                    validChoice = false;
+                }
+
+                if (validChoice)
+                {
+                    cout << "✓ Attendance update processed for ID: " << id << endl;
+                }
             }
-        }
-
-        SQLFreeHandle(SQL_HANDLE_STMT, hStmt);
-        std::cout << "Loaded course registrations from database into BST" << std::endl;
-    }
-
-    void loadAttendanceFromDB()
-    {
-        if (!db.connected())
-        {
-            std::cout << "Database not connected!" << std::endl;
-            return;
-        }
-
-        SQLHSTMT hStmt = nullptr;
-        SQLRETURN ret = SQLAllocHandle(SQL_HANDLE_STMT, db.returnDb(), &hStmt);
-
-        if (ret != SQL_SUCCESS && ret != SQL_SUCCESS_WITH_INFO)
-        {
-            std::cout << "Failed to allocate statement handle!" << std::endl;
-            return;
-        }
-
-        const char *query = "SELECT attendanceId, stdId, courseId, attendanceDate, isPresent FROM Attendance";
-
-        if (SQLExecDirect(hStmt, (SQLCHAR *)query, SQL_NTS) == SQL_SUCCESS)
-        {
-            SQLINTEGER attendanceId, stdId, courseId;
-            SQLCHAR attendanceDate[11];
-            SQLSMALLINT isPresent;
-            SQLLEN idInd = 0, stdInd = 0, courseInd = 0, dateInd = 0, presentInd = 0;
-
-            while (SQLFetch(hStmt) == SQL_SUCCESS)
+            else if (table == "fieldStudy")
             {
-                SQLGetData(hStmt, 1, SQL_C_SLONG, &attendanceId, 0, &idInd);
-                SQLGetData(hStmt, 2, SQL_C_SLONG, &stdId, 0, &stdInd);
-                SQLGetData(hStmt, 3, SQL_C_SLONG, &courseId, 0, &courseInd);
-                SQLGetData(hStmt, 4, SQL_C_CHAR, attendanceDate, sizeof(attendanceDate), &dateInd);
-                SQLGetData(hStmt, 5, SQL_C_SSHORT, &isPresent, 0, &presentInd);
+                int choice;
+                cout << "\nSelect field to update:" << endl;
+                cout << "1. fieldName" << endl;
+                cout << "Enter choice: ";
+                cin >> choice;
+                cin.ignore();
 
-                Attendance attendance;
-                attendance.setAttendanceId(attendanceId);
-                attendance.setStdId(stdId);
-                attendance.setCourseId(courseId);
-                attendance.setAttendanceDate(std::string(reinterpret_cast<char *>(attendanceDate)));
-                attendance.setIsPresent(isPresent == 1);
+                string newValue;
+                string sqlQuery;
+                bool validChoice = true;
 
-                attendanceBST.insert(attendance);
+                if (choice == 1)
+                {
+                    cout << "Enter new fieldName: ";
+                    getline(cin, newValue);
+                    sqlQuery = "UPDATE fieldStudy SET fieldName = ? WHERE fieldId = ?";
+                    db.executeUpdate(sqlQuery, newValue, id);
+                }
+                else
+                {
+                    cout << "Invalid choice! Skipping this update." << endl;
+                    validChoice = false;
+                }
+
+                if (validChoice)
+                {
+                    cout << "✓ FieldStudy update processed for ID: " << id << endl;
+                }
             }
-        }
-
-        SQLFreeHandle(SQL_HANDLE_STMT, hStmt);
-        std::cout << "Loaded attendance from database into BST" << std::endl;
-    }
-
-    void loadStudentFeesFromDB()
-    {
-        if (!db.connected())
-        {
-            std::cout << "Database not connected!" << std::endl;
-            return;
-        }
-
-        SQLHSTMT hStmt = nullptr;
-        SQLRETURN ret = SQLAllocHandle(SQL_HANDLE_STMT, db.returnDb(), &hStmt);
-
-        if (ret != SQL_SUCCESS && ret != SQL_SUCCESS_WITH_INFO)
-        {
-            std::cout << "Failed to allocate statement handle!" << std::endl;
-            return;
-        }
-
-        const char *query = "SELECT feeId, stdId, amount, paymentDate, status FROM StudentFees";
-
-        if (SQLExecDirect(hStmt, (SQLCHAR *)query, SQL_NTS) == SQL_SUCCESS)
-        {
-            SQLINTEGER feeId, stdId;
-            SQLDOUBLE amount;
-            SQLCHAR paymentDate[11], status[21];
-            SQLLEN idInd = 0, stdInd = 0, amountInd = 0, dateInd = 0, statusInd = 0;
-
-            while (SQLFetch(hStmt) == SQL_SUCCESS)
+            else if (table == "course")
             {
-                SQLGetData(hStmt, 1, SQL_C_SLONG, &feeId, 0, &idInd);
-                SQLGetData(hStmt, 2, SQL_C_SLONG, &stdId, 0, &stdInd);
-                SQLGetData(hStmt, 3, SQL_C_DOUBLE, &amount, 0, &amountInd);
-                SQLGetData(hStmt, 4, SQL_C_CHAR, paymentDate, sizeof(paymentDate), &dateInd);
-                SQLGetData(hStmt, 5, SQL_C_CHAR, status, sizeof(status), &statusInd);
+                int choice;
+                cout << "\nSelect field to update:" << endl;
+                cout << "1. courseTitle" << endl;
+                cout << "2. teacherName" << endl;
+                cout << "3. courseId (Update ID itself)" << endl;
+                cout << "Enter choice: ";
+                cin >> choice;
+                cin.ignore();
 
-                StudentFees fee;
-                fee.setFeeId(feeId);
-                fee.setStdId(stdId);
-                fee.setAmount(amount);
-                fee.setPaymentDate(std::string(reinterpret_cast<char *>(paymentDate)));
-                fee.setStatus(std::string(reinterpret_cast<char *>(status)));
+                string newValue;
+                string sqlQuery;
+                bool validChoice = true;
 
-                stdFeeBST.insert(fee);
+                if (choice == 1)
+                {
+                    cout << "Enter new courseTitle: ";
+                    getline(cin, newValue);
+                    sqlQuery = "UPDATE course SET courseTitle = ? WHERE courseId = ?";
+                    db.executeUpdate(sqlQuery, newValue, id);
+                }
+                else if (choice == 2)
+                {
+                    cout << "Enter new teacherName: ";
+                    getline(cin, newValue);
+                    sqlQuery = "UPDATE course SET teacherName = ? WHERE courseId = ?";
+                    db.executeUpdate(sqlQuery, newValue, id);
+                }
+                else if (choice == 3)
+                {
+                    cout << "Enter new courseId: ";
+                    getline(cin, newValue);
+                    int newId = stoi(newValue);
+                    sqlQuery = "UPDATE course SET courseId = ? WHERE courseId = ?";
+                    db.executeUpdate(sqlQuery, newId, id);
+                }
+                else
+                {
+                    cout << "Invalid choice! Skipping this update." << endl;
+                    validChoice = false;
+                }
+
+                if (validChoice)
+                {
+                    cout << "✓ Course update processed for ID: " << id << endl;
+                }
             }
-        }
-
-        SQLFreeHandle(SQL_HANDLE_STMT, hStmt);
-        std::cout << "Loaded student fees from database into BST" << std::endl;
-    }
-
-    void loadResultsFromDB()
-    {
-        if (!db.connected())
-        {
-            std::cout << "Database not connected!" << std::endl;
-            return;
-        }
-
-        SQLHSTMT hStmt = nullptr;
-        SQLRETURN ret = SQLAllocHandle(SQL_HANDLE_STMT, db.returnDb(), &hStmt);
-
-        if (ret != SQL_SUCCESS && ret != SQL_SUCCESS_WITH_INFO)
-        {
-            std::cout << "Failed to allocate statement handle!" << std::endl;
-            return;
-        }
-
-        const char *query = "SELECT stdId, courseId, gotNumber, grade FROM result";
-
-        if (SQLExecDirect(hStmt, (SQLCHAR *)query, SQL_NTS) == SQL_SUCCESS)
-        {
-            SQLINTEGER stdId, courseId;
-            SQLDOUBLE gotNumber;
-            SQLCHAR grade[3];
-            SQLLEN stdInd = 0, courseInd = 0, numberInd = 0, gradeInd = 0;
-
-            while (SQLFetch(hStmt) == SQL_SUCCESS)
+            else if (table == "result")
             {
-                SQLGetData(hStmt, 1, SQL_C_SLONG, &stdId, 0, &stdInd);
-                SQLGetData(hStmt, 2, SQL_C_SLONG, &courseId, 0, &courseInd);
-                SQLGetData(hStmt, 3, SQL_C_DOUBLE, &gotNumber, 0, &numberInd);
-                SQLGetData(hStmt, 4, SQL_C_CHAR, grade, sizeof(grade), &gradeInd);
+                int currentCourseId;
+                cout << "Enter current courseId for this result: ";
+                cin >> currentCourseId;
+                cin.ignore();
 
-                Result result;
-                result.setStdId(stdId);
-                result.setCourseId(courseId);
-                result.setGotNumber(gotNumber);
-                result.setGrade(std::string(reinterpret_cast<char *>(grade)));
+                int choice;
+                cout << "\nSelect field to update:" << endl;
+                cout << "1. gotNumber" << endl;
+                cout << "2. grade" << endl;
+                cout << "3. courseId" << endl;
+                cout << "Enter choice: ";
+                cin >> choice;
+                cin.ignore();
 
-                stdResultBST.insert(result);
+                string newValue;
+                string sqlQuery;
+                bool validChoice = true;
+
+                if (choice == 1)
+                {
+                    cout << "Enter new gotNumber: ";
+                    getline(cin, newValue);
+                    double gotNumber = stod(newValue);
+                    sqlQuery = "UPDATE result SET gotNumber = ? WHERE stdId = ? AND courseId = ?";
+                    db.executeUpdate(sqlQuery, gotNumber, id, currentCourseId);
+                }
+                else if (choice == 2)
+                {
+                    cout << "Enter new grade: ";
+                    getline(cin, newValue);
+                    sqlQuery = "UPDATE result SET grade = ? WHERE stdId = ? AND courseId = ?";
+                    db.executeUpdate(sqlQuery, newValue, id, currentCourseId);
+                }
+                else if (choice == 3)
+                {
+                    cout << "Enter new courseId: ";
+                    getline(cin, newValue);
+                    int newCourseId = stoi(newValue);
+                    sqlQuery = "UPDATE result SET courseId = ? WHERE stdId = ? AND courseId = ?";
+                    db.executeUpdate(sqlQuery, newCourseId, id, currentCourseId);
+                }
+                else
+                {
+                    cout << "Invalid choice! Skipping this update." << endl;
+                    validChoice = false;
+                }
+
+                if (validChoice)
+                {
+                    cout << "✓ Result update processed for Student ID: " << id << endl;
+                }
             }
+            else if (table == "courseRegStd")
+            {
+                int currentCourseId;
+                cout << "Enter current courseId for this registration: ";
+                cin >> currentCourseId;
+                cin.ignore();
+
+                int choice;
+                cout << "\nSelect field to update:" << endl;
+                cout << "1. regDate" << endl;
+                cout << "2. courseId" << endl;
+                cout << "Enter choice: ";
+                cin >> choice;
+                cin.ignore();
+
+                string newValue;
+                string sqlQuery;
+                bool validChoice = true;
+
+                if (choice == 1)
+                {
+                    cout << "Enter new regDate (YYYY-MM-DD HH:MM:SS): ";
+                    getline(cin, newValue);
+                    sqlQuery = "UPDATE courseRegStd SET regDate = ? WHERE stdId = ? AND courseId = ?";
+                    db.executeUpdate(sqlQuery, newValue, id, currentCourseId);
+                }
+                else if (choice == 2)
+                {
+                    cout << "Enter new courseId: ";
+                    getline(cin, newValue);
+                    int newCourseId = stoi(newValue);
+                    sqlQuery = "UPDATE courseRegStd SET courseId = ? WHERE stdId = ? AND courseId = ?";
+                    db.executeUpdate(sqlQuery, newCourseId, id, currentCourseId);
+                }
+                else
+                {
+                    cout << "Invalid choice! Skipping this update." << endl;
+                    validChoice = false;
+                }
+
+                if (validChoice)
+                {
+                    cout << "✓ Course registration update processed for Student ID: " << id << endl;
+                }
+            }
+            else
+            {
+                cout << "Unknown table: " << table << ". Skipping this update." << endl;
+            }
+
+            // Delete the node after processing
+            delete nod;
+
+            cout << "--------------------------------------" << endl;
         }
 
-        SQLFreeHandle(SQL_HANDLE_STMT, hStmt);
-        std::cout << "Loaded results from database into BST" << std::endl;
-    }
-
-    void loadAllDataFromDB()
-    {
-        std::cout << "\n=== Loading data from database ===" << std::endl;
-
-        if (!db.connected())
-        {
-            std::cout << "ERROR: Database not connected! Cannot load data." << std::endl;
-            return;
-        }
-
-        loadFieldsFromDB();
-        loadStudentsFromDB();
-        loadCoursesFromDB();
-        loadCourseRegistrationsFromDB();
-        loadStudentFeesFromDB();
-        loadAttendanceFromDB();
-        loadResultsFromDB();
-        loadAdminsFromDB();
-
-        std::cout << "=== All data loaded successfully ===" << std::endl;
+        cout << "\n======================================" << endl;
+        cout << "All updates processed successfully!" << endl;
+        cout << "======================================" << endl;
     }
 
 public:
@@ -934,20 +926,139 @@ public:
         // Test print engine
         printEngine.printAllStudents(studentBST);
         printEngine.printAllCourses(courseBST);
-        int id;
-        cout<<"Enter Your student id";
-        cin>>id;
-        StdNode<Student> *node = studentBST.search(id);
-            if (node)
-        {
-            std::cout << "Student Found: ";
-            node->getData().print();
-        }
-      else
-      {
-        std::cout<<"Student not found with ID: "<<id<<std::endl;
-      }
 
+        // Create an update queue
+        upQueue updateQueue;
+
+        int mainChoice = 0;
+        while (mainChoice != 3)
+        {
+            cout << "\n======================================" << endl;
+            cout << "        MAIN MENU" << endl;
+            cout << "======================================" << endl;
+            cout << "1. Update System Records" << endl;
+            cout << "2. Process Update Queue (" << updateQueue.size() << " pending)" << endl;
+            cout << "3. Exit" << endl;
+            cout << "Enter your choice: ";
+            cin >> mainChoice;
+            cin.ignore();
+
+            switch (mainChoice)
+            {
+            case 1: // Update System Records
+            {
+                cout << "\n======================================" << endl;
+                cout << "    SELECT TABLE TO UPDATE" << endl;
+                cout << "======================================" << endl;
+                cout << "1. student" << endl;
+                cout << "2. adminTab" << endl;
+                cout << "3. StudentFees" << endl;
+                cout << "4. Attendance" << endl;
+                cout << "5. fieldStudy" << endl;
+                cout << "6. course" << endl;
+                cout << "7. result" << endl;
+                cout << "8. courseRegStd" << endl;
+                cout << "Enter table number: ";
+
+                int tableChoice;
+                cin >> tableChoice;
+                cin.ignore();
+
+                string tableName;
+                switch (tableChoice)
+                {
+                case 1:
+                    tableName = "student";
+                    break;
+                case 2:
+                    tableName = "adminTab";
+                    break;
+                case 3:
+                    tableName = "StudentFees";
+                    break;
+                case 4:
+                    tableName = "Attendance";
+                    break;
+                case 5:
+                    tableName = "fieldStudy";
+                    break;
+                case 6:
+                    tableName = "course";
+                    break;
+                case 7:
+                    tableName = "result";
+                    break;
+                case 8:
+                    tableName = "courseRegStd";
+                    break;
+                default:
+                    cout << "Invalid choice! Returning to main menu." << endl;
+                    continue;
+                }
+
+                int recordId;
+                cout << "Enter record ID for " << tableName << ": ";
+                cin >> recordId;
+                cin.ignore();
+
+                // Create and add to queue
+                upNode *updateNode = new upNode(recordId, tableName);
+                updateQueue.enqueue(updateNode);
+
+                cout << "\n✓ Update request added to queue!" << endl;
+                cout << "Table: " << tableName << ", ID: " << recordId << endl;
+
+                // Ask if user wants to add more
+                char more;
+                cout << "\nAdd another update request? (y/n): ";
+                cin >> more;
+                cin.ignore();
+
+                if (more == 'y' || more == 'Y')
+                {
+                    mainChoice = 1; // Stay in update mode
+                }
+                break;
+            }
+
+            case 2: // Process Update Queue
+            {
+                if (updateQueue.isEmpty())
+                {
+                    cout << "\nUpdate queue is empty. Nothing to process." << endl;
+                }
+                else
+                {
+                    cout << "\n======================================" << endl;
+                    cout << "    PROCESSING UPDATE QUEUE" << endl;
+                    cout << "======================================" << endl;
+                    cout << "Queue size: " << updateQueue.size() << " requests" << endl;
+
+                    cout << "\nProcessing update requests..." << endl;
+                    universalUPdation(updateQueue);
+                }
+                break;
+            }
+
+            case 3: // Exit
+            {
+                // Clean up any remaining nodes in the queue
+                while (!updateQueue.isEmpty())
+                {
+                    upNode *node = updateQueue.dequeue();
+                    delete node;
+                }
+
+                cout << "\nExiting Student Management System..." << endl;
+                break;
+            }
+
+            default:
+                cout << "Invalid choice! Please try again." << endl;
+            }
+        }
+
+        // Display admin menu at the end
         ui.displayAdminMenu();
     }
 
