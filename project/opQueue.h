@@ -129,7 +129,17 @@ public:
         }
         return NULL; // Not found
     }
-
+    // opNode<T>*searchByStringDataLikeName(string RelateObjName)
+    // {
+    //     opNode<T> *current = front;
+    //     while (current != NULL)
+    //     {
+    //       if(current->getData().getName().find(RelateObjName) != string::npos)
+    //         return current;
+    //       current = current->getNext();
+    //     }
+    //     return NULL; // Not found
+    // }
     void printQueue()
     {
         opNode<T> *current = front;

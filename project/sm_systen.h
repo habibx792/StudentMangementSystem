@@ -591,10 +591,10 @@ private:
 
     void registerNewAdmin(const Admin &admin)
     {
-        adminBST.insert(admin);
         insertAdminToDB(admin);
+        adminBST.insert(admin);
+        newAdminOpQueue.enqueueNewStd(admin);
     }
-
     // ================= Data Loading Method =================
     void loadAllDataFromDB()
     {
@@ -1318,7 +1318,7 @@ public:
         loadAllDataFromDB();
 
         // Test print engine
-      
+
         pause();
 
         int choice = 0;
@@ -1337,7 +1337,7 @@ public:
             cout << "9. Print Engine" << std::endl;
             cout << "10. Exit" << std::endl;
 
-            choice = getChoice(1, 10 );
+            choice = getChoice(1, 10);
 
             if (choice == 1)
             {
@@ -1611,6 +1611,14 @@ public:
                         int adminId;
                         cout << "Enter Admin ID to search: ";
                         cin >> adminId;
+                        StdNode<Admin>* node = adminBST.search(adminId);
+                        if(node)
+                        {
+                           Admin searched=node->getData();
+                           cout << "Admin Found!" << endl;
+                           cout << "Admin ID: " << searched.getAdminId() << endl;
+                           cout << "Admin Name: " << searched.getAdminName() << endl;
+                        }
                         // Add search logic here
                         pause();
                     }
@@ -1892,18 +1900,18 @@ public:
                 std::cout << "\n======================================" << std::endl;
                 std::cout << "        PRINTING ALL DATA" << std::endl;
                 std::cout << "======================================" << std::endl;
-                int printChoice=0;
-                while(printChoice != 4)
+                int printChoice = 0;
+                while (printChoice != 9)
                 {
-                    cout<<"1 For Print all Students\n";
-                    cout<<"2 For Print all Courses\n";
-                    cout<<"3 For Print all Fields\n";
-                    cout<<"4 For Print all Fee Records\n";
-                    cout<<"5 For Print all Attendance\n";
-                    cout<<"6 For Print all Student Courses\n";
-                    cout<<"7 For Print all Results\n";
-                    cout<<"8 For Print all Admins\n";
-                    cout<<"9 Return Back to Main Menu\n";
+                    cout << "1 For Print all Students\n";
+                    cout << "2 For Print all Courses\n";
+                    cout << "3 For Print all Fields\n";
+                    cout << "4 For Print all Fee Records\n";
+                    cout << "5 For Print all Attendance\n";
+                    cout << "6 For Print all Student Courses\n";
+                    cout << "7 For Print all Results\n";
+                    cout << "8 For Print all Admins\n";
+                    cout << "9 Return Back to Main Menu\n";
                     printChoice = getChoice(1, 9);
                     if (printChoice == 1)
                     {
@@ -1926,32 +1934,37 @@ public:
                         printEngine.printAllFields(fieldBST);
                         pause();
                     }
-                    else if (printChoice == 4){
+                    else if (printChoice == 4)
+                    {
                         std::cout << "\n=== All Fee Records ===" << std::endl;
-                        printEngine.printAllFeeRecords(stdFeeBST);
+                        printEngine.printAllStudentFees(stdFeeBST);
                     }
-                    else if(printChoice == 5){
+                    else if (printChoice == 5)
+                    {
                         std::cout << "\n=== All Attendance ===" << std::endl;
                         printEngine.printAllAttendance(attendanceBST);
                     }
-                    else if(printChoice == 6){
+                    else if (printChoice == 6)
+                    {
                         std::cout << "\n=== All Student Courses ===" << std::endl;
                         printEngine.printAllStdCourses(stdCourseBST);
                     }
-                    else if(printChoice == 7){
+                    else if (printChoice == 7)
+                    {
                         std::cout << "\n=== All Results ===" << std::endl;
                         printEngine.printAllResults(stdResultBST);
                     }
-                    else if(printChoice == 8){
+                    else if (printChoice == 8)
+                    {
                         std::cout << "\n=== All Admins ===" << std::endl;
                         printEngine.printAllAdmins(adminBST);
                     }
-                    else if(printChoice == 9){
-                        cout<<"Return Back to Main \n";
-
+                    else if (printChoice == 9)
+                    {
+                        cout << "Return Back to Main \n";
                     }
                 }
-               
+
                 pause();
             }
             else if (choice == 10)
