@@ -8,8 +8,10 @@
 
 int main()
 {
+    cout<<"New Commit -m sleep\n";
     SMSSystem &system = SMSSystem::getInstance(); // Changed from SmsSytem to SMSSystem
     system.run();
+    
     return 0;
     
 }
