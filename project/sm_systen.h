@@ -2207,7 +2207,7 @@ public:
                         cout << "Enter New Registrion Student Id \n";
                         cin >> stdId;
                         cin.ignore();
-                        StdNode<Student> *node = StudentBST.search(stdId);
+                        StdNode<Student> *node = studentBST.search(stdId);
                         if (node)
                         {
                             Student std = node->getData();
@@ -2217,31 +2217,99 @@ public:
                     else if (newInsetIonChoich == 2)
                     {
                         std::cout << "\n=== Search New Inserted Courses ===" << std::endl;
-                        StdNode<Course>*node
-\                    }
+                        int courseId;
+                        cout << "Enter New Registrion Course Id \n";
+                        cin >> courseId;
+                        cin.ignore();
+                        StdNode<Course>*node = courseBST.search(courseId);
+                        if (node)
+                        {
+                            Course course = node->getData();
+                            course.print();
+                        }
+                    }
                     else if (newInsetIonChoich == 3)
                     {
                         std::cout << "\n=== Search New Inserted Fields ===" << std::endl;
-                        printEngine.printAllFields(fieldBST);
+                        int fieldId;
+                        cout << "Enter New Registrion Field Id \n";
+                        cin >> fieldId;
+                        cin.ignore();
+                        StdNode<FieldStudy>*node = fieldBST.search(fieldId);
+                        if (node)
+                        {
+                            FieldStudy field = node->getData();
+                            field.print();
+                        }
                     }
                     else if (newInsetIonChoich == 4)
                     {
                         std::cout << "\n=== Search New Inserted Fee Records ===" << std::endl;
-                        printEngine.printAllStudentFees(stdFeeBST);
+                        int stdId;
+                        cout << "Enter New Registrion Student Id \n";
+                        cin >> stdId;
+                        cin.ignore();
+                        StdNode<StudentFees>*node = stdFeeBST.search(stdId);
+                        if (node)
+                        {
+                            StudentFees fees = node->getData();
+                            fees.print();
+                        }
                     }
                     else if (newInsetIonChoich == 5)
                     {
                         std::cout << "\n=== Search New Inserted Attendance ===" << std::endl;
-                        printEngine.printAllAttendance(attendanceBST);
-                    }
+                        int stdId;
+                        cout << "Enter New Registrion Student Id \n";
+                        cin >> stdId;
+                        cin.ignore();
+                        StdNode<Attendance>*node = attendanceBST.search(stdId);
+                        if (node)
+                        {
+                            Attendance att = node->getData();
+                            att.print();
+                        }
                     else if (newInsetIonChoich == 6)
                     {
                         std::cout << "\n=== Search New Inserted Student Courses ===" << std::endl;
-                        printEngine.printAllStdCourses(stdCourseBST);
+                        int stdId;
+                        cout << "Enter New Registrion Student Id \n";
+                        cin >> stdId;
+                        cin.ignore();
+                        StdNode<StdCourse>*node = stdCourseBST.search(stdId);
+                        if (node)
+                        {
+                            StdCourse course = node->getData();
+                            course.print();
+                        }
                     }
                     else if (newInsetIonChoich == 7)
                     {
                         std::cout << "\n=== Search New Inserted Results ===" << std::endl;
+                        int stdId;
+                        cout << "Enter New Registrion Student Id \n";
+                        cin >> stdId;
+                        cin.ignore();
+                        StdNode<Result>*node = stdResultBST.search(stdId);
+                        if (node)
+                        {
+                            Result result = node->getData();
+                            result.print();
+                        }
+                    }
+                    else if (newInsetIonChoich == 8)
+                    {
+                        std::cout << "\n=== Search New Inserted Admin ===" << std::endl;
+                        int stdId;
+                        cout << "Enter New Registrion Admin Id \n";
+                        cin >> stdId;
+                        cin.ignore();
+                        StdNode<Admin>*node = adminBST.search(stdId);
+                        if (node)
+                        {
+                            Admin admin = node->getData();
+                            admin.print();
+                        }
                     }
                 }
             }
