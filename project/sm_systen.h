@@ -2521,53 +2521,130 @@ public:
             {
                 // Delete Data Menu
                 int deleteChoice = 0;
-                while (deleteChoice != 6)
+                while (deleteChoice != 9)
                 {
                     clearScreen();
                     cout << "\n=== DELETE DATA ===" << std::endl;
-                    cout << "1. Delete Student" << std::endl;
-                    cout << "2. Delete Course" << std::endl;
-                    cout << "3. Delete Admin" << std::endl;
-                    cout << "4. Delete Fee Record" << std::endl;
-                    cout << "5. View Deletion Queue" << std::endl;
-                    cout << "6. Back to Main Menu" << std::endl;
+                    cout << "1. Delete Student Record" << std::endl;
+                    cout << "2. Delete Course Record" << std::endl;
+                    cout << "3. Delete Student Course Record" << std::endl;
+                    cout << "4. Delete Admin Record" << std::endl;
+                    cout << "5. Delete Fee Record" << std::endl;
+                    cout << "6. Delete Attendance Record" << std::endl;
+                    cout << "7. Delete Result Record" << std::endl;
+                    cout << "8. View Deletion Queue" << std::endl;
+                    cout << "9. Back to Main Menu" << std::endl;
 
-                    deleteChoice = getChoice(1, 6);
+                    deleteChoice = getChoice(1, 9);
 
-                    // Add delete functionality here
-                    if (deleteChoice == 1)
+                    switch (deleteChoice)
                     {
+                    case 1: // Delete Student Record
                         clearScreen();
-                        cout << "Delete Student functionality" << std::endl;
+                        cout << "=== DELETE STUDENT RECORD ===" << std::endl;
+                        deleteStudent();
+                        char restartChoice;
+                        cout << "\nDo you want to restart the system? (y/n): ";
+                        cin >> restartChoice;
+                        if (restartChoice == 'y' || restartChoice == 'Y')
+                        {
+                            restartSystemToDeleteData();
+                        }
                         pause();
-                    }
-                    if (deleteChoice == 2)
-                    {
+                        break;
+
+                    case 2: // Delete Course Record
                         clearScreen();
-                        cout << "Delete Course functionality" << std::endl;
+                        cout << "=== DELETE COURSE RECORD ===" << std::endl;
+                        deleteCourse();
+                        cout << "\nDo you want to restart the system? (y/n): ";
+                        cin >> restartChoice;
+                        if (restartChoice == 'y' || restartChoice == 'Y')
+                        {
+                            restartSystemToDeleteData();
+                        }
                         pause();
-                    }
-                    else if (deleteChoice == 3)
-                    {
+                        break;
+
+                    case 3: // Delete Student Course Record
                         clearScreen();
-                        cout << "Delete Admin functionality" << std::endl;
+                        cout << "=== DELETE STUDENT COURSE ENROLLMENT ===" << std::endl;
+                        deleteStudentCourse();
+                        cout << "\nDo you want to restart the system? (y/n): ";
+                        cin >> restartChoice;
+                        if (restartChoice == 'y' || restartChoice == 'Y')
+                        {
+                            restartSystemToDeleteData();
+                        }
                         pause();
-                    }
-                    else if (deleteChoice == 4)
-                    {
+                        break;
+
+                    case 4: // Delete Admin Record
                         clearScreen();
-                        cout << "Delete Fee Record functionality" << std::endl;
+                        cout << "=== DELETE ADMIN RECORD ===" << std::endl;
+                        deleteAdmin();
+                        cout << "\nDo you want to restart the system? (y/n): ";
+                        cin >> restartChoice;
+                        if (restartChoice == 'y' || restartChoice == 'Y')
+                        {
+                            restartSystemToDeleteData();
+                        }
                         pause();
-                    }
-                    else if (deleteChoice == 5)
-                    {
+                        break;
+
+                    case 5: // Delete Fee Record
                         clearScreen();
-                        cout << "View Deletion Queue functionality" << std::endl;
+                        cout << "=== DELETE FEE RECORD ===" << std::endl;
+                        deleteStdFee();
+                        cout << "\nDo you want to restart the system? (y/n): ";
+                        cin >> restartChoice;
+                        if (restartChoice == 'y' || restartChoice == 'Y')
+                        {
+                            restartSystemToDeleteData();
+                        }
                         pause();
-                    }
-                    else if (deleteChoice == 6)
-                    {
+                        break;
+
+                    case 6: // Delete Attendance Record
+                        clearScreen();
+                        cout << "=== DELETE ATTENDANCE RECORD ===" << std::endl;
+                        deleteAttendance();
+                        cout << "\nDo you want to restart the system? (y/n): ";
+                        cin >> restartChoice;
+                        if (restartChoice == 'y' || restartChoice == 'Y')
+                        {
+                            restartSystemToDeleteData();
+                        }
+                        pause();
+                        break;
+
+                    case 7: // Delete Result Record
+                        clearScreen();
+                        cout << "=== DELETE RESULT RECORD ===" << std::endl;
+                        deleteResult();
+                        cout << "\nDo you want to restart the system? (y/n): ";
+                        cin >> restartChoice;
+                        if (restartChoice == 'y' || restartChoice == 'Y')
+                        {
+                            restartSystemToDeleteData();
+                        }
+                        pause();
+                        break;
+
+                    case 8: // View Deletion Queue
+                        clearScreen();
+                        cout << "=== DELETION QUEUE ===" << std::endl;
+                        viewDeletionQueue();
+                        pause();
+                        break;
+
+                    case 9: // Back to Main Menu
                         cout << "Returning to Main Menu..." << std::endl;
+                        break;
+
+                    default:
+                        cout << "Invalid choice! Please try again." << std::endl;
+                        pause();
                     }
                 }
             }
@@ -2786,19 +2863,10 @@ public:
             cout << "\nThank you for using Student Management System!" << endl;
             pause();
         }
-        char choiceRestart;
-        cout << "Do you want to restart the system? (y/n): ";
-        cin >> choiceRestart;
-        if (choiceRestart == 'y' || choiceRestart == 'Y')
-        {
-            db.printStatus();
-            loadAllDataFromDB();
-            restartSystemToDeleteData();
-            universalUPdation(updateQueue);
-            loadAllDataFromDB();
-        }
-
-        
+        db.printStatus();
+        loadAllDataFromDB();
+        restartSystemToDeleteData();
+        universalUPdation(updateQueue);
     }
     // Public getter methods
     BST<Student> &getStudentBST()

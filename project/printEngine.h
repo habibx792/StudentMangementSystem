@@ -316,33 +316,48 @@ public:
     {
         printAllBST(tree, "All Student Fees");
     }
+    
 
-    // =========================
-    // Utility Printers
-    // =========================
-    void printSeparator(const string &title = "")
+
+
+    //===making print Engine methods for Delqueuq and Upquque
+    
+    void printDeleteQueue(BST<T>&tree deleteQueue &delQueue)
     {
-        cout << "\n========================================" << endl;
-        if (!title.empty())
-            cout << title << endl;
-        cout << "========================================\n"
-             << endl;
+        
     }
 
-    void printMessage(const string &message)
+    void printUpdateQueue(upQueue &upQueue)
     {
-        cout << ">> " << message << endl;
+        upQueue.print();
     }
 
-    void printError(const string &error)
-    {
-        cout << "ERROR: " << error << endl;
-    }
+    // // =========================
+    // // Utility Printers
+    // // =========================
+    // void printSeparator(const string &title = "")
+    // {
+    //     cout << "\n========================================" << endl;
+    //     if (!title.empty())
+    //         cout << title << endl;
+    //     cout << "========================================\n"
+    //          << endl;
+    // }
 
-    void printSuccess(const string &message)
-    {
-        cout << "SUCCESS: " << message << endl;
-    }
+    // void printMessage(const string &message)
+    // {
+    //     cout << ">> " << message << endl;
+    // }
+
+    // void printError(const string &error)
+    // {
+    //     cout << "ERROR: " << error << endl;
+    // }
+
+    // void printSuccess(const string &message)
+    // {
+    //     cout << "SUCCESS: " << message << endl;
+    // }
 };
 
 #endif // PRINTENGINE_H
