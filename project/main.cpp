@@ -8,7 +8,7 @@
 
 int main()
 {
-    cout<<"New Commit -m sleep\n";
+    cout<<"New Commit 3:00 am sleep time  -m sleep\n";
     SMSSystem &system = SMSSystem::getInstance(); // Changed from SmsSytem to SMSSystem
     system.run();
     
