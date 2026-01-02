@@ -54,6 +54,11 @@ public:
         upNode *node = new upNode(id, table);
         enqueue(node);
     }
+    void enqueue(int id, int id2, const string &table)
+    {
+        upNode *node = new upNode(id, id2, table);
+        enqueue(node);
+    }
 
     upNode *dequeue()
     {
@@ -96,8 +101,14 @@ public:
         upNode *curr = fr;
         while (curr != NULL)
         {
-            auto [id, table] = curr->getMetaData();
-            cout << "Id: " << id << ", Table: " << table << endl;
+            pair<pair<int,int>,string>node= curr->getMetaData();
+            cout << "Id: " << node.first.first << ", Table: "<<node.second;
+
+            if(curr->hasSecondId())
+            {
+                 cout<<", Id2: "<<node.first.second ;
+            }
+            cout<<endl;
             curr = curr->getNext();
         }
     }
@@ -106,7 +117,8 @@ public:
         upNode *curr = fr;
         while (curr != NULL)
         {
-            auto [searchId, table] = curr->getMetaData();
+            pair<pair<int,int>,string>node = curr->getMetaData();
+            int searchId = node.first.first;
             if (searchId == id)
                 return curr;
             curr = curr->getNext();

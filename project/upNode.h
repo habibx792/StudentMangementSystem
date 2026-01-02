@@ -36,6 +36,12 @@ public:
         this->table = "NULL";
         this->next = NULL;
     }
+    bool hasSecondId()
+    {
+        if (id2 == -1)
+            return false;
+        return true;
+    }
 
     upNode *getNext() const
     {

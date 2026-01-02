@@ -2634,7 +2634,7 @@ public:
                     case 8: // View Deletion Queue
                         clearScreen();
                         cout << "=== DELETION QUEUE ===" << std::endl;
-                        viewDeletionQueue();
+                        // viewDeletionQueue();
                         pause();
                         break;
 
