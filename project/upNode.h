@@ -9,6 +9,7 @@ class upNode
 {
 private:
     int id;
+    int id2;
     string table;
 
 public:
@@ -20,6 +21,7 @@ public:
         this->table = table;
         this->next = NULL;
     }
+    
 
     upNode()
     {

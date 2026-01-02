@@ -11,6 +11,7 @@ using namespace std;
 #include "deleteQueues.h"
 #include "updationQueue.h"
 #include "opQueue.h"
+#include "deleteQueues.h"
 
 #include "admin.h"
 #include "student.h"
@@ -317,19 +318,60 @@ public:
         printAllBST(tree, "All Student Fees");
     }
     
-
-
-
     //===making print Engine methods for Delqueuq and Upquque
-    
-    void printDeleteQueue(BST<T>&tree deleteQueue &delQueue)
+    template<class T>
+    void printDeleteQueue(BST<T>&tree, deleteQueue &delQueue)
     {
-        
+       delNode * curr=delQueue.front();
+       while(curr)
+       {
+           pair<pair<int, int>, string> data = curr->getMetaData();
+           if (curr->hasSecondId())
+           {
+               // Print the record based on the metadata
+               StdNode<T>* nod = tree.search(data.first.first);
+                   nod->getData().print();
+           }
+           else
+           {
+               // Print the record based on the metadata
+               StdNode<T>* nod = tree.search(data.first.first);
+               if (nod)
+                   nod->getData().print();
+           }
+       }
+        delQueue.dequeue();
     }
-
-    void printUpdateQueue(upQueue &upQueue)
+    template<class T>
+    void printDeleteQueue(BST<T>&tree,BST<T>&tree2, deleteQueue &delQueue)
     {
-        upQueue.print();
+        delNode * curr=delQueue.front();
+        while(curr)
+        {
+            pair<pair<int, int>, string> data = curr->getMetaData();
+            if (curr->hasSecondId())
+            {
+                // Print the record based on the metadata
+                StdNode<T>* nod = tree.search(data.first.first);
+                StdNode<T>*nod2=tree2.search(data.first.second);
+                if (nod&&nod2)
+                    nod->getData().print();
+                    nod2->getData().print();
+            }
+            else
+            {
+                // Print the record based on the metadata
+                StdNode<T>* nod = tree.search(data.first.first);
+                if (nod)
+                    nod->getData().print();
+            }
+        }
+        delQueue.dequeue();
+    }
+    template<class T>
+    void printUpdateQueue(BST<T>&tree, updateQueue   &upQueue)
+    {
+        upNode<T>
     }
 
     // // =========================
