@@ -9,6 +9,7 @@
 int main()
 {
     cout<<"New Commit 3:00 am sleep time  -m sleep\n";
+    cout<<"I will test all project next day and in uni \n";
     SMSSystem &system = SMSSystem::getInstance(); // Changed from SmsSytem to SMSSystem
     system.run();
     
