@@ -169,6 +169,7 @@ private:
             std::cout << "Database not connected!" << std::endl;
             return;
         }
+        cout << "Test  don --->\n";
 
         SQLHSTMT hStmt = nullptr;
         SQLRETURN ret = SQLAllocHandle(SQL_HANDLE_STMT, db.returnDb(), &hStmt);
@@ -214,7 +215,7 @@ private:
                          40, 0, (SQLPOINTER)stdFatherName.c_str(), 0, &fatherLen);
 
         if (SQLExecute(hStmt) == SQL_SUCCESS)
-            std::cout << "Student inserted successfully." << std::endl;
+            std::cout << "Student inserted jhgjgkh successfully." << std::endl;
         else
         {
             std::cout << "Failed to insert student. Error: ";
@@ -292,8 +293,7 @@ private:
             std::cout << "Failed to allocate statement handle!" << std::endl;
             return;
         }
-
-        const char *query = "INSERT INTO fieldStudy (fieldId, fieldName) VALUES (?, ?)";
+        const char *query = "INSERT INTO fieldStudy (fieldName) VALUES (?)";
 
         if (SQLPrepare(hStmt, (SQLCHAR *)query, SQL_NTS) != SQL_SUCCESS)
         {
@@ -302,14 +302,11 @@ private:
             return;
         }
 
-        SQLINTEGER fieldId = field.getFieldId();
         std::string fieldName = truncateToSize(sanitizeForSQL(field.getFieldName()), 40);
-
         SQLLEN nameLen = fieldName.empty() ? SQL_NULL_DATA : SQL_NTS;
 
-        SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_SLONG, SQL_INTEGER,
-                         0, 0, &fieldId, 0, nullptr);
-        SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_VARCHAR,
+        // Bind only one parameter now (fieldName)
+        SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_VARCHAR,
                          40, 0, (SQLPOINTER)fieldName.c_str(), 0, &nameLen);
 
         if (SQLExecute(hStmt) == SQL_SUCCESS)
@@ -322,7 +319,6 @@ private:
 
         SQLFreeHandle(SQL_HANDLE_STMT, hStmt);
     }
-
     void insertAttendanceToDB(const Attendance &attendance)
     {
         if (!db.connected())
@@ -339,16 +335,13 @@ private:
             std::cout << "Failed to allocate statement handle!" << std::endl;
             return;
         }
-
         const char *query = "INSERT INTO Attendance (attendanceId, stdId, courseId, attendanceDate, isPresent) VALUES (?, ?, ?, ?, ?)";
-
         if (SQLPrepare(hStmt, (SQLCHAR *)query, SQL_NTS) != SQL_SUCCESS)
         {
             std::cout << "Failed to prepare statement!" << std::endl;
             SQLFreeHandle(SQL_HANDLE_STMT, hStmt);
             return;
         }
-
         SQLINTEGER attendanceId = attendance.getAttendanceId();
         SQLINTEGER stdId = attendance.getStdId();
         SQLINTEGER courseId = attendance.getCourseId();
@@ -1265,16 +1258,20 @@ private:
         int age;
         cout << "Enter A random Student Id Between 10000 t to 999999999 \n";
         cin >> stdId;
+        cin.ignore();
+
         cout << "Enter Student Name: ";
         getline(cin, stdName);
         cout << "Enter Student Age: ";
         cin >> age;
+        cin.ignore();
         cout << "Enter Student Father Name: ";
         getline(cin, fatherName);
         cout << "Enter Student User Name: ";
         getline(cin, userName);
         cout << "Enter Student Field Id: ";
         cin >> fieldId;
+        cin.ignore();
         //     Student(int id, string name, string userName, int age, int fId, string fatherName)
 
         Student student(stdId, stdName, userName, age, fieldId, fatherName);
@@ -1284,117 +1281,144 @@ private:
     {
         string courseTitle;
         string teacherName;
+        int id;
+        cout << "Enter A randdom Course Id betweeen 10000 to 99999\n";
+        cin >> id;
+        cin.ignore();
         cout << "Enter Course Title: \n";
         getline(cin, courseTitle);
         cout << "Enter Teacher Name: \n";
         getline(cin, teacherName);
-        Course course(courseTitle, teacherName);
+        Course course(id, courseTitle, teacherName);
         registerNewCourse(course);
     }
     void addNewField()
     {
         string fieldName;
-        int  fieldId;
-        cout<<"Enter Field Id: \n";
-        cin>>fieldId;
+        int fieldId;
+        cout << "Enter Field Id: \n";
+        cin >> fieldId;
+        cin.ignore();
         cout << "Enter Field Name: \n";
         getline(cin, fieldName);
         FieldStudy field(fieldId, fieldName);
 
         registerNewField(field);
     }
-    void addNewAttendance() {
+    void addNewAttendance()
+    {
         int attendanceId;
         int stdId;
         int courseId;
         string attendanceDate;
         bool isPresent;
-        cout<<"Enter Attendance Id: \n";
-        cin>>attendanceId;
-        cout<<"Enter Student Id: \n";
-        cin>>stdId;
-        cout<<"Enter Course Id: \n";
-        cin>>courseId;
-        cout<<"Enter Attendance Date (YYYY-MM-DD): \n";
+        cout << "Enter Attendance Id: \n";
+        cin >> attendanceId;
+        cin.ignore();
+        cout << "Enter Student Id: \n";
+        cin >> stdId;
+        cin.ignore();
+        cout << "Enter Course Id: \n";
+        cin >> courseId;
+        cin.ignore();
+        cout << "Enter Attendance Date (YYYY-MM-DD): \n";
         getline(cin, attendanceDate);
-        cout<<"Enter Present Status (1 for Present, 0 for Absent): \n";
-        cin>>isPresent;
+        cout << "Enter Present Status (1 for Present, 0 for Absent): \n";
+        cin >> isPresent;
+        cin.ignore();
         Attendance attendance(attendanceId, stdId, courseId, attendanceDate, isPresent);
         registerNewAttendance(attendance);
-     }
-    void addNewStdCourse() {
+    }
+    void addNewStdCourse()
+    {
         int stdId;
         int courseId;
         string regDate;
-        cout<<"Enter Student Id: \n";
-        cin>>stdId;
-        cout<<"Enter Course Id: \n";
-        cin>>courseId;
-        cout<<"Enter Registration Date (YYYY-MM-DD): \n";
+        cout << "Enter Student Id: \n";
+        cin >> stdId;
+        cin.ignore();
+        cout << "Enter Course Id: \n";
+        cin >> courseId;
+        cin.ignore();
+        cout << "Enter Registration Date (YYYY-MM-DD): \n";
         getline(cin, regDate);
         StdCourse stdCourse(stdId, courseId, regDate);
-        registerNewStdCourse(stdCourse); }
-    void addNewStudentFees() {
+        registerNewStdCourse(stdCourse);
+    }
+    void addNewStudentFees()
+    {
         int feeId;
         int stdId;
         double amount;
         string paymentDate;
         string status;
-        cout<<"Enter Fee Id: \n";
-        cin>>feeId;
-        cout<<"Enter Student Id: \n";
-        cin>>stdId;
-        cout<<"Enter Amount: \n";
-        cin>>amount;
-        cout<<"Enter Payment Date (YYYY-MM-DD): \n";
+        cout << "Enter Fee Id: \n";
+        cin >> feeId;
+        cin.ignore();
+        cout << "Enter Student Id: \n";
+        cin >> stdId;
+        cin.ignore();
+        cout << "Enter Amount: \n";
+        cin >> amount;
+        cin.ignore();
+        cout << "Enter Payment Date (YYYY-MM-DD): \n";
         getline(cin, paymentDate);
-        cout<<"Enter Status:->Pending<->Paid \n";
-        cout<<"1 For Pending,\n 2 For Paid \n";
+        cout << "Enter Status:->Pending<->Paid \n";
+        cout << "1 For Pending,\n 2 For Paid \n";
         int st;
-        cin>>st;
-        if(st == 1) {
+        cin >> st;
+        cin.ignore();
+        if (st == 1)
+        {
             status = "Pending";
-        } else {
+        }
+        else
+        {
             status = "Paid";
         }
         StudentFees stdFee(feeId, stdId, amount, paymentDate, status);
-        registerNewStudentFees(stdFee); 
+        registerNewStudentFees(stdFee);
     }
-    void addNewResult() {
+    void addNewResult()
+    {
         int stdId;
         int courseId;
         double gotNumber;
         string grade;
-        cout<<"Enter Student Id: \n";
-        cin>>stdId;
-        cout<<"Enter Course Id: \n";
-        cin>>courseId;
-        cout<<"Enter Got Number: \n";
-        cin>>gotNumber;
-        cout<<"Enter Grade:->A->A+ \n";
+        cout << "Enter Student Id: \n";
+        cin >> stdId;
+        cin.ignore();
+        cout << "Enter Course Id: \n";
+        cin >> courseId;
+        cin.ignore();
+        cout << "Enter Got Number: \n";
+        cin >> gotNumber;
+        cin.ignore();
+        cout << "Enter Grade:->A->A+ \n";
         getline(cin, grade);
         Result stdResult(stdId, courseId, gotNumber, grade);
-        registerNewResult(stdResult); 
+        registerNewResult(stdResult);
     }
-    void addNewAdmin() {
+    void addNewAdmin()
+    {
         int adminId;
         string adminName;
         string passWord;
-        cout<<"Enter Admin Id: \n";
-        cin>>adminId;
-        cout<<"Enter Admin Name: \n";
+        cout << "Enter Admin Id: \n";
+        cin >> adminId;
+        cin.ignore();
+        cout << "Enter Admin Name: \n";
         getline(cin, adminName);
-        cout<<"Enter Admin Password: \n";
+        cout << "Enter Admin Password: \n";
         getline(cin, passWord);
         Admin admin(adminId, adminName, passWord);
-        registerNewAdmin(admin); 
-
+        registerNewAdmin(admin);
     }
     void UniVersalInsertionMethod()
     {
-        cout<<"Welcome to Student Management System Insertion ";
-        int insetChoise=0;
-        while(insetChoise != 11)
+        cout << "Welcome to Student Management System Insertion ";
+        int insetChoise = 0;
+        while (insetChoise != 9)
         {
             cout << "\n=== INSERTION MENU ===" << std::endl;
             cout << "1. Add Student" << std::endl;
@@ -1406,40 +1430,38 @@ private:
             cout << "7. Add Result Information" << std::endl;
             cout << "8. Add Admin Information" << std::endl;
             cout << "9. Back to Main Menu" << std::endl;
-
             insetChoise = getChoice(1, 9);
 
             switch (insetChoise)
             {
-                case 1:
-                    addNewStudent();
-                    break;
-                case 2:
-                    addNewCourse();
-                    break;
-                case 3:
-                    addNewField();
-                    break;
-                case 4:
-                    addNewAttendance();
-                    break;
-                case 5:
-                    addNewStdCourse();
-                    break;
-                case 6:
-                    addNewStudentFees();
-                    break;
-                case 7:
-                    addNewResult();
-                    break;
-                case 8:
-                    addNewAdmin();
-                    break;
-                default:
-                    break; // No action needed for default
+            case 1:
+                addNewStudent();
+                break;
+            case 2:
+                addNewCourse();
+                break;
+            case 3:
+                addNewField();
+                break;
+            case 4:
+                addNewAttendance();
+                break;
+            case 5:
+                addNewStdCourse();
+                break;
+            case 6:
+                addNewStudentFees();
+                break;
+            case 7:
+                addNewResult();
+                break;
+            case 8:
+                addNewAdmin();
+                break;
+            default:
+                break; // No action needed for default
             }
         }
-
     }
 
 public:
@@ -1476,6 +1498,7 @@ public:
         {
             cout << "Enter choice (" << min << "-" << max << "): ";
             cin >> choice;
+            cin.ignore();
 
             if (cin.fail() || choice < min || choice > max)
             {
@@ -1510,7 +1533,7 @@ public:
         pause();
 
         int choice = 0;
-        while (choice != 10) // Changed to 8 for exit
+        while (choice != 11) // Changed to 8 for exit
         {
             clearScreen();
             cout << "\n=== MAIN MENU ===" << std::endl;
@@ -1523,9 +1546,10 @@ public:
             cout << "7. Update Data" << std::endl;
             cout << "8. Delete Data" << std::endl;
             cout << "9. Print Engine" << std::endl;
-            cout << "10. Exit" << std::endl;
+            cout << "10 To Insetion Operations \n";
+            cout << "11. Exit" << std::endl;
 
-            choice = getChoice(1, 10);
+            choice = getChoice(1, 11);
 
             if (choice == 1)
             {
@@ -2158,7 +2182,68 @@ public:
             else if (choice == 10)
             {
                 clearScreen();
-                cout << "Exiting program..." << std::endl;
+                cout << "\n === Insertion Operations ===\n"
+                     << std::endl;
+                cin.ignore();
+                UniVersalInsertionMethod();
+                cout << "Search New insrtion Informainon \n";
+                int newInsetIonChoich = 0;
+                while (newInsetIonChoich != 9)
+                {
+                    cout << "1 For Search New Inseted Students\n";
+                    cout << "2 For Search New Inseted Courses\n";
+                    cout << "3 For Search New Inseted Fields\n";
+                    cout << "4 For Search New Inseted Fee Records\n";
+                    cout << "5 For Search New Inseted Attendance\n";
+                    cout << "6 For Search New Inseted Student Courses\n";
+                    cout << "7 For Search New Inseted Results\n";
+                    cout << "8 For Search New Inseted Admins\n";
+                    cout << "9 Return Back to Main Menu\n";
+                    newInsetIonChoich = getChoice(1, 9);
+                    if (newInsetIonChoich == 1)
+                    {
+                        std::cout << "\n=== Search New Inserted Students ===" << std::endl;
+                        int stdId;
+                        cout << "Enter New Registrion Student Id \n";
+                        cin >> stdId;
+                        cin.ignore();
+                        StdNode<Student> *node = StudentBST.search(stdId);
+                        if (node)
+                        {
+                            Student std = node->getData();
+                            std.print();
+                        }
+                    }
+                    else if (newInsetIonChoich == 2)
+                    {
+                        std::cout << "\n=== Search New Inserted Courses ===" << std::endl;
+                        StdNode<Course>*node
+\                    }
+                    else if (newInsetIonChoich == 3)
+                    {
+                        std::cout << "\n=== Search New Inserted Fields ===" << std::endl;
+                        printEngine.printAllFields(fieldBST);
+                    }
+                    else if (newInsetIonChoich == 4)
+                    {
+                        std::cout << "\n=== Search New Inserted Fee Records ===" << std::endl;
+                        printEngine.printAllStudentFees(stdFeeBST);
+                    }
+                    else if (newInsetIonChoich == 5)
+                    {
+                        std::cout << "\n=== Search New Inserted Attendance ===" << std::endl;
+                        printEngine.printAllAttendance(attendanceBST);
+                    }
+                    else if (newInsetIonChoich == 6)
+                    {
+                        std::cout << "\n=== Search New Inserted Student Courses ===" << std::endl;
+                        printEngine.printAllStdCourses(stdCourseBST);
+                    }
+                    else if (newInsetIonChoich == 7)
+                    {
+                        std::cout << "\n=== Search New Inserted Results ===" << std::endl;
+                    }
+                }
             }
         }
 
