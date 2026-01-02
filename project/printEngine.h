@@ -317,61 +317,85 @@ public:
     {
         printAllBST(tree, "All Student Fees");
     }
-    
+
     //===making print Engine methods for Delqueuq and Upquque
-    template<class T>
-    void printDeleteQueue(BST<T>&tree, deleteQueue &delQueue)
+    template <class T>
+    void printDeleteQueue(BST<T> &tree, deleteQueue &delQueue)
     {
-       delNode * curr=delQueue.front();
-       while(curr)
-       {
-           pair<pair<int, int>, string> data = curr->getMetaData();
-           if (curr->hasSecondId())
-           {
-               // Print the record based on the metadata
-               StdNode<T>* nod = tree.search(data.first.first);
-                   nod->getData().print();
-           }
-           else
-           {
-               // Print the record based on the metadata
-               StdNode<T>* nod = tree.search(data.first.first);
-               if (nod)
-                   nod->getData().print();
-           }
-       }
-        delQueue.dequeue();
-    }
-    template<class T>
-    void printDeleteQueue(BST<T>&tree,BST<T>&tree2, deleteQueue &delQueue)
-    {
-        delNode * curr=delQueue.front();
-        while(curr)
+        deleteNode *curr = delQueue.getFront();
+        while (curr)
         {
             pair<pair<int, int>, string> data = curr->getMetaData();
             if (curr->hasSecondId())
             {
                 // Print the record based on the metadata
-                StdNode<T>* nod = tree.search(data.first.first);
-                StdNode<T>*nod2=tree2.search(data.first.second);
-                if (nod&&nod2)
-                    nod->getData().print();
-                    nod2->getData().print();
+                StdNode<T> *nod = tree.search(data.first.first);
+                nod->getData().print();
             }
             else
             {
                 // Print the record based on the metadata
-                StdNode<T>* nod = tree.search(data.first.first);
+                StdNode<T> *nod = tree.search(data.first.first);
                 if (nod)
                     nod->getData().print();
             }
         }
         delQueue.dequeue();
     }
-    template<class T>
-    void printUpdateQueue(BST<T>&tree, updateQueue   &upQueue)
+    template <class T>
+    void printDeleteQueue(BST<T> &tree, BST<T> &tree2, deleteQueue &delQueue)
     {
-        upNode<T>
+        deleteNode *curr = delQueue.getFront();
+        while (curr)
+        {
+            pair<pair<int, int>, string> data = curr->getMetaData();
+            if (curr->hasSecondId())
+            {
+                // Print the record based on the metadata
+                StdNode<T> *nod = tree.search(data.first.first);
+                StdNode<T> *nod2 = tree2.search(data.first.second);
+                if (nod && nod2)
+                    nod->getData().print();
+                nod2->getData().print();
+            }
+            else
+            {
+                // Print the record based on the metadata
+                StdNode<T> *nod = tree.search(data.first.first);
+                if (nod)
+                    nod->getData().print();
+            }
+        }
+    }
+    template <class T>
+    void printUpdateQueue(BST<T> &tree, upQueue &upQueue)
+    {
+        upNode *curr = upQueue.getFront();
+        while (curr)
+        {
+            pair<pair<int, int>, string> data = curr->getMetaData();
+            int id = data.first.first;
+            StdNode<T> *nod = tree.search(id);
+            if (nod)
+                nod->getData().print();
+        }
+    }
+    template <class T>
+    void printUpdateQueue(BST<T> &tree, BST<T> &tree2, upQueue &upQueue)
+    {
+        upNode *curr = upQueue.getFront();
+        while (curr)
+        {
+            pair<pair<int, int>, string> data = curr->getMetaData();
+            int id1 = data.first.first;
+            int id2 = data.first.second;
+            StdNode<T> *nod1 = tree.search(id1);
+            StdNode<T> *nod2 = tree2.search(id2);
+            if (nod1)
+                nod1->getData().print();
+            if (nod2)
+                nod2->getData().print();
+        }
     }
 
     // // =========================

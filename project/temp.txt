@@ -1,23 +1,56 @@
-#ifndef SMS_SYSTEM_H
+PS D:\Programming\Projects\C++\StudentMangementSystem\project> cd "d:\Programming\Projects\C++\StudentMangementSystem\pro
 
-
-#include <iostream>
-#include <string>
-using namespace std;
-
-class SMS_SYSTEM
-{
-private:
-    SMS_SYSTEM() : memberName("DefaultUser") {}
-    SMS_SYSTEM(const SMS_SYSTEM &) = delete;
-    SMS_SYSTEM &operator=(const SMS_SYSTEM &) = delete;
-public:
-    
-    static SMS_SYSTEM &getInstance()
-    {
-        static SMS_SYSTEM instance; 
-        return instance;
-    }
-};
-
-#endif // SMS_SYSTEM_H
+sm_systen.h: In member function 'void SMSSystem::universalUPdation(upQueue&)':
+sm_systen.h:1008:64: error: conversion from 'pair<std::pair<int, int>,[...]>' to non-scalar type 'pair<int,[...]>' requested
+ 1008 |             std::pair<int, std::string> meta = nod->getMetaData();
+      |                                                ~~~~~~~~~~~~~~~~^~
+sm_systen.h: In member function 'void SMSSystem::run()':
+sm_systen.h:2572:25: error: 'deleteStudentCourse' was not declared in this scope; did you mean 'deleteStudent'?
+ 2572 |                         deleteStudentCourse();
+      |                         ^~~~~~~~~~~~~~~~~~~
+      |                         deleteStudent
+PS D:\Programming\Projects\C++\StudentMangementSystem\project> cd "d:\Programming\Projects\C++\StudentMangementSystem\project"
+PS D:\Programming\Projects\C++\StudentMangementSystem\project> cd "d:\Programming\Projects\C++\StudentMangementSystem\project\" ; if ($?) { g++ main.cpp -o main -std=c++17 -lodbc32 -lodbccp32 } ; if ($?) { .\main }
+In file included from sm_systen.h:40,
+                 from main.cpp:7:
+printEngine.h:372:40: error: 'updateQueue' has not been declared; did you mean 'upQueue'?
+  372 |     void printUpdateQueue(BST<T>&tree, updateQueue   &upQueue)
+      |                                        ^~~~~~~~~~~
+      |                                        upQueue
+printEngine.h: In member function 'void PrintEngine::printDeleteQueue(BST<T>&, deleteQueue&)':
+printEngine.h:325:8: error: 'delNode' was not declared in this scope [-Wtemplate-body]
+  325 |        delNode * curr=delQueue.front();
+      |        ^~~~~~~
+printEngine.h:325:18: error: 'curr' was not declared in this scope [-Wtemplate-body]
+  325 |        delNode * curr=delQueue.front();
+      |                  ^~~~
+printEngine.h:325:32: error: 'class deleteQueue' has no member named 'front' [-Wtemplate-body]
+  325 |        delNode * curr=delQueue.front();
+      |                                ^~~~~
+printEngine.h: In member function 'void PrintEngine::printDeleteQueue(BST<T>&, BST<T>&, deleteQueue&)':
+printEngine.h:348:9: error: 'delNode' was not declared in this scope [-Wtemplate-body]
+  348 |         delNode * curr=delQueue.front();
+      |         ^~~~~~~
+printEngine.h:348:19: error: 'curr' was not declared in this scope [-Wtemplate-body]
+  348 |         delNode * curr=delQueue.front();
+      |                   ^~~~
+printEngine.h:348:33: error: 'class deleteQueue' has no member named 'front' [-Wtemplate-body]
+  348 |         delNode * curr=delQueue.front();
+      |                                 ^~~~~
+printEngine.h: In member function 'void PrintEngine::printUpdateQueue(BST<T>&, int&)':
+printEngine.h:374:9: error: 'upNode' is not a template [-Wtemplate-body]
+  374 |         upNode<T>
+      |         ^~~~~~
+printEngine.h:375:5: error: expected unqualified-id before '}' token [-Wtemplate-body]
+  375 |     }
+      |     ^
+sm_systen.h: In member function 'void SMSSystem::universalUPdation(upQueue&)':
+sm_systen.h:1008:64: error: conversion from 'pair<std::pair<int, int>,[...]>' to non-scalar type 'pair<int,[...]>' requested
+ 1008 |             std::pair<int, std::string> meta = nod->getMetaData();
+      |                                                ~~~~~~~~~~~~~~~~^~
+sm_systen.h: In member function 'void SMSSystem::run()':
+sm_systen.h:2572:25: error: 'deleteStudentCourse' was not declared in this scope; did you mean 'deleteStudent'?
+ 2572 |                         deleteStudentCourse();
+      |                         ^~~~~~~~~~~~~~~~~~~
+      |                         deleteStudent
+PS D:\Programming\Projects\C++\StudentMangementSystem\project> 

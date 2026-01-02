@@ -591,6 +591,7 @@ private:
         adminBST.insert(admin);
         newAdminOpQueue.enqueueNewStd(admin);
     }
+
     // ================= Data Loading Method =================
     void loadAllDataFromDB()
     {
@@ -1005,8 +1006,8 @@ private:
                 continue;
             }
 
-            std::pair<int, std::string> meta = nod->getMetaData();
-            int id = meta.first;
+            std::pair<pair<int, int>, std::string> meta = nod->getMetaData();
+            int id = meta.first.first;
             std::string table = meta.second;
 
             std::cout << "\n--------------------------------------" << std::endl;
@@ -1249,7 +1250,8 @@ private:
         // Reload data
         loadAllDataFromDB();
     }
-    // implemeting insertion into tables
+
+    // ================= Insertion UI Methods =================
     void addNewStudent()
     {
         int stdId;
@@ -1466,8 +1468,8 @@ private:
             }
         }
     }
-    // db detion methods
-    // studnet deltion
+
+    // ================= Deletion UI Methods =================
     void deleteStudent()
     {
         int stdId;
@@ -1562,6 +1564,56 @@ private:
         deleteNode *delNode = new deleteNode(stdId, courseId, table);
         delQueue.enqueue(delNode);
     }
+    void UniversalDeletions()
+    {
+        cout << "Welcome to Student Management System Deletion ";
+        int deleteChoice = 0;
+        while (deleteChoice != 9)
+        {
+            cout << "\n=== DELETION MENU ===" << std::endl;
+            cout << "1. Delete Student" << std::endl;
+            cout << "2. Delete Course" << std::endl;
+            cout << "3. Delete Field Study" << std::endl;
+            cout << "4. Delete Attendance" << std::endl;
+            cout << "5. Delete Student Course Registration" << std::endl;
+            cout << "6. Delete Student Fee Information" << std::endl;
+            cout << "7. Delete Result Information" << std::endl;
+            cout << "8. Delete Admin Information" << std::endl;
+            cout << "9. Back to Main Menu" << std::endl;
+            deleteChoice = getChoice(1, 9);
+            switch (deleteChoice)
+            {
+            case 1:
+                deleteStudent();
+                break;
+            case 2:
+                deleteCourse();
+                break;
+            case 3:
+                deleteField();
+                break;
+            case 4:
+                deleteAttendance();
+                break;
+            case 5:
+                deleteCourseStdReg();
+                break;
+            case 6:
+                deleteStdFee();
+                break;
+            case 7:
+                deleteResult();
+                break;
+            case 8:
+                deleteAdmin();
+                break;
+            default:
+                break;
+            }
+        }
+    }
+
+    // ================= Database Deletion Methods =================
     void deleteStudentFromDB(int stdId)
     {
         if (!db.connect())
@@ -1831,55 +1883,6 @@ private:
         else
         {
             cout << "Admin deleted successfully." << endl;
-        }
-    }
-
-    void UniversalDeletions()
-    {
-        cout << "Welcome to Student Management System Deletion ";
-        int deleteChoice = 0;
-        while (deleteChoice != 9)
-        {
-            cout << "\n=== DELETION MENU ===" << std::endl;
-            cout << "1. Delete Student" << std::endl;
-            cout << "2. Delete Course" << std::endl;
-            cout << "3. Delete Field Study" << std::endl;
-            cout << "4. Delete Attendance" << std::endl;
-            cout << "5. Delete Student Course Registration" << std::endl;
-            cout << "6. Delete Student Fee Information" << std::endl;
-            cout << "7. Delete Result Information" << std::endl;
-            cout << "8. Delete Admin Information" << std::endl;
-            cout << "9. Back to Main Menu" << std::endl;
-            deleteChoice = getChoice(1, 9);
-            switch (deleteChoice)
-            {
-            case 1:
-                deleteStudent();
-                break;
-            case 2:
-                deleteCourse();
-                break;
-            case 3:
-                deleteField();
-                break;
-            case 4:
-                deleteAttendance();
-                break;
-            case 5:
-                deleteCourseStdReg();
-                break;
-            case 6:
-                deleteStdFee();
-                break;
-            case 7:
-                deleteResult();
-                break;
-            case 8:
-                deleteAdmin();
-                break;
-            default:
-                break;
-            }
         }
     }
     void restartSystemToDeleteData()
@@ -2569,7 +2572,7 @@ public:
                     case 3: // Delete Student Course Record
                         clearScreen();
                         cout << "=== DELETE STUDENT COURSE ENROLLMENT ===" << std::endl;
-                        deleteStudentCourse();
+                        // deleteStudentCourse();
                         cout << "\nDo you want to restart the system? (y/n): ";
                         cin >> restartChoice;
                         if (restartChoice == 'y' || restartChoice == 'Y')
@@ -2812,47 +2815,47 @@ public:
                             Attendance att = node->getData();
                             att.print();
                         }
-                        else if (newInsetIonChoich == 6)
+                    }
+                    else if (newInsetIonChoich == 6)
+                    {
+                        std::cout << "\n=== Search New Inserted Student Courses ===" << std::endl;
+                        int stdId;
+                        cout << "Enter New Registrion Student Id \n";
+                        cin >> stdId;
+                        cin.ignore();
+                        StdNode<StdCourse> *node = stdCourseBST.search(stdId);
+                        if (node)
                         {
-                            std::cout << "\n=== Search New Inserted Student Courses ===" << std::endl;
-                            int stdId;
-                            cout << "Enter New Registrion Student Id \n";
-                            cin >> stdId;
-                            cin.ignore();
-                            StdNode<StdCourse> *node = stdCourseBST.search(stdId);
-                            if (node)
-                            {
-                                StdCourse course = node->getData();
-                                course.print();
-                            }
+                            StdCourse course = node->getData();
+                            course.print();
                         }
-                        else if (newInsetIonChoich == 7)
+                    }
+                    else if (newInsetIonChoich == 7)
+                    {
+                        std::cout << "\n=== Search New Inserted Results ===" << std::endl;
+                        int stdId;
+                        cout << "Enter New Registrion Student Id \n";
+                        cin >> stdId;
+                        cin.ignore();
+                        StdNode<Result> *node = stdResultBST.search(stdId);
+                        if (node)
                         {
-                            std::cout << "\n=== Search New Inserted Results ===" << std::endl;
-                            int stdId;
-                            cout << "Enter New Registrion Student Id \n";
-                            cin >> stdId;
-                            cin.ignore();
-                            StdNode<Result> *node = stdResultBST.search(stdId);
-                            if (node)
-                            {
-                                Result result = node->getData();
-                                result.print();
-                            }
+                            Result result = node->getData();
+                            result.print();
                         }
-                        else if (newInsetIonChoich == 8)
+                    }
+                    else if (newInsetIonChoich == 8)
+                    {
+                        std::cout << "\n=== Search New Inserted Admin ===" << std::endl;
+                        int stdId;
+                        cout << "Enter New Registrion Admin Id \n";
+                        cin >> stdId;
+                        cin.ignore();
+                        StdNode<Admin> *node = adminBST.search(stdId);
+                        if (node)
                         {
-                            std::cout << "\n=== Search New Inserted Admin ===" << std::endl;
-                            int stdId;
-                            cout << "Enter New Registrion Admin Id \n";
-                            cin >> stdId;
-                            cin.ignore();
-                            StdNode<Admin> *node = adminBST.search(stdId);
-                            if (node)
-                            {
-                                Admin admin = node->getData();
-                                admin.print();
-                            }
+                            Admin admin = node->getData();
+                            admin.print();
                         }
                     }
                 }
