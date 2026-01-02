@@ -18,7 +18,10 @@
 #include "stdBst.h"
 #include "opQueue.h"
 #include "updationQueue.h"
+#include "delNod.h"
 #include "deleteQueues.h"
+
+// #include "delNod.h"
 // #include "opNode.h"
 // #include "InsertionQueue.h"
 // ================= Domain Models =================
@@ -1463,49 +1466,321 @@ private:
             }
         }
     }
-    //db detion methods 
-    //studnet deltion 
-    void deleteStudentFromDB()
+    // db detion methods
+    // studnet deltion
+    void deleteStudentFromDB(int stdId)
     {
-
+        if (!db.connect())
+        {
+            cout << "Database connection failed." << endl;
+            return;
+        }
+        SQLHSTMT hStmt = nullptr;
+        SQLRETURN ret = SQLAllocHandle(SQL_HANDLE_STMT, db.returnDb(), &hStmt);
+        if (ret != SQL_SUCCESS && ret != SQL_SUCCESS_WITH_INFO)
+        {
+            cout << "Failed to prepare statement." << endl;
+            return;
+        }
+        string quer = "DELETE FROM student WHERE stdId = ?";
+        if (SQLPrepare(hStmt, (SQLCHAR *)quer.c_str(), SQL_NTS) != SQL_SUCCESS)
+        {
+            cout << "Failed to prepare statement." << endl;
+            SQLFreeHandle(SQL_HANDLE_STMT, hStmt);
+            return;
+        }
+        SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, 10, 0, &stdId, 0, NULL);
+        ret = SQLExecute(hStmt);
+        if (ret != SQL_SUCCESS && ret != SQL_SUCCESS_WITH_INFO)
+        {
+            cout << "Failed to execute statement." << endl;
+            return;
+        }
+        else
+        {
+            cout << "Student deleted successfully." << endl;
+        }
     }
-    void   deleteCourseFromDB()
+    void deleteCourseFromDB(int courseId)
     {
-
+        if (!db.connect())
+        {
+            cout << "Database connection failed." << endl;
+            return;
+        }
+        SQLHSTMT hStmt = nullptr;
+        SQLRETURN ret = SQLAllocHandle(SQL_HANDLE_STMT, db.returnDb(), &hStmt);
+        if (ret != SQL_SUCCESS && ret != SQL_SUCCESS_WITH_INFO)
+        {
+            cout << "Failed to prepare statement." << endl;
+            return;
+        }
+        string quer = "DELETE FROM course WHERE courseId = ?";
+        if (SQLPrepare(hStmt, (SQLCHAR *)quer.c_str(), SQL_NTS) != SQL_SUCCESS)
+        {
+            cout << "Failed to prepare statement." << endl;
+            SQLFreeHandle(SQL_HANDLE_STMT, hStmt);
+            return;
+        }
+        cin.ignore();
+        SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, 10, 0, &courseId, 0, NULL);
+        ret = SQLExecute(hStmt);
+        if (ret != SQL_SUCCESS && ret != SQL_SUCCESS_WITH_INFO)
+        {
+            cout << "Failed to execute statement." << endl;
+            return;
+        }
+        else
+        {
+            cout << "Course deleted successfully." << endl;
+        }
     }
-    void deleteFieldFromDB()
+    void deleteFieldFromDB(int fieldId)
     {
-
+        if (!db.connect())
+        {
+            cout << "Database connection failed." << endl;
+            return;
+        }
+        SQLHSTMT hStmt = nullptr;
+        SQLRETURN ret = SQLAllocHandle(SQL_HANDLE_STMT, db.returnDb(), &hStmt);
+        if (ret != SQL_SUCCESS && ret != SQL_SUCCESS_WITH_INFO)
+        {
+            cout << "Failed to prepare statement." << endl;
+            return;
+        }
+        string quer = "DELETE FROM fieldStudy WHERE fieldId = ?";
+        if (SQLPrepare(hStmt, (SQLCHAR *)quer.c_str(), SQL_NTS) != SQL_SUCCESS)
+        {
+            cout << "Failed to prepare statement." << endl;
+            SQLFreeHandle(SQL_HANDLE_STMT, hStmt);
+            return;
+        }
+     
+        SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, 10, 0, &fieldId, 0, NULL);
+        ret = SQLExecute(hStmt);
+        if (ret != SQL_SUCCESS && ret != SQL_SUCCESS_WITH_INFO)
+        {
+            cout << "Failed to execute statement." << endl;
+            return;
+        }
+        else
+        {
+            cout << "Field Study deleted successfully." << endl;
+        }
     }
-    void deleteAttendanceFromDB()
+    void deleteAttendanceFromDB(int stdId,int courseId)
     {
-
-    } 
-    void deleteStdFeeFromDB()
-    {
-
+        if (!db.connect())
+        {
+            cout << "Database connection failed." << endl;
+            return;
+        }
+        SQLHSTMT hStmt = nullptr;
+        SQLRETURN ret = SQLAllocHandle(SQL_HANDLE_STMT, db.returnDb(), &hStmt);
+        if (ret != SQL_SUCCESS && ret != SQL_SUCCESS_WITH_INFO)
+        {
+            cout << "Failed to prepare statement." << endl;
+            return;
+        }
+        string quer = "DELETE FROM Attendance WHERE stdId = ? AND courseId = ?";
+        if (SQLPrepare(hStmt, (SQLCHAR *)quer.c_str(), SQL_NTS) != SQL_SUCCESS)
+        {
+            cout << "Failed to prepare statement." << endl;
+            SQLFreeHandle(SQL_HANDLE_STMT, hStmt);
+            return;
+        }
+        SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, 10, 0, &stdId, 0, NULL);
+        SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, 10, 0, &courseId, 0, NULL);
+        ret = SQLExecute(hStmt);
+        if (ret != SQL_SUCCESS && ret != SQL_SUCCESS_WITH_INFO)
+        {
+            cout << "Failed to execute statement." << endl;
+            return;
+        }
+        else
+        {
+            cout << "Attendance deleted successfully." << endl;
+        }
     }
-    void deleteResultFromDB()
+    void deleteStdFeeFromDB(int stdId)
     {
-
+        if (!db.connect())
+        {
+            cout << "Database connection failed." << endl;
+            return;
+        }
+        SQLHSTMT hStmt = nullptr;
+        SQLRETURN ret = SQLAllocHandle(SQL_HANDLE_STMT, db.returnDb(), &hStmt);
+        if (ret != SQL_SUCCESS && ret != SQL_SUCCESS_WITH_INFO)
+        {
+            cout << "Failed to prepare statement." << endl;
+            return;
+        }
+        string quer = "DELETE FROM StudentFees WHERE stdId = ?";
+        if (SQLPrepare(hStmt, (SQLCHAR *)quer.c_str(), SQL_NTS) != SQL_SUCCESS)
+        {
+            cout << "Failed to prepare statement." << endl;
+            SQLFreeHandle(SQL_HANDLE_STMT, hStmt);
+            return;
+        }
+        SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, 10, 0, &stdId, 0, NULL);
+        ret = SQLExecute(hStmt);
+        if (ret != SQL_SUCCESS && ret != SQL_SUCCESS_WITH_INFO)
+        {
+            cout << "Failed to execute statement." << endl;
+            return;
+        }
+        else
+        {
+            cout << "Student Fee deleted successfully." << endl;
+        }
     }
-    void deleteAdminFromDB()
+    void deleteResultFromDB(int stdId,int courseId)
     {
-
+        if (!db.connect())
+        {
+            cout << "Database connection failed." << endl;
+            return;
+        }
+        SQLHSTMT hStmt = nullptr;
+        SQLRETURN ret = SQLAllocHandle(SQL_HANDLE_STMT, db.returnDb(), &hStmt);
+        if (ret != SQL_SUCCESS && ret != SQL_SUCCESS_WITH_INFO)
+        {
+            cout << "Failed to prepare statement." << endl;
+            return;
+        }
+        string quer = "DELETE FROM Result WHERE stdId = ? AND courseId = ?";
+        if (SQLPrepare(hStmt, (SQLCHAR *)quer.c_str(), SQL_NTS) != SQL_SUCCESS)
+        {
+            cout << "Failed to prepare statement." << endl;
+            SQLFreeHandle(SQL_HANDLE_STMT, hStmt);
+            return;
+        }
+        SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, 10, 0, &stdId, 0, NULL);
+        SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, 10, 0, &courseId, 0, NULL);
+        ret = SQLExecute(hStmt);
+        if (ret != SQL_SUCCESS && ret != SQL_SUCCESS_WITH_INFO)
+        {
+            cout << "Failed to execute statement." << endl;
+            return;
+        }
+        else
+        {
+            cout << "Result deleted successfully." << endl;
+        }
     }
-    
-    void deleteAdminFromDB()
+    void deleteAdminFromDB(int adminId)
     {
-
+        if(!db.connect())
+        {
+            cout<<"Database connection failed."<<endl;
+            return;
+        }
+        SQLHSTMT hStmt = nullptr;
+        SQLRETURN  ret=SQLAllocHandle(SQL_HANDLE_STMT,db.returnDb(),&hStmt);
+        if(ret!=SQL_SUCCESS&&ret!=SQL_SUCCESS_WITH_INFO)
+        {
+            cout << "Failed to prepare statement." << endl;
+            SQLFreeHandle(SQL_HANDLE_STMT, hStmt);
+            return;
+        }
+        string quer = "DELETE FROM adminTab WHERE adminId = ?";
+        if(SQLPrepare(hStmt,(SQLCHAR *)quer.c_str(),SQL_NTS)!=SQL_SUCCESS){
+            cout<<"Failed to prepare statement."<<endl;SQLFREEHANDLE(SQL_HANDLE_STMT, hStmt);
+            return;
+        }
+        SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, 10, 0, &adminId, 0, NULL);
+        ret = SQLExecute(hStmt);
+        if (ret != SQL_SUCCESS && ret != SQL_SUCCESS_WITH_INFO)
+        {
+            cout << "Failed to execute statement." << endl;
+            return;
+        }
+        else
+        {
+            cout << "Admin deleted successfully." << endl;
+        }
     }
     void deleteStudent()
     {
         int stdId;
-        string table = "Student";
+        string table = "student"; // corrected
         cout << "Enter Student ID to delete: ";
         cin >> stdId;
         cin.ignore();
-        // deleteStudentFromDB(stdId, table);
+        deleteNode *delNode = new deleteNode(stdId, table);
+        delQueue.enqueue(delNode);
+    }
+    void deleteCourse()
+    {
+        int courseId;
+        string table = "course"; // corrected
+        cout << "Enter Course ID to delete: ";
+        cin >> courseId;
+        cin.ignore();
+        deleteNode *delNode = new deleteNode(courseId, table);
+        delQueue.enqueue(delNode);
+    }
+    void deleteField()
+    {
+        int fieldId;
+        string table = "fieldStudy"; // corrected
+        cout << "Enter Field Study ID to delete: ";
+        cin >> fieldId;
+        cin.ignore();
+        deleteNode *delNode = new deleteNode(fieldId, table);
+        delQueue.enqueue(delNode);
+    }
+    void deleteResult()
+    {
+        int stdId;
+        string table = "result"; // already correct
+        cout << "Enter Student ID to delete result information: ";
+        cin >> stdId;
+        cin.ignore();
+        deleteNode *delNode = new deleteNode(stdId, table);
+        delQueue.enqueue(delNode);
+    }
+    void deleteStdFee()
+    {
+        int stdId;
+        string table = "StudentFees"; // already correct
+        cout << "Enter Student ID to delete fee information: ";
+        cin >> stdId;
+        cin.ignore();
+        deleteNode *delNode = new deleteNode(stdId, table);
+        delQueue.enqueue(delNode);
+    }
+    void deleteAdmin()
+    {
+        int adminId;
+        string table = "adminTab"; // corrected
+        cout << "Enter Admin ID to delete: ";
+        cin >> adminId;
+        cin.ignore();
+        deleteNode *delNode = new deleteNode(adminId, table);
+        delQueue.enqueue(delNode);
+    }
+    void deleteCourseStdReg()
+    {
+        int stdId;
+        string table = "courseRegStd"; // already correct
+        cout << "Enter Student ID to delete course registration: ";
+        cin >> stdId;
+        cin.ignore();
+        deleteNode *delNode = new deleteNode(stdId, table);
+        delQueue.enqueue(delNode);
+    }
+    void deleteAttendance()
+    {
+        int attId;
+        string table = "Attendance"; // already correct
+        cout << "Enter Attendance ID to delete: ";
+        cin >> attId;
+        cin.ignore();
+        deleteNode *delNode = new deleteNode(attId, table);
+        delQueue.enqueue(delNode);
     }
     void UniversalDeletions()
     {
@@ -1523,9 +1798,7 @@ private:
             cout << "7. Delete Result Information" << std::endl;
             cout << "8. Delete Admin Information" << std::endl;
             cout << "9. Back to Main Menu" << std::endl;
-
             deleteChoice = getChoice(1, 9);
-
             switch (deleteChoice)
             {
             case 1:
