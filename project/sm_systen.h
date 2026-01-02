@@ -1463,9 +1463,49 @@ private:
             }
         }
     }
+    //db detion methods 
+    //studnet deltion 
+    void deleteStudentFromDB()
+    {
+
+    }
+    void   deleteCourseFromDB()
+    {
+
+    }
+    void deleteFieldFromDB()
+    {
+
+    }
+    void deleteAttendanceFromDB()
+    {
+
+    } 
+    void deleteStdFeeFromDB()
+    {
+
+    }
+    void deleteResultFromDB()
+    {
+
+    }
+    void deleteAdminFromDB()
+    {
+
+    }
+    
+    void deleteAdminFromDB()
+    {
+
+    }
     void deleteStudent()
     {
-        
+        int stdId;
+        string table = "Student";
+        cout << "Enter Student ID to delete: ";
+        cin >> stdId;
+        cin.ignore();
+        // deleteStudentFromDB(stdId, table);
     }
     void UniversalDeletions()
     {
