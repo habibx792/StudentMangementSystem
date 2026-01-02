@@ -1463,6 +1463,60 @@ private:
             }
         }
     }
+    void deleteStudent()
+    {
+        
+    }
+    void UniversalDeletions()
+    {
+        cout << "Welcome to Student Management System Deletion ";
+        int deleteChoice = 0;
+        while (deleteChoice != 9)
+        {
+            cout << "\n=== DELETION MENU ===" << std::endl;
+            cout << "1. Delete Student" << std::endl;
+            cout << "2. Delete Course" << std::endl;
+            cout << "3. Delete Field Study" << std::endl;
+            cout << "4. Delete Attendance" << std::endl;
+            cout << "5. Delete Student Course Registration" << std::endl;
+            cout << "6. Delete Student Fee Information" << std::endl;
+            cout << "7. Delete Result Information" << std::endl;
+            cout << "8. Delete Admin Information" << std::endl;
+            cout << "9. Back to Main Menu" << std::endl;
+
+            deleteChoice = getChoice(1, 9);
+
+            switch (deleteChoice)
+            {
+            case 1:
+                // deleteStudent();
+                break;
+            case 2:
+                // deleteCourse();
+                break;
+            case 3:
+                // deleteField();
+                break;
+            case 4:
+                // deleteAttendance();
+                break;
+            case 5:
+                // deleteStdCourse();
+                break;
+            case 6:
+                // deleteStudentFees();
+                break;
+            case 7:
+                // deleteResult();
+                break;
+            case 8:
+                // deleteAdmin();
+                break;
+            default:
+                break; // No action needed for default
+            }
+        }
+    }
 
 public:
     // Static method to get the single instance
@@ -2221,7 +2275,7 @@ public:
                         cout << "Enter New Registrion Course Id \n";
                         cin >> courseId;
                         cin.ignore();
-                        StdNode<Course>*node = courseBST.search(courseId);
+                        StdNode<Course> *node = courseBST.search(courseId);
                         if (node)
                         {
                             Course course = node->getData();
@@ -2235,7 +2289,7 @@ public:
                         cout << "Enter New Registrion Field Id \n";
                         cin >> fieldId;
                         cin.ignore();
-                        StdNode<FieldStudy>*node = fieldBST.search(fieldId);
+                        StdNode<FieldStudy> *node = fieldBST.search(fieldId);
                         if (node)
                         {
                             FieldStudy field = node->getData();
@@ -2249,7 +2303,7 @@ public:
                         cout << "Enter New Registrion Student Id \n";
                         cin >> stdId;
                         cin.ignore();
-                        StdNode<StudentFees>*node = stdFeeBST.search(stdId);
+                        StdNode<StudentFees> *node = stdFeeBST.search(stdId);
                         if (node)
                         {
                             StudentFees fees = node->getData();
@@ -2263,66 +2317,67 @@ public:
                         cout << "Enter New Registrion Student Id \n";
                         cin >> stdId;
                         cin.ignore();
-                        StdNode<Attendance>*node = attendanceBST.search(stdId);
+                        StdNode<Attendance> *node = attendanceBST.search(stdId);
                         if (node)
                         {
                             Attendance att = node->getData();
                             att.print();
                         }
-                    else if (newInsetIonChoich == 6)
-                    {
-                        std::cout << "\n=== Search New Inserted Student Courses ===" << std::endl;
-                        int stdId;
-                        cout << "Enter New Registrion Student Id \n";
-                        cin >> stdId;
-                        cin.ignore();
-                        StdNode<StdCourse>*node = stdCourseBST.search(stdId);
-                        if (node)
+                        else if (newInsetIonChoich == 6)
                         {
-                            StdCourse course = node->getData();
-                            course.print();
+                            std::cout << "\n=== Search New Inserted Student Courses ===" << std::endl;
+                            int stdId;
+                            cout << "Enter New Registrion Student Id \n";
+                            cin >> stdId;
+                            cin.ignore();
+                            StdNode<StdCourse> *node = stdCourseBST.search(stdId);
+                            if (node)
+                            {
+                                StdCourse course = node->getData();
+                                course.print();
+                            }
                         }
-                    }
-                    else if (newInsetIonChoich == 7)
-                    {
-                        std::cout << "\n=== Search New Inserted Results ===" << std::endl;
-                        int stdId;
-                        cout << "Enter New Registrion Student Id \n";
-                        cin >> stdId;
-                        cin.ignore();
-                        StdNode<Result>*node = stdResultBST.search(stdId);
-                        if (node)
+                        else if (newInsetIonChoich == 7)
                         {
-                            Result result = node->getData();
-                            result.print();
+                            std::cout << "\n=== Search New Inserted Results ===" << std::endl;
+                            int stdId;
+                            cout << "Enter New Registrion Student Id \n";
+                            cin >> stdId;
+                            cin.ignore();
+                            StdNode<Result> *node = stdResultBST.search(stdId);
+                            if (node)
+                            {
+                                Result result = node->getData();
+                                result.print();
+                            }
                         }
-                    }
-                    else if (newInsetIonChoich == 8)
-                    {
-                        std::cout << "\n=== Search New Inserted Admin ===" << std::endl;
-                        int stdId;
-                        cout << "Enter New Registrion Admin Id \n";
-                        cin >> stdId;
-                        cin.ignore();
-                        StdNode<Admin>*node = adminBST.search(stdId);
-                        if (node)
+                        else if (newInsetIonChoich == 8)
                         {
-                            Admin admin = node->getData();
-                            admin.print();
+                            std::cout << "\n=== Search New Inserted Admin ===" << std::endl;
+                            int stdId;
+                            cout << "Enter New Registrion Admin Id \n";
+                            cin >> stdId;
+                            cin.ignore();
+                            StdNode<Admin> *node = adminBST.search(stdId);
+                            if (node)
+                            {
+                                Admin admin = node->getData();
+                                admin.print();
+                            }
                         }
                     }
                 }
             }
+
+            // Process any pending updates before exiting
+            universalUPdation(updateQueue);
+            loadAllDataFromDB();
+
+            db.disconnect();
+
+            cout << "\nThank you for using Student Management System!" << endl;
+            pause();
         }
-
-        // Process any pending updates before exiting
-        universalUPdation(updateQueue);
-        loadAllDataFromDB();
-
-        db.disconnect();
-
-        cout << "\nThank you for using Student Management System!" << endl;
-        pause();
     }
 
     // Public getter methods

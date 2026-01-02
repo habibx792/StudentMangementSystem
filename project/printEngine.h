@@ -320,7 +320,6 @@ public:
     // =========================
     // Utility Printers
     // =========================
-
     void printSeparator(const string &title = "")
     {
         cout << "\n========================================" << endl;
