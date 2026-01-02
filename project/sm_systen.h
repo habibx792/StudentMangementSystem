@@ -1520,7 +1520,7 @@ private:
         cin >> stdId;
         cin.ignore();
         cout << "Enter Fee ID to delete fee information: ";
-   
+
         cin >> feeId;
         deleteNode *delNode = new deleteNode(stdId, feeId, table);
         delQueue.enqueue(delNode);
@@ -1548,7 +1548,7 @@ private:
         deleteNode *delNode = new deleteNode(stdId, courseId, table);
         delQueue.enqueue(delNode);
     }
-       void deleteAttendance()
+    void deleteAttendance()
     {
         int stdId;
         int courseId;
@@ -1833,8 +1833,7 @@ private:
             cout << "Admin deleted successfully." << endl;
         }
     }
-  
- 
+
     void UniversalDeletions()
     {
         cout << "Welcome to Student Management System Deletion ";
@@ -1995,12 +1994,8 @@ public:
             pause();
             return;
         }
-
         db.printStatus();
         loadAllDataFromDB();
-
-        // Test print engine
-
         pause();
 
         int choice = 0;
@@ -2787,16 +2782,24 @@ public:
             }
 
             // Process any pending updates before exiting
-            universalUPdation(updateQueue);
-            loadAllDataFromDB();
-
-            db.disconnect();
 
             cout << "\nThank you for using Student Management System!" << endl;
             pause();
         }
-    }
+        char choiceRestart;
+        cout << "Do you want to restart the system? (y/n): ";
+        cin >> choiceRestart;
+        if (choiceRestart == 'y' || choiceRestart == 'Y')
+        {
+            db.printStatus();
+            loadAllDataFromDB();
+            restartSystemToDeleteData();
+            universalUPdation(updateQueue);
+            loadAllDataFromDB();
+        }
 
+        
+    }
     // Public getter methods
     BST<Student> &getStudentBST()
     {
