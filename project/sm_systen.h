@@ -1468,6 +1468,100 @@ private:
     }
     // db detion methods
     // studnet deltion
+    void deleteStudent()
+    {
+        int stdId;
+        string table = "student"; // corrected
+        cout << "Enter Student ID to delete: ";
+        cin >> stdId;
+        cin.ignore();
+        deleteNode *delNode = new deleteNode(stdId, table);
+        delQueue.enqueue(delNode);
+    }
+    void deleteCourse()
+    {
+        int courseId;
+        string table = "course"; // corrected
+        cout << "Enter Course ID to delete: ";
+        cin >> courseId;
+        cin.ignore();
+        deleteNode *delNode = new deleteNode(courseId, table);
+        delQueue.enqueue(delNode);
+    }
+    void deleteField()
+    {
+        int fieldId;
+        string table = "fieldStudy"; // corrected
+        cout << "Enter Field Study ID to delete: ";
+        cin >> fieldId;
+        cin.ignore();
+        deleteNode *delNode = new deleteNode(fieldId, table);
+        delQueue.enqueue(delNode);
+    }
+    void deleteResult()
+    {
+        int stdId;
+        int courseId;
+        string table = "result"; // already correct
+        cout << "Enter Student ID to delete result information: ";
+        cin >> stdId;
+        cin.ignore();
+        cout << "Enter Course ID to delete result information: ";
+        cin >> courseId;
+        deleteNode *delNode = new deleteNode(stdId, courseId, table);
+        delQueue.enqueue(delNode);
+    }
+    void deleteStdFee()
+    {
+        int stdId;
+        int feeId;
+        string table = "StudentFees"; // already correct
+        cout << "Enter Student ID to delete fee information: ";
+        cin >> stdId;
+        cin.ignore();
+        cout << "Enter Fee ID to delete fee information: ";
+   
+        cin >> feeId;
+        deleteNode *delNode = new deleteNode(stdId, feeId, table);
+        delQueue.enqueue(delNode);
+    }
+    void deleteAdmin()
+    {
+        int adminId;
+        string table = "adminTab"; // corrected
+        cout << "Enter Admin ID to delete: ";
+        cin >> adminId;
+        cin.ignore();
+        deleteNode *delNode = new deleteNode(adminId, table);
+        delQueue.enqueue(delNode);
+    }
+    void deleteCourseStdReg()
+    {
+        int stdId;
+        int courseId;
+        string table = "courseRegStd"; // already correct
+        cout << "Enter Student ID to delete course registration: ";
+        cin >> stdId;
+        cin.ignore();
+        cout << "Enter Course ID to delete course registration: ";
+        cin >> courseId;
+        deleteNode *delNode = new deleteNode(stdId, courseId, table);
+        delQueue.enqueue(delNode);
+    }
+       void deleteAttendance()
+    {
+        int stdId;
+        int courseId;
+        string table = "Attendance"; // already correct
+        cout << "Enter Student ID to delete attendance: ";
+        cin >> stdId;
+        cin.ignore();
+        cout << "Enter Course ID to delete attendance: ";
+
+        cin >> courseId;
+        deleteNode *delNode = new deleteNode(stdId, courseId, table);
+        delQueue.enqueue(delNode);
+    }
     void deleteStudentFromDB(int stdId)
     {
         if (!db.connect())
@@ -1535,6 +1629,40 @@ private:
             cout << "Course deleted successfully." << endl;
         }
     }
+    void deleteCourseRegFromDB(int std, int courseId)
+    {
+        if (!db.connect())
+        {
+            cout << "Database connection failed." << endl;
+            return;
+        }
+        SQLHSTMT hStmt = nullptr;
+        SQLRETURN ret = SQLAllocHandle(SQL_HANDLE_STMT, db.returnDb(), &hStmt);
+        if (ret != SQL_SUCCESS && ret != SQL_SUCCESS_WITH_INFO)
+        {
+            cout << "Failed to prepare statement." << endl;
+            return;
+        }
+        string quer = "DELETE FROM StudentCourse WHERE stdId = ? AND courseId = ?";
+        if (SQLPrepare(hStmt, (SQLCHAR *)quer.c_str(), SQL_NTS) != SQL_SUCCESS)
+        {
+            cout << "Failed to prepare statement." << endl;
+            SQLFreeHandle(SQL_HANDLE_STMT, hStmt);
+            return;
+        }
+        SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, 10, 0, &std, 0, NULL);
+        SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, 10, 0, &courseId, 0, NULL);
+        ret = SQLExecute(hStmt);
+        if (ret != SQL_SUCCESS && ret != SQL_SUCCESS_WITH_INFO)
+        {
+            cout << "Failed to execute statement." << endl;
+            return;
+        }
+        else
+        {
+            cout << "Course registration deleted successfully." << endl;
+        }
+    }
     void deleteFieldFromDB(int fieldId)
     {
         if (!db.connect())
@@ -1556,7 +1684,7 @@ private:
             SQLFreeHandle(SQL_HANDLE_STMT, hStmt);
             return;
         }
-     
+
         SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, 10, 0, &fieldId, 0, NULL);
         ret = SQLExecute(hStmt);
         if (ret != SQL_SUCCESS && ret != SQL_SUCCESS_WITH_INFO)
@@ -1569,7 +1697,7 @@ private:
             cout << "Field Study deleted successfully." << endl;
         }
     }
-    void deleteAttendanceFromDB(int stdId,int courseId)
+    void deleteAttendanceFromDB(int stdId, int courseId)
     {
         if (!db.connect())
         {
@@ -1603,7 +1731,7 @@ private:
             cout << "Attendance deleted successfully." << endl;
         }
     }
-    void deleteStdFeeFromDB(int stdId)
+    void deleteStdFeeFromDB(int stdId, int feeId)
     {
         if (!db.connect())
         {
@@ -1617,7 +1745,7 @@ private:
             cout << "Failed to prepare statement." << endl;
             return;
         }
-        string quer = "DELETE FROM StudentFees WHERE stdId = ?";
+        string quer = "DELETE FROM StudentFees WHERE stdId = ? AND feeId = ?";
         if (SQLPrepare(hStmt, (SQLCHAR *)quer.c_str(), SQL_NTS) != SQL_SUCCESS)
         {
             cout << "Failed to prepare statement." << endl;
@@ -1625,6 +1753,7 @@ private:
             return;
         }
         SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, 10, 0, &stdId, 0, NULL);
+        SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, 10, 0, &feeId, 0, NULL);
         ret = SQLExecute(hStmt);
         if (ret != SQL_SUCCESS && ret != SQL_SUCCESS_WITH_INFO)
         {
@@ -1636,7 +1765,7 @@ private:
             cout << "Student Fee deleted successfully." << endl;
         }
     }
-    void deleteResultFromDB(int stdId,int courseId)
+    void deleteResultFromDB(int stdId, int courseId)
     {
         if (!db.connect())
         {
@@ -1672,22 +1801,24 @@ private:
     }
     void deleteAdminFromDB(int adminId)
     {
-        if(!db.connect())
+        if (!db.connect())
         {
-            cout<<"Database connection failed."<<endl;
+            cout << "Database connection failed." << endl;
             return;
         }
         SQLHSTMT hStmt = nullptr;
-        SQLRETURN  ret=SQLAllocHandle(SQL_HANDLE_STMT,db.returnDb(),&hStmt);
-        if(ret!=SQL_SUCCESS&&ret!=SQL_SUCCESS_WITH_INFO)
+        SQLRETURN ret = SQLAllocHandle(SQL_HANDLE_STMT, db.returnDb(), &hStmt);
+        if (ret != SQL_SUCCESS && ret != SQL_SUCCESS_WITH_INFO)
         {
             cout << "Failed to prepare statement." << endl;
             SQLFreeHandle(SQL_HANDLE_STMT, hStmt);
             return;
         }
         string quer = "DELETE FROM adminTab WHERE adminId = ?";
-        if(SQLPrepare(hStmt,(SQLCHAR *)quer.c_str(),SQL_NTS)!=SQL_SUCCESS){
-            cout<<"Failed to prepare statement."<<endl;SQLFREEHANDLE(SQL_HANDLE_STMT, hStmt);
+        if (SQLPrepare(hStmt, (SQLCHAR *)quer.c_str(), SQL_NTS) != SQL_SUCCESS)
+        {
+            cout << "Failed to prepare statement." << endl;
+            SQLFreeHandle(SQL_HANDLE_STMT, hStmt);
             return;
         }
         SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, 10, 0, &adminId, 0, NULL);
@@ -1702,86 +1833,8 @@ private:
             cout << "Admin deleted successfully." << endl;
         }
     }
-    void deleteStudent()
-    {
-        int stdId;
-        string table = "student"; // corrected
-        cout << "Enter Student ID to delete: ";
-        cin >> stdId;
-        cin.ignore();
-        deleteNode *delNode = new deleteNode(stdId, table);
-        delQueue.enqueue(delNode);
-    }
-    void deleteCourse()
-    {
-        int courseId;
-        string table = "course"; // corrected
-        cout << "Enter Course ID to delete: ";
-        cin >> courseId;
-        cin.ignore();
-        deleteNode *delNode = new deleteNode(courseId, table);
-        delQueue.enqueue(delNode);
-    }
-    void deleteField()
-    {
-        int fieldId;
-        string table = "fieldStudy"; // corrected
-        cout << "Enter Field Study ID to delete: ";
-        cin >> fieldId;
-        cin.ignore();
-        deleteNode *delNode = new deleteNode(fieldId, table);
-        delQueue.enqueue(delNode);
-    }
-    void deleteResult()
-    {
-        int stdId;
-        string table = "result"; // already correct
-        cout << "Enter Student ID to delete result information: ";
-        cin >> stdId;
-        cin.ignore();
-        deleteNode *delNode = new deleteNode(stdId, table);
-        delQueue.enqueue(delNode);
-    }
-    void deleteStdFee()
-    {
-        int stdId;
-        string table = "StudentFees"; // already correct
-        cout << "Enter Student ID to delete fee information: ";
-        cin >> stdId;
-        cin.ignore();
-        deleteNode *delNode = new deleteNode(stdId, table);
-        delQueue.enqueue(delNode);
-    }
-    void deleteAdmin()
-    {
-        int adminId;
-        string table = "adminTab"; // corrected
-        cout << "Enter Admin ID to delete: ";
-        cin >> adminId;
-        cin.ignore();
-        deleteNode *delNode = new deleteNode(adminId, table);
-        delQueue.enqueue(delNode);
-    }
-    void deleteCourseStdReg()
-    {
-        int stdId;
-        string table = "courseRegStd"; // already correct
-        cout << "Enter Student ID to delete course registration: ";
-        cin >> stdId;
-        cin.ignore();
-        deleteNode *delNode = new deleteNode(stdId, table);
-        delQueue.enqueue(delNode);
-    }
-    void deleteAttendance()
-    {
-        int attId;
-        string table = "Attendance"; // already correct
-        cout << "Enter Attendance ID to delete: ";
-        cin >> attId;
-        cin.ignore();
-        deleteNode *delNode = new deleteNode(attId, table);
-        delQueue.enqueue(delNode);
-    }
+  
+ 
     void UniversalDeletions()
     {
         cout << "Welcome to Student Management System Deletion ";
@@ -1802,31 +1855,82 @@ private:
             switch (deleteChoice)
             {
             case 1:
-                // deleteStudent();
+                deleteStudent();
                 break;
             case 2:
-                // deleteCourse();
+                deleteCourse();
                 break;
             case 3:
-                // deleteField();
+                deleteField();
                 break;
             case 4:
-                // deleteAttendance();
+                deleteAttendance();
                 break;
             case 5:
-                // deleteStdCourse();
+                deleteCourseStdReg();
                 break;
             case 6:
-                // deleteStudentFees();
+                deleteStdFee();
                 break;
             case 7:
-                // deleteResult();
+                deleteResult();
                 break;
             case 8:
-                // deleteAdmin();
+                deleteAdmin();
                 break;
             default:
-                break; // No action needed for default
+                break;
+            }
+        }
+    }
+    void restartSystemToDeleteData()
+    {
+        char choice;
+        cout << "For deletion, do you want to restart the system? (y/n): ";
+        cin >> choice;
+        if (choice == 'y' || choice == 'Y')
+        {
+            // Restart the system
+            cout << "Restarting system..." << endl;
+            while (delQueue.isEmpty())
+            {
+                deleteNode *nod = delQueue.dequeue();
+                pair<pair<int, int>, string> metaData = nod->getMetaData();
+                int delId = metaData.first.first;
+                int delIdTwo = metaData.first.second;
+                string table = metaData.second;
+                if (table == "Student")
+                {
+                    deleteStudentFromDB(delId);
+                }
+                else if (table == "Course")
+                {
+                    deleteCourseFromDB(delId);
+                }
+                else if (table == "FieldStudy")
+                {
+                    deleteFieldFromDB(delId);
+                }
+                else if (table == "Attendance")
+                {
+                    deleteAttendanceFromDB(delId, delIdTwo);
+                }
+                else if (table == "courseRegStd")
+                {
+                    deleteCourseRegFromDB(delId, delIdTwo);
+                }
+                else if (table == "StudentFees")
+                {
+                    deleteStdFeeFromDB(delId, delIdTwo);
+                }
+                else if (table == "Result")
+                {
+                    deleteResultFromDB(delId, delIdTwo);
+                }
+                else if (table == "Admin")
+                {
+                    deleteAdminFromDB(delId);
+                }
             }
         }
     }

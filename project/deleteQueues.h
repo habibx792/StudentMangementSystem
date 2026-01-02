@@ -89,14 +89,29 @@ public:
     {
         return rear;
     }
-    deleteNode * searchQueue(int id)
+    deleteNode * searchQueue(int id,int secondId)
     {
         deleteNode* curr = fr;
         while (curr != NULL)
         {
-            auto [searchId, table] = curr->getMetaData();
-            if (searchId == id)
-                return curr;
+            if(curr->hasSecondId()){
+                pair<pair<int,int>,string>node = curr->getMetaData();
+                if(node.first.first == id && node.first.second == secondId)
+                    return curr;
+            }
+        }
+        return NULL;
+    }
+    deleteNode* searchQueue(int id)
+    {
+        deleteNode* curr = fr;
+        while (curr != NULL)
+        {
+            if(!curr->hasSecondId()){
+                pair<pair<int,int>,string>node = curr->getMetaData();
+                if(node.first.first == id)
+                    return curr;
+            }
             curr = curr->getNext();
         }
         return NULL;
@@ -106,9 +121,14 @@ public:
         deleteNode *curr = fr;
         while (curr != NULL)
         {
-            auto [id, table] = curr->getMetaData();
-            cout << "Id: " << id << ", Table: " << table << endl;
-            curr = curr->getNext();
+          pair<pair<int,int>,string>node = curr->getMetaData();
+          bool hasSecondId = curr->hasSecondId();
+          cout << "Id: " << node.first.first << ", Table: " << node.second;
+          if(hasSecondId)
+          {
+            cout<<node.first.second;
+          }
+          cout<<endl;
         }
     }
 };
