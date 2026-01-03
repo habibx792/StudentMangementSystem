@@ -8,6 +8,7 @@
 #include "stdResult.h"
 #include "attendance.h"
 #include "stdCourse.h"
+#include "stdBst.h"
 #include "admin.h"
 #include "field.h"
 #include "stdFee.h"
@@ -229,6 +230,18 @@ inline StdNode<StudentFees> *searchStdFeeByStdId(StdNode<StudentFees> *node, int
         return left;
     return searchStdFeeByStdId(node->getRight(), stdId);
 }
-
+template<typename T>
+inline StdNode<T> *searchStdFeeByStdId(BST<T> &feeBST, int stdId)
+{
+    if (!feeBST.getRoot())
+    {
+        return NULL;
+    }
+    if (feeBST.getRoot().getData().getStdId() == stdId)
+    {
+        return feeBST.getRoot();
+    }
+    return searchStdFeeByStdId(feeBST.getRoot(), stdId);
+}
 
 #endif // SEARCHENGINE_H
