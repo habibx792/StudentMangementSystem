@@ -1,5 +1,3 @@
-
-
 # Student Management System
 
 A professional, robust, and extensible C++ console application for managing student records, courses, attendance, results, and fees. This project demonstrates advanced data structure usage and database connectivity, making it ideal for learning and practical deployment in academic environments.
@@ -111,5 +109,3 @@ Contributions are welcome! Please open issues or submit pull requests for improv
 
 ## License
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
-
