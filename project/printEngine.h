@@ -397,33 +397,6 @@ public:
                 nod2->getData().print();
         }
     }
-
-    // // =========================
-    // // Utility Printers
-    // // =========================
-    // void printSeparator(const string &title = "")
-    // {
-    //     cout << "\n========================================" << endl;
-    //     if (!title.empty())
-    //         cout << title << endl;
-    //     cout << "========================================\n"
-    //          << endl;
-    // }
-
-    // void printMessage(const string &message)
-    // {
-    //     cout << ">> " << message << endl;
-    // }
-
-    // void printError(const string &error)
-    // {
-    //     cout << "ERROR: " << error << endl;
-    // }
-
-    // void printSuccess(const string &message)
-    // {
-    //     cout << "SUCCESS: " << message << endl;
-    // }
 };
 
 #endif // PRINTENGINE_H
