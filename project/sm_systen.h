@@ -2311,7 +2311,7 @@ public:
                         // clearScreen();
                         cout << left << setw(20) << "=== UPDATE STUDENT ===" << endl;
                         // Update Student
-                        int stdId;
+                       upDateSt
                         cout << left << setw(20) << "Enter Student ID to update: ";
                         cin >> stdId;
                         // Add update logic here
