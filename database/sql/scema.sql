@@ -1,4 +1,4 @@
--- SQL Server Database Setup Script
+
 USE master;
 GO
 
@@ -12,7 +12,7 @@ GO
 USE SM_System;
 GO
 
--- Admin Table
+
 CREATE TABLE adminTab
 (
     adminId INT IDENTITY(1,1) PRIMARY KEY,
@@ -21,7 +21,6 @@ CREATE TABLE adminTab
 );
 GO
 
--- Field of Study
 CREATE TABLE fieldStudy
 (
     fieldId INT IDENTITY(1,1) PRIMARY KEY,
@@ -29,7 +28,6 @@ CREATE TABLE fieldStudy
 );
 GO
 
--- Student Table
 CREATE TABLE student
 (
     stdId INT NOT NULL PRIMARY KEY,
@@ -42,7 +40,6 @@ CREATE TABLE student
 );
 GO
 
--- Course Table
 CREATE TABLE course
 (
     courseId INT NOT NULL PRIMARY KEY,
@@ -51,7 +48,6 @@ CREATE TABLE course
 );
 GO
 
--- Student Fees
 CREATE TABLE StudentFees
 (
     feeId INT IDENTITY(1,1) PRIMARY KEY,
@@ -63,7 +59,6 @@ CREATE TABLE StudentFees
 );
 GO
 
--- Course Registration
 CREATE TABLE courseRegStd
 (
     stdId INT NOT NULL,
@@ -75,7 +70,6 @@ CREATE TABLE courseRegStd
 );
 GO
 
--- Attendance
 CREATE TABLE Attendance 
 (
     attendanceId INT IDENTITY(1,1) PRIMARY KEY,
@@ -89,7 +83,6 @@ CREATE TABLE Attendance
 );
 GO
 
--- Results
 CREATE TABLE result
 (
     stdId INT NOT NULL,
@@ -101,29 +94,4 @@ CREATE TABLE result
     FOREIGN KEY (stdId) REFERENCES student(stdId) ON DELETE CASCADE,
     FOREIGN KEY (courseId) REFERENCES course(courseId) ON DELETE CASCADE
 );
-GO
-
--- Insert Default Data
-INSERT INTO fieldStudy (fieldName) VALUES 
-('Computer Science'),
-('Electrical Engineering'),
-('Business Administration'),
-('Medicine'),
-('Law');
-GO
-
-INSERT INTO adminTab (adminName, passWord) VALUES 
-('admin', 'admin123'),
-('supervisor', 'sup123');
-GO
-
--- Create Indexes for Performance
-CREATE INDEX idx_student_field ON student(fieldId);
-CREATE INDEX idx_fees_student ON StudentFees(stdId);
-CREATE INDEX idx_attendance_student ON Attendance(stdId);
-CREATE INDEX idx_attendance_course ON Attendance(courseId);
-CREATE INDEX idx_result_student ON result(stdId);
-GO
-
-PRINT 'Database SM_System created successfully with all tables!';
 GO
