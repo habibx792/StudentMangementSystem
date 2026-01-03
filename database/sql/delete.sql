@@ -1,4 +1,4 @@
-use stdMangementDB;
+use SM_System;
 DELETE FROM result;
 DELETE FROM Attendance;
 DELETE FROM courseRegStd;

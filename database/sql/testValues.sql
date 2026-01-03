@@ -20,10 +20,7 @@ GO
 INSERT INTO adminTab
    (adminName, passWord)
 VALUES
-   ('admin1', 'password123'),
-   ('admin2', 'securepass456'),
-   ('admin3', 'admin@2024'),
-   ('superadmin', 'super@secure789');
+   ('admin1', '123');
 GO
 
 -- Insert Student data (stdId starts from 1000)
