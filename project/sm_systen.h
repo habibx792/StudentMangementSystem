@@ -1132,7 +1132,9 @@ private:
                     {
                         success = true;
                         std::cout << "✓ Student name updated successfully." << std::endl;
-                    }else{
+                    }
+                    else
+                    {
                         std::cout << "✗ Failed to update student name." << std::endl;
                     }
                 }
@@ -1144,7 +1146,9 @@ private:
                     {
                         success = true;
                         std::cout << "✓ Student father name updated successfully." << std::endl;
-                    }else{
+                    }
+                    else
+                    {
                         std::cout << "✗ Failed to update student father name." << std::endl;
                     }
                 }
@@ -1156,7 +1160,9 @@ private:
                     {
                         success = true;
                         std::cout << "✓ Student user name updated successfully." << std::endl;
-                    }else{
+                    }
+                    else
+                    {
                         std::cout << "✗ Failed to update student user name." << std::endl;
                     }
                 }
@@ -2311,12 +2317,8 @@ public:
                         // clearScreen();
                         cout << left << setw(20) << "=== UPDATE STUDENT ===" << endl;
                         // Update Student
-                       upDateSt
-                        cout << left << setw(20) << "Enter Student ID to update: ";
-                        cin >> stdId;
-                        // Add update logic here
-                        // universalup
-                        // pause();
+                        upDateStudent();
+                        universalUPdation(updateQueue);
                     }
                     else if (stdChoice == 3)
                     {
@@ -2357,8 +2359,17 @@ public:
                         int stdId;
                         cout << left << setw(20) << "Enter Student ID to check fee: ";
                         cin >> stdId;
-                        // Add fee check logic here
-                        // pause();
+                        cin.ignore();
+                        StdNode<StudentFees> *node = searchStdFeeByStdId(stdFeeBST, stdId);
+                        if (node)
+                        {
+                            StudentFees fees = node->getData();
+                            printEngine.printStudentById(studentBST, stdId);
+                        }
+                        else
+                        {
+                            cout << left << setw(20) << "Student fee information not found!" << std::endl;
+                        }
                     }
                     else if (stdChoice == 6)
                     {
@@ -2396,19 +2407,7 @@ public:
                         // clearScreen();
                         cout << left << setw(20) << "=== ADD COURSE ===" << endl;
                         // Add Course
-                        int courseId;
-                        string courseName, teacherName;
-
-                        cout << left << setw(20) << "Enter Course ID: ";
-                        cin >> courseId;
-                        cin.ignore();
-                        cout << left << setw(20) << "Enter Course Title: ";
-                        getline(cin, courseName);
-                        cout << left << setw(20) << "Enter Teacher Name: ";
-                        getline(cin, teacherName);
-
-                        Course course(courseId, courseName, teacherName);
-                        newRegCourseOpQueue.enqueueNewStd(course);
+                        addNewCourse();
                         cout << left << setw(20) << "Course Added Successfully!" << std::endl;
                         // pause();
                     }
@@ -2417,11 +2416,8 @@ public:
                         // clearScreen();
                         cout << left << setw(20) << "=== UPDATE COURSE ===" << endl;
                         // Update Course
-                        int courseId;
-                        cout << left << setw(20) << "Enter Course ID to update: ";
-                        cin >> courseId;
-                        // Add update logic here
-                        // pause();
+                        upDateCourse();
+                        universalUPdation(updateQueue);
                     }
                     else if (courseChoice == 3)
                     {
@@ -2490,20 +2486,7 @@ public:
                         // clearScreen();
                         cout << left << setw(20) << "=== ADD ADMIN ===" << endl;
                         // Add Admin
-                        int adminId;
-                        string adminName, adminPassword;
-
-                        cout << left << setw(20) << "Enter Admin ID: ";
-                        cin >> adminId;
-                        cin.ignore();
-                        cout << left << setw(20) << "Enter Admin Name: ";
-                        getline(cin, adminName);
-                        cout << left << setw(20) << "Enter Admin Password: ";
-                        getline(cin, adminPassword);
-
-                        Admin admin(adminId, adminName, adminPassword);
-                        newAdminOpQueue.enqueueNewStd(admin);
-                        cout << left << setw(20) << "Admin Added Successfully!" << std::endl;
+                        addNewAdmin();
                         // pause();
                     }
                     else if (adminChoice == 2)
@@ -2511,11 +2494,8 @@ public:
                         // clearScreen();
                         cout << left << setw(20) << "=== UPDATE ADMIN ===" << endl;
                         // Update Admin
-                        int adminId;
-                        cout << left << setw(20) << "Enter Admin ID to update: ";
-                        cin >> adminId;
-                        // Add update logic here
-                        // pause();
+                        upDateAdmin();
+                        universalUPdation(updateQueue);
                     }
                     else if (adminChoice == 3)
                     {
@@ -2581,19 +2561,14 @@ public:
                     {
                         // clearScreen();
                         cout << left << setw(20) << "=== ADD FEE RECORD ===" << endl;
-                        // Add Fee Record
-                        cout << left << setw(20) << "Add Fee Record functionality" << std::endl;
-                        // Add fee record logic here
-                        // pause();
+                        addNewStudentFees();
                     }
                     else if (feeChoice == 2)
                     {
                         // clearScreen();
                         cout << left << setw(20) << "=== UPDATE FEE RECORD ===" << endl;
-                        // Update Fee Record
-                        cout << left << setw(20) << "Update Fee Record functionality" << std::endl;
-                        // Add update logic here
-                        // pause();
+                        upDateFee();
+                        universalUPdation(updateQueue);
                     }
                     else if (feeChoice == 3)
                     {
@@ -2690,8 +2665,8 @@ public:
                         int adminId;
                         cout << left << setw(20) << "Enter Admin ID: ";
                         cin >> adminId;
-                        // Add admin search logic here
-                        // pause();
+                        cin.ignore();
+                        printEngine.printAdminById(adminBST, adminId);
                     }
                     else if (searchChoice == 4)
                     {
@@ -2714,53 +2689,58 @@ public:
             {
                 // Update Data Menu
                 int updateChoice = 0;
-                while (updateChoice != 6)
+                while (updateChoice != 8)
                 {
-                    clearScreen();
-                    cout << left << setw(20) << "=== UPDATE DATA ===" << std::endl;
-                    cout << left << setw(20) << "1. Update Student" << std::endl;
-                    cout << left << setw(20) << "2. Update Course" << std::endl;
-                    cout << left << setw(20) << "3. Update Admin" << std::endl;
+                    cout << left << setw(20) << "=== UPDATE DATA Record " << std::endl;
+                    cout << left << setw(20) << "1. Update Student  Record" << std::endl;
+                    cout << left << setw(20) << "2. Update Course   Record" << std::endl;
+                    cout << left << setw(20) << "3. Update Admin Record" << std::endl;
                     cout << left << setw(20) << "4. Update Fee Record" << std::endl;
-                    cout << left << setw(20) << "5. View Pending Updates" << std::endl;
-                    cout << left << setw(20) << "6. Back to Main Menu" << std::endl;
-
+                    cout << left << setw(20) << "5 .Update Attendance Record \n";
+                    cout << left << setw(20) << "6. Update Field Study Record";
+                    cout << left << setw(20) << "7. Update Student Register Course \n";
+                    cout << left << setw(20) << "8. Back to Main Menu" << std::endl;
                     updateChoice = getChoice(1, 6);
-
                     // Add update functionality here
                     if (updateChoice == 1)
                     {
-                        clearScreen();
-                        cout << left << setw(20) << "Update Student functionality" << std::endl;
-                        // pause();
+                        upDateStudent();
+                        universalUPdation(updateQueue);
                     }
                     else if (updateChoice == 2)
                     {
-                        // clearScreen();
-                        cout << left << setw(20) << "Update Course functionality" << std::endl;
-                        // pause();
+                        upDateCourse();
+                        universalUPdation(updateQueue);
                     }
                     else if (updateChoice == 3)
                     {
-                        // clearScreen();
                         cout << left << setw(20) << "Update Admin functionality" << std::endl;
-                        // pause();
+                        UpdateAdmin();
+                        universalUPdation(updateQueue);
                     }
                     else if (updateChoice == 4)
                     {
-                        // clearScreen();
                         cout << left << setw(20) << "Update Fee Record functionality" << std::endl;
-                        pause();
+                        upStudentFee();
+                        universalUPdation(updateQueue);
                     }
                     else if (updateChoice == 5)
                     {
-                        // clearScreen();
-                        cout << left << setw(20) << "View Pending Updates functionality" << std::endl;
-                        // pause();
+                        cout << left << setw(20) << "Update Attendance Record functionality" << std::endl;
+                        upUpdateAttendance();
+                        universalUPdation(updateQueue);
                     }
                     else if (updateChoice == 6)
                     {
-                        cout << left << setw(20) << "Returning to Main Menu..." << std::endl;
+                        cout << left << setw(20) << "Update Field Study Record functionality" << std::endl;
+                        upDateField();
+                        universalUPdation(updateQueue);
+                    }
+                    else if (updateChoice == 7)
+                    {
+                        cout << left << setw(20) << "Update Student Register Course functionality" << std::endl;
+                        upStdCourseReg();
+                        universalUPdation(updateQueue);
                     }
                 }
             }
@@ -2815,7 +2795,7 @@ public:
                     case 3: // Delete Student Course Record
                         // clearScreen();
                         cout << left << setw(20) << "=== DELETE STUDENT COURSE ENROLLMENT ===" << std::endl;
-                        // deleteStudentCourse();
+                        deleteCourse();
                         cout << left << setw(20) << "\nDo you want to restart the system? (y/n): ";
                         cin >> restartChoice;
                         if (restartChoice == 'y' || restartChoice == 'Y')
@@ -2965,8 +2945,6 @@ public:
                         cout << left << setw(20) << "Return Back to Main \n";
                     }
                 }
-
-                pause();
             }
             else if (choice == 10)
             {
@@ -3115,21 +3093,6 @@ public:
         universalUPdation(updateQueue);
         UniVersalInsertionMethod();
     }
-    // // Public getter methods
-    // BST<Student> &getStudentBST()
-    // {
-    //     return studentBST;
-    // }
-    // BST<Admin> &getAdminBST() { return adminBST; }
-    // BST<Course> &getCourseBST() { return courseBST; }
-    // BST<FieldStudy> &getFieldBST() { return fieldBST; }
-    // BST<Attendance> &getAttendanceBST() { return attendanceBST; }
-    // BST<StdCourse> &getStdCourseBST() { return stdCourseBST; }
-    // BST<StudentFees> &getStdFeeBST() { return stdFeeBST; }
-    // BST<Result> &getStdResultBST() { return stdResultBST; }
-
-    // DB &getDB() { return db; }
-    // PrintEngine &getPrintEngine() { return printEngine; }
 };
 
 #endif // SMSSYSTEM_H
