@@ -4,6 +4,7 @@
 // ================= Standard Library =================
 #include <string>
 #include <iostream>
+#include <iomanip>
 #include <memory>
 #include <vector>
 #include <iomanip>
@@ -3007,23 +3008,21 @@ public:
         restartSystemToDeleteData();
         universalUPdation(updateQueue);
     }
-    // Public getter methods
-    BST<Student> &getStudentBST()
-    {
-        return studentBST;
-    }
-    BST<Admin> &getAdminBST() { return adminBST; }
-    BST<Course> &getCourseBST() { return courseBST; }
-    BST<FieldStudy> &getFieldBST() { return fieldBST; }
-    BST<Attendance> &getAttendanceBST() { return attendanceBST; }
-    BST<StdCourse> &getStdCourseBST() { return stdCourseBST; }
-    BST<StudentFees> &getStdFeeBST() { return stdFeeBST; }
-    BST<Result> &getStdResultBST() { return stdResultBST; }
+    // // Public getter methods
+    // BST<Student> &getStudentBST()
+    // {
+    //     return studentBST;
+    // }
+    // BST<Admin> &getAdminBST() { return adminBST; }
+    // BST<Course> &getCourseBST() { return courseBST; }
+    // BST<FieldStudy> &getFieldBST() { return fieldBST; }
+    // BST<Attendance> &getAttendanceBST() { return attendanceBST; }
+    // BST<StdCourse> &getStdCourseBST() { return stdCourseBST; }
+    // BST<StudentFees> &getStdFeeBST() { return stdFeeBST; }
+    // BST<Result> &getStdResultBST() { return stdResultBST; }
 
-    DB &getDB() { return db; }
-    PrintEngine &getPrintEngine() { return printEngine; }
-
-    // Public registration methods
+    // DB &getDB() { return db; }
+    // PrintEngine &getPrintEngine() { return printEngine; }
 };
 
 #endif // SMSSYSTEM_H

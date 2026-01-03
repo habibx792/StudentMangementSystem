@@ -1,7 +1,7 @@
 #define _HAS_STD_BYTE 0
 #ifndef ATTENDANCE_H
 #define ATTENDANCE_H
-
+#include <iomanip>
 #include <iostream>
 #include <string>
 using namespace std;
@@ -94,11 +94,14 @@ public:
 
     void print() const
     {
-        cout << "Attendance ID: " << this->attendanceId
-             << " | Student ID: " << this->stdId
-             << " | Course ID: " << this->courseId
-             << " | Date: " << this->attendanceDate
-             << " | Present: " << (this->isPresent ? "Yes" : "No") << endl;
+        cout<<"===========================================\n";
+        cout << left
+             << setw(15) << "Attendance ID:" << attendanceId << endl
+             << setw(15) << "Student ID:" << stdId << endl
+             << setw(15) << "Course ID:" << courseId << endl
+             << setw(15) << "Date:" << attendanceDate << endl
+             << setw(15) << "Present:" << (isPresent ? "Yes" : "No") << endl;
+        cout<<"===========================================\n";
     }
 
     int getId() const

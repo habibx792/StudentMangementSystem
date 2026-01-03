@@ -2,6 +2,7 @@
 #define ADMIN_H
 #define _HAS_STD_BYTE 0
 #include <iostream>
+#include <iomanip>
 #include <string>
 using namespace std;
 
@@ -59,9 +60,11 @@ public:
 
     void print() const
     {
-        cout << "Admin ID: " << this->adminId
-             << " | Name: " << this->adminName
-             << " | Password: " << this->passWord << endl;
+        cout << left
+             << setw(12) << "Admin ID:" << adminId << endl
+             << setw(12) << "Name:" << adminName << endl
+             << setw(12) << "Password:" << passWord << endl
+             << "-----------------------------" << endl;
     }
 
     int getId() const

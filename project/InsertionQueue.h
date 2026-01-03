@@ -4,6 +4,7 @@
 #include <string>
 #include <utility>
 #include <iostream>
+#include <iomanip>
 #include "stdNode.h"
 using namespace std;
 template<class T>
@@ -92,13 +93,17 @@ public:
 
     void printQueue() const
     {
-        stdNode *curr = fr;
+        cout<<"===========================================\n";
+        stdNode<T> *curr = fr;
         while (curr != NULL)
         {
             auto [id, table] = curr->getMetaData();
-            cout << "Id: " << id << ", Table: " << table << endl;
+            cout << left
+                 << setw(15) << "Id:" << id
+                 << setw(15) << "Table:" << table << endl;
             curr = curr->getNext();
         }
+        cout<<"===========================================\n";
     }
     stdNode<T> *searchQueue(int id)
     {

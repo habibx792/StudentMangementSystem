@@ -10,28 +10,53 @@ INSERT INTO fieldStudy (fieldName) VALUES
 ('Architecture');
 GO
 
--- 2. Insert students (20 students)
+---- 2. Insert students (20 students)
+--INSERT INTO student (stdId, stdName, stdUserName, stdAge, fieldId, stdFatherName) VALUES
+--(1001, 'Ali Ahmed', 'ali.ahmed', 20, 1022, 'Ahmed Khan'),      -- Architecture
+--(1002, 'Sara Khan', 'sara.khan', 21, 1019, 'Khalid Khan'),    -- Psychology
+--(1003, 'Muhammad Bilal', 'm.bilal', 22, 1021, 'Bilal Ahmed'), -- Chemistry
+--(1004, 'Fatima Zara', 'fatima.z', 19, 1020, 'Zafar Ali'),     -- Mathematics
+--(1005, 'Omar Farooq', 'omar.f', 23, 1022, 'Farooq Ahmed'),   -- Architecture
+--(1006, 'Ayesha Siddiqui', 'ayesha.s', 20, 1018, 'Siddiqui Raza'), -- Mechanical
+--(1007, 'Hassan Raza', 'h.raza', 21, 1021, 'Raza Muhammad'),  -- Chemistry
+--(1008, 'Zainab Malik', 'zainab.m', 22, 1019, 'Malik Akbar'), -- Psychology
+--(1009, 'Usman Ghani', 'usman.g', 20, 1020, 'Ghaniullah'),    -- Mathematics
+--(1010, 'Nadia Shah', 'nadia.shah', 21, 1018, 'Shah Jahan'),  -- Mechanical
+--(1011, 'Kamran Ali', 'kamran.a', 22, 1022, 'Ali Hassan'),    -- Architecture
+--(1012, 'Sana Ullah', 'sana.u', 19, 1021, 'Ullah Khan'),      -- Chemistry
+--(1013, 'Bilal Yousaf', 'bilal.y', 23, 1019, 'Yousaf Khan'),  -- Psychology
+--(1014, 'Mehwish Akram', 'mehwish.a', 20, 1020, 'Akram Chaudhry'), -- Mathematics
+--(1015, 'Imran Hashmi', 'imran.h', 21, 1018, 'Hashmi Raza'),  -- Mechanical
+--(1016, 'Rabia Arif', 'rabia.a', 22, 1022, 'Arif Mehmood'),   -- Architecture
+--(1017, 'Faisal Iqbal', 'faisal.i', 20, 1021, 'Iqbal Ahmed'), -- Chemistry
+--(1018, 'Saima Noor', 'saima.n', 21, 1019, 'Noor Muhammad'),  -- Psychology
+--(1019, 'Tariq Javed', 'tariq.j', 23, 1020, 'Javed Iqbal'),   -- Mathematics
+--(1020, 'Hina Aslam', 'hina.a', 20, 1018, 'Aslam Khan');      -- Mechanical
+--GO
+
+
+
 INSERT INTO student (stdId, stdName, stdUserName, stdAge, fieldId, stdFatherName) VALUES
-(1001, 'Ali Ahmed', 'ali.ahmed', 20, 1022, 'Ahmed Khan'),      -- Architecture
-(1002, 'Sara Khan', 'sara.khan', 21, 1019, 'Khalid Khan'),    -- Psychology
-(1003, 'Muhammad Bilal', 'm.bilal', 22, 1021, 'Bilal Ahmed'), -- Chemistry
-(1004, 'Fatima Zara', 'fatima.z', 19, 1020, 'Zafar Ali'),     -- Mathematics
-(1005, 'Omar Farooq', 'omar.f', 23, 1022, 'Farooq Ahmed'),   -- Architecture
-(1006, 'Ayesha Siddiqui', 'ayesha.s', 20, 1018, 'Siddiqui Raza'), -- Mechanical
-(1007, 'Hassan Raza', 'h.raza', 21, 1021, 'Raza Muhammad'),  -- Chemistry
-(1008, 'Zainab Malik', 'zainab.m', 22, 1019, 'Malik Akbar'), -- Psychology
-(1009, 'Usman Ghani', 'usman.g', 20, 1020, 'Ghaniullah'),    -- Mathematics
-(1010, 'Nadia Shah', 'nadia.shah', 21, 1018, 'Shah Jahan'),  -- Mechanical
-(1011, 'Kamran Ali', 'kamran.a', 22, 1022, 'Ali Hassan'),    -- Architecture
-(1012, 'Sana Ullah', 'sana.u', 19, 1021, 'Ullah Khan'),      -- Chemistry
-(1013, 'Bilal Yousaf', 'bilal.y', 23, 1019, 'Yousaf Khan'),  -- Psychology
-(1014, 'Mehwish Akram', 'mehwish.a', 20, 1020, 'Akram Chaudhry'), -- Mathematics
-(1015, 'Imran Hashmi', 'imran.h', 21, 1018, 'Hashmi Raza'),  -- Mechanical
-(1016, 'Rabia Arif', 'rabia.a', 22, 1022, 'Arif Mehmood'),   -- Architecture
-(1017, 'Faisal Iqbal', 'faisal.i', 20, 1021, 'Iqbal Ahmed'), -- Chemistry
-(1018, 'Saima Noor', 'saima.n', 21, 1019, 'Noor Muhammad'),  -- Psychology
-(1019, 'Tariq Javed', 'tariq.j', 23, 1020, 'Javed Iqbal'),   -- Mathematics
-(1020, 'Hina Aslam', 'hina.a', 20, 1018, 'Aslam Khan');      -- Mechanical
+(1001, 'Ali Ahmed', 'ali.ahmed', 20, 17, 'Ahmed Khan'),      -- Architecture
+(1002, 'Sara Khan', 'sara.khan', 21, 14, 'Khalid Khan'),    -- Psychology
+(1003, 'Muhammad Bilal', 'm.bilal', 22, 16, 'Bilal Ahmed'), -- Chemistry
+(1004, 'Fatima Zara', 'fatima.z', 19, 15, 'Zafar Ali'),     -- Mathematics
+(1005, 'Omar Farooq', 'omar.f', 23, 17, 'Farooq Ahmed'),   -- Architecture
+(1006, 'Ayesha Siddiqui', 'ayesha.s', 20, 13, 'Siddiqui Raza'), -- Mechanical
+(1007, 'Hassan Raza', 'h.raza', 21, 16, 'Raza Muhammad'),  -- Chemistry
+(1008, 'Zainab Malik', 'zainab.m', 22, 14, 'Malik Akbar'), -- Psychology
+(1009, 'Usman Ghani', 'usman.g', 20, 15, 'Ghaniullah'),    -- Mathematics
+(1010, 'Nadia Shah', 'nadia.shah', 21, 13, 'Shah Jahan'),  -- Mechanical
+(1011, 'Kamran Ali', 'kamran.a', 22, 17, 'Ali Hassan'),    -- Architecture
+(1012, 'Sana Ullah', 'sana.u', 19, 16, 'Ullah Khan'),      -- Chemistry
+(1013, 'Bilal Yousaf', 'bilal.y', 23, 14, 'Yousaf Khan'),  -- Psychology
+(1014, 'Mehwish Akram', 'mehwish.a', 20, 15, 'Akram Chaudhry'), -- Mathematics
+(1015, 'Imran Hashmi', 'imran.h', 21, 13, 'Hashmi Raza'),  -- Mechanical
+(1016, 'Rabia Arif', 'rabia.a', 22, 17, 'Arif Mehmood'),   -- Architecture
+(1017, 'Faisal Iqbal', 'faisal.i', 20, 16, 'Iqbal Ahmed'), -- Chemistry
+(1018, 'Saima Noor', 'saima.n', 21, 14, 'Noor Muhammad'),  -- Psychology
+(1019, 'Tariq Javed', 'tariq.j', 23, 15, 'Javed Iqbal'),   -- Mathematics
+(1020, 'Hina Aslam', 'hina.a', 20, 13, 'Aslam Khan');      -- Mechanical
 GO
 
 -- 3. Insert courses (8 courses)
@@ -272,6 +297,8 @@ INSERT INTO Attendance (stdId, courseId, attendanceDate, isPresent) VALUES
 (1020, 108, '2024-01-06', 1);
 GO
 
+insert into adminTab (adminName,passWord)
+values ('admin','123');
 -- 7. Insert results
 INSERT INTO result (stdId, courseId, gotNumber, grade) VALUES
 -- Course 101 Results
@@ -342,3 +369,4 @@ INSERT INTO result (stdId, courseId, gotNumber, grade) VALUES
 (1015, 108, 77.0, 'B'),
 (1020, 108, 82.5, 'B+');
 GO
+
