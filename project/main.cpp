@@ -18,5 +18,5 @@ int main()
     SMSSystem &system = SMSSystem::getInstance(); // Changed from SmsSytem to SMSSystem
     system.run();
     return 0;
-    
+    cout<<"No print\n";
 }
