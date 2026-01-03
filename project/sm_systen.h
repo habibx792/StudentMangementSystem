@@ -218,7 +218,7 @@ private:
                          40, 0, (SQLPOINTER)stdFatherName.c_str(), 0, &fatherLen);
 
         if (SQLExecute(hStmt) == SQL_SUCCESS)
-            std::cout << "Student inserted  successfully." << std::endl;
+            std::cout << "Student inserted hghghjghj  successfully." << std::endl;
         else
         {
             std::cout << "Failed to insert student. Error: ";
@@ -2179,23 +2179,7 @@ public:
                         clearScreen();
                         cout << "=== ADD STUDENT ===" << endl;
                         // Add Student
-                        int stdId, fieldId, stdAge;
-                        string stdName, fatherName;
-
-                        cout << "Enter Student ID: ";
-                        cin >> stdId;
-                        cin.ignore();
-                        cout << "Enter Student Name: ";
-                        getline(cin, stdName);
-                        cout << "Enter Student Father Name: ";
-                        getline(cin, fatherName);
-                        cout << "Enter Student Age: ";
-                        cin >> stdAge;
-                        cout << "Enter Field ID: ";
-                        cin >> fieldId;
-
-                        Student std(stdName, "", stdAge, fieldId, fatherName);
-                        newStudentOpQueue.enqueueNewStd(std);
+                        addnewStudent();
                         cout << "\nStudent Added Successfully!" << std::endl;
                         pause();
                     }
@@ -3006,6 +2990,7 @@ public:
         loadAllDataFromDB();
         restartSystemToDeleteData();
         universalUPdation(updateQueue);
+        UniVersalInsertionMethod();
     }
     // Public getter methods
     BST<Student> &getStudentBST()
