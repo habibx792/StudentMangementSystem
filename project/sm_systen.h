@@ -1011,12 +1011,12 @@ private:
             {
                 int choice;
                 std::cout << "\nSelect field to update:" << std::endl;
-                std::cout << "1. stdName (VARCHAR(40))" << std::endl;
-                std::cout << "2. stdFatherName (VARCHAR(40))" << std::endl;
-                std::cout << "3. stdUserName (VARCHAR(40))" << std::endl;
-                std::cout << "4. stdAge (INT)" << std::endl;
-                std::cout << "5. fieldId (INT)" << std::endl;
-                std::cout << "6. stdId (INT - Update ID itself)" << std::endl;
+                std::cout << "1.Student  Name (VARCHAR(40))" << std::endl;
+                std::cout << "2.Student FatherName (VARCHAR(40))" << std::endl;
+                std::cout << "3.Student UserName (VARCHAR(40))" << std::endl;
+                std::cout << "4.Student Age (INT)" << std::endl;
+                std::cout << "5.Student fieldId (INT)" << std::endl;
+                std::cout << "6. Student stdId (INT - Update ID itself)" << std::endl;
                 std::cout << "Enter choice: ";
                 std::cin >> choice;
                 std::cin.ignore();
@@ -1026,13 +1026,13 @@ private:
 
                 if (choice == 1)
                 {
-                    std::cout << "Enter new stdName (max 40 chars): ";
+                    std::cout << "Enter new Student Name (max 40 chars): ";
                     std::getline(std::cin, newValue);
                     success = updateStudentField(id, "stdName", newValue);
                 }
                 else if (choice == 2)
                 {
-                    std::cout << "Enter new stdFatherName (max 40 chars): ";
+                    std::cout << "Enter  Student new FatherName (max 40 chars): ";
                     std::getline(std::cin, newValue);
                     success = updateStudentField(id, "stdFatherName", newValue);
                 }
@@ -1044,7 +1044,7 @@ private:
                 }
                 else if (choice == 4)
                 {
-                    std::cout << "Enter new stdAge: ";
+                    std::cout << "Enter  Student new Age: ";
                     std::getline(std::cin, newValue);
                     try
                     {
@@ -1067,7 +1067,7 @@ private:
                 }
                 else if (choice == 5)
                 {
-                    std::cout << "Enter new fieldId: ";
+                    std::cout << "Enter Student new fieldId: ";
                     std::getline(std::cin, newValue);
                     try
                     {
@@ -1114,8 +1114,8 @@ private:
             {
                 int choice;
                 std::cout << "\nSelect field to update:" << std::endl;
-                std::cout << "1. courseTitle (VARCHAR(40))" << std::endl;
-                std::cout << "2. teacherName (VARCHAR(40))" << std::endl;
+                std::cout << "1. course Title (VARCHAR(40))" << std::endl;
+                std::cout << "2. teacher Name (VARCHAR(40))" << std::endl;
                 std::cout << "3. courseId (INT - Update ID itself)" << std::endl;
                 std::cout << "Enter choice: ";
                 std::cin >> choice;
@@ -1126,13 +1126,13 @@ private:
 
                 if (choice == 1)
                 {
-                    std::cout << "Enter new courseTitle (max 40 chars): ";
+                    std::cout << "Enter new course Title (max 40 chars): ";
                     std::getline(std::cin, newValue);
                     success = updateCourseField(id, "courseTitle", newValue);
                 }
                 else if (choice == 2)
                 {
-                    std::cout << "Enter new teacherName (max 40 chars): ";
+                    std::cout << "Enter new teacher Name (max 40 chars): ";
                     std::getline(std::cin, newValue);
                     success = updateCourseField(id, "teacherName", newValue);
                 }
@@ -1203,18 +1203,161 @@ private:
                     std::cout << "Invalid choice! Skipping this update." << std::endl;
                 }
             }
+            else if (table == "fieldStudy")
+            {
+                int choice;
+                std::cout << "\nSelect field to update:" << std::endl;
+                std::cout << "1. fieldName (VARCHAR(40))" << std::endl;
+                std::cout << "Enter choice: ";
+                std::cin >> choice;
+                std::cin.ignore();
+
+                std::string newValue;
+                bool success = false;
+
+                if (choice == 1)
+                {
+                    std::cout << "Enter new field name (max 40 chars): ";
+                    std::getline(std::cin, newValue);
+                    std::string cleanValue = truncateToSize(sanitizeForSQL(newValue), 40);
+                    if (db.executeUpdate("UPDATE fieldStudy SET fieldName = ? WHERE fieldId = ?", cleanValue, id))
+                    {
+                        success = true;
+                        std::cout << "✓ Field name updated successfully." << std::endl;
+                    }
+                }
+                else
+                {
+                    std::cout << "Invalid choice!";
+                }
+            }
+            else if (table == "result")
+            {
+                int choice;
+                std::cout << "Updating Student Result Information \n";
+                cout << "Enter Your Student  Id: \n";
+                int resid;
+                cin >> resid;
+                cin.ignore();
+                cout << "Enter Your Course ID : \n";
+                int courseId;
+                cin >> courseId;
+                cin.ignore();
+                cout << "1-> To Update Got Number \n";
+                cout << "2-> To Update isPass \n";
+                cout << "Enter Your Choice: \n";
+                cin >> choice;
+                cin.ignore();
+                if (choice == 1)
+                {
+                    int marksObtained;
+                    cout << "Enter New Marks Obtained: \n";
+                    cin >> marksObtained;
+                    cin.ignore();
+                    if (db.executeUpdate("UPDATE result SET marksObtained = ? WHERE stdId = ? AND courseId = ?", marksObtained, resid, courseId))
+                    {
+
+                        std::cout << "✓ Marks obtained updated successfully." << std::endl;
+                    }
+                }
+                else if (choice == 2)
+                {
+                    bool isPass;
+                    cout << "Enter New isPass (0 or 1): \n";
+                    cin >> isPass;
+                    cin.ignore();
+                    if (db.executeUpdate("UPDATE result SET isPass = ? WHERE stdId = ? AND courseId = ?", isPass, resid, courseId))
+                    {
+
+                        std::cout << "✓ Is pass updated successfully." << std::endl;
+                    }
+                }
+            }
+            else if (table == "attendance")
+            {
+                int choice;
+                int stdId;
+                int courseId;
+                cout << "Enter Student Id: \n";
+                cin >> stdId;
+                cin.ignore();
+                cout << "Enter Course Id: \n";
+                cin >> courseId;
+                cin.ignore();
+                cout << "1-> To Update Attendance Status \n";
+                cout << "2-> To Update Attendance Date \n";
+                cout << "Enter Your Choice: \n";
+                cin >> choice;
+                cin.ignore();
+                if (choice == 1)
+                {
+                    bool isPresent;
+                    cout << "Enter New Attendance Status (0 or 1): \n";
+                    cin >> isPresent;
+                    cin.ignore();
+                    if (db.executeUpdate("UPDATE attendance SET isPresent = ? WHERE stdId = ? AND courseId = ?", isPresent, stdId, courseId))
+                    {
+                        std::cout << "✓ Attendance status updated successfully." << std::endl;
+                    }
+                }
+                else if (choice == 2)
+                {
+                    string date;
+                    cout << "Enter New Attendance Date (YYYY-MM-DD): \n";
+                    getline(cin, date);
+                    if (db.executeUpdate("UPDATE attendance SET date = ? WHERE stdId = ? AND courseId = ?", date, stdId, courseId))
+                    {
+                        std::cout << "✓ Attendance date updated successfully." << std::endl;
+                    }
+                }
+            }
+            else if (table == "StudentFees")
+            {
+                int choice;
+                int stdId;
+                cout << "Enter Student Id \n";
+                cin >> stdId;
+                cin.ignore();
+                int feeId;
+                cout << "Enter Fee Id \n";
+                cin >> feeId;
+                cin.ignore();
+                cout << "1-> To Update Fee Amount \n";
+                cout << "2-> To Update Fee Date \n";
+                cout << "Enter Your Choice: \n";
+                cin >> choice;
+                cin.ignore();
+                if (choice == 1)
+                {
+                    double feeAmount;
+                    cout << "Enter New Fee Amount: \n";
+                    cin >> feeAmount;
+                    cin.ignore();
+                    if (db.executeUpdate("UPDATE StudentFees SET feeAmount = ? WHERE stdId = ? AND feeId = ?", feeAmount, stdId, feeId))
+                    {
+                        std::cout << "✓ Fee amount updated successfully." << std::endl;
+                    }
+                }
+                else if (choice == 2)
+                {
+                    string date;
+                    cout << "Enter New Fee Date (YYYY-MM-DD): \n";
+                    getline(cin, date);
+                    if (db.executeUpdate("UPDATE StudentFees SET date = ? WHERE stdId = ? AND feeId = ?", date, stdId, feeId))
+                    {
+                        std::cout << "✓ Fee date updated successfully." << std::endl;
+                    }
+                }
+            }
             else
             {
                 std::cout << "Table '" << table << "' update not implemented yet." << std::endl;
             }
-
             delete nod;
             std::cout << "--------------------------------------" << std::endl;
         }
-
         // Reload data after all updates
         loadAllDataFromDB();
-
         std::cout << "\n======================================" << std::endl;
         std::cout << "All updates processed successfully!" << std::endl;
         std::cout << "======================================" << std::endl;
