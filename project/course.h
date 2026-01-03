@@ -1,7 +1,7 @@
 #define _HAS_STD_BYTE 0
 #ifndef COURSE_H
 #define COURSE_H
-
+#include <iomanip>
 #include <iostream>
 #include <string>
 using namespace std;
@@ -53,9 +53,12 @@ public:
 
     void print() const
     {
-        cout << "courseID : " << courseId << endl;
-        cout << "Course Title : " << courseTitle << endl;
-        cout << "Teacher Name : " << teacherName << endl;
+        cout<<"===========================================\n";
+        cout << left
+             << setw(15) << "Course ID:" << courseId << endl
+             << setw(15) << "Course Title:" << courseTitle << endl
+             << setw(15) << "Teacher Name:" << teacherName << endl;
+        cout<<"===========================================\n";
     }
 
     int getId() const

@@ -1,9 +1,9 @@
 #define _HAS_STD_BYTE 0
 #ifndef OPQUEUE_H
 #define OPQUEUE_H
-
 #include <iostream>
 #include <string>
+#include <iomanip>
 #include "stdNode.h"
 using namespace std;
 
@@ -129,28 +129,17 @@ public:
         }
         return NULL; // Not found
     }
-    // opNode<T>*searchByStringDataLikeName(string RelateObjName)
-    // {
-    //     opNode<T> *current = front;
-    //     while (current != NULL)
-    //     {
-    //       if(current->getData().getName().find(RelateObjName) != string::npos)
-    //         return current;
-    //       current = current->getNext();
-    //     }
-    //     return NULL; // Not found
-    // }
     void printQueue()
     {
+        cout<<"=====================================\n";
         opNode<T> *current = front;
         while (current != NULL)
         {
             // Assuming T has a print() method
             current->getData().print();
-            cout << " -> ";
             current = current->getNext();
         }
-        cout << "NULL" << endl;
+        cout << "==========================================\n" << endl;
     }
 };
 

@@ -3,6 +3,7 @@
 #define FIELDSTUDY_H
 #include <iostream>
 #include <string>
+#include <iomanip>
 using namespace std;
 
 class FieldStudy
@@ -51,8 +52,11 @@ public:
 
     void print() const
     {
-        cout << "Field ID: " << this->fieldId
-             << " | Field Name: " << this->fieldName << endl;
+        cout<<"===========================================\n";
+        cout << left
+             << setw(15) << "Field ID:" << this->fieldId << endl
+             << setw(15) << "Field Name:" << this->fieldName << endl;
+        cout<<"===========================================\n";
     }
 
     int getId() const

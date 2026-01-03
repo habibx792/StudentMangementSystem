@@ -4,6 +4,7 @@
 
 #include <string>
 #include <utility>
+#include <iomanip>
 #include <iostream>
 #include "delNod.h"
 using namespace std;
@@ -118,18 +119,22 @@ public:
     }
     void printQueue() const
     {
+        cout<<"===========================================\n";
         deleteNode *curr = fr;
         while (curr != NULL)
         {
           pair<pair<int,int>,string>node = curr->getMetaData();
           bool hasSecondId = curr->hasSecondId();
-          cout << "Id: " << node.first.first << ", Table: " << node.second;
+          cout << left
+               << setw(15) << "Id:" << node.first.first
+               << setw(15) << "Table:" << node.second;
           if(hasSecondId)
           {
-            cout<<node.first.second;
+            cout<<setw(15)<<"SecondId:"<<node.first.second;
           }
           cout<<endl;
         }
+        cout<<"===========================================\n";
     }
 };
 
