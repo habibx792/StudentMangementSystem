@@ -230,18 +230,9 @@ inline StdNode<StudentFees> *searchStdFeeByStdId(StdNode<StudentFees> *node, int
         return left;
     return searchStdFeeByStdId(node->getRight(), stdId);
 }
-template<typename T>
-inline StdNode<T> *searchStdFeeByStdId(BST<T> &feeBST, int stdId)
+inline StdNode<StudentFees> *searchStdFeeByStdId(BST<StudentFees> &feeBST, int stdId)
 {
-    if (!feeBST.getRoot())
-    {
-        return NULL;
-    }
-    if (feeBST.getRoot().getData().getStdId() == stdId)
-    {
-        return feeBST.getRoot();
-    }
     return searchStdFeeByStdId(feeBST.getRoot(), stdId);
 }
-
+// template<typename T>
 #endif // SEARCHENGINE_H

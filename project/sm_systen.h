@@ -2363,7 +2363,6 @@ public:
                         StdNode<StudentFees> *node = searchStdFeeByStdId(stdFeeBST, stdId);
                         if (node)
                         {
-                            StudentFees fees = node->getData();
                             printEngine.printStudentById(studentBST, stdId);
                         }
                         else
@@ -2494,7 +2493,7 @@ public:
                         // clearScreen();
                         cout << left << setw(20) << "=== UPDATE ADMIN ===" << endl;
                         // Update Admin
-                        upDateAdmin();
+                        UpdateAdmin();
                         universalUPdation(updateQueue);
                     }
                     else if (adminChoice == 3)
