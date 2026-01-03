@@ -5,14 +5,19 @@
 // Now include C++ standard and your project headers
 #include <iostream>
 #include "sm_systen.h"
-
+void clearScreen()
+{
+#ifdef _WIN32
+    system("cls");
+#else
+    system("clear");
+#endif
+}
 int main()
 {
-    cout<<"New Commit 3:00 am sleep time  -m sleep\n";
-    cout<<"I will test all project next day and in uni \n";
+    clearScreen();
     SMSSystem &system = SMSSystem::getInstance(); // Changed from SmsSytem to SMSSystem
     system.run();
-    
     return 0;
     
 }
