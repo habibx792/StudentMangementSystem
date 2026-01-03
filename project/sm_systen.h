@@ -218,7 +218,7 @@ private:
                          40, 0, (SQLPOINTER)stdFatherName.c_str(), 0, &fatherLen);
 
         if (SQLExecute(hStmt) == SQL_SUCCESS)
-            std::cout << "Student inserted jhgjgkh successfully." << std::endl;
+            std::cout << "Student inserted  successfully." << std::endl;
         else
         {
             std::cout << "Failed to insert student. Error: ";
@@ -338,30 +338,25 @@ private:
             std::cout << "Failed to allocate statement handle!" << std::endl;
             return;
         }
-        const char *query = "INSERT INTO Attendance (attendanceId, stdId, courseId, attendanceDate, isPresent) VALUES (?, ?, ?, ?, ?)";
+        const char *query = "INSERT INTO Attendance (stdId, courseId, attendanceDate, isPresent) VALUES (?, ?, ?, ?)";
         if (SQLPrepare(hStmt, (SQLCHAR *)query, SQL_NTS) != SQL_SUCCESS)
         {
             std::cout << "Failed to prepare statement!" << std::endl;
             SQLFreeHandle(SQL_HANDLE_STMT, hStmt);
             return;
         }
-        SQLINTEGER attendanceId = attendance.getAttendanceId();
+
         SQLINTEGER stdId = attendance.getStdId();
         SQLINTEGER courseId = attendance.getCourseId();
         std::string attendanceDate = truncateToSize(sanitizeForSQL(attendance.getAttendanceDate()), 10);
         SQLSMALLINT isPresent = attendance.getIsPresent() ? 1 : 0;
 
         SQLLEN dateLen = attendanceDate.empty() ? SQL_NULL_DATA : SQL_NTS;
-
-        SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_SLONG, SQL_INTEGER,
-                         0, 0, &attendanceId, 0, nullptr);
-        SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_SLONG, SQL_INTEGER,
-                         0, 0, &stdId, 0, nullptr);
-        SQLBindParameter(hStmt, 3, SQL_PARAM_INPUT, SQL_C_SLONG, SQL_INTEGER,
-                         0, 0, &courseId, 0, nullptr);
-        SQLBindParameter(hStmt, 4, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_VARCHAR,
+        SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_SLONG, SQL_INTEGER, 0, 0, &stdId, 0, nullptr);
+        SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_SLONG, SQL_INTEGER, 0, 0, &courseId, 0, nullptr);
+        SQLBindParameter(hStmt, 3, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_VARCHAR,
                          10, 0, (SQLPOINTER)attendanceDate.c_str(), 0, &dateLen);
-        SQLBindParameter(hStmt, 5, SQL_PARAM_INPUT, SQL_C_SSHORT, SQL_SMALLINT,
+        SQLBindParameter(hStmt, 4, SQL_PARAM_INPUT, SQL_C_SSHORT, SQL_SMALLINT,
                          0, 0, &isPresent, 0, nullptr);
 
         if (SQLExecute(hStmt) == SQL_SUCCESS)
@@ -442,7 +437,7 @@ private:
             return;
         }
 
-        const char *query = "INSERT INTO StudentFees (feeId, stdId, amount, paymentDate, status) VALUES (?, ?, ?, ?, ?)";
+        const char *query = "INSERT INTO StudentFees ( stdId, amount, paymentDate, status) VALUES ( ?, ?, ?, ?)";
 
         if (SQLPrepare(hStmt, (SQLCHAR *)query, SQL_NTS) != SQL_SUCCESS)
         {
@@ -450,8 +445,6 @@ private:
             SQLFreeHandle(SQL_HANDLE_STMT, hStmt);
             return;
         }
-
-        SQLINTEGER feeId = fee.getFeeId();
         SQLINTEGER stdId = fee.getStdId();
         SQLDOUBLE amount = fee.getAmount();
         std::string paymentDate = truncateToSize(sanitizeForSQL(fee.getPaymentDate()), 10);
@@ -459,16 +452,13 @@ private:
 
         SQLLEN dateLen = paymentDate.empty() ? SQL_NULL_DATA : SQL_NTS;
         SQLLEN statusLen = status.empty() ? SQL_NULL_DATA : SQL_NTS;
-
         SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_SLONG, SQL_INTEGER,
-                         0, 0, &feeId, 0, nullptr);
-        SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_SLONG, SQL_INTEGER,
                          0, 0, &stdId, 0, nullptr);
-        SQLBindParameter(hStmt, 3, SQL_PARAM_INPUT, SQL_C_DOUBLE, SQL_DOUBLE,
+        SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_DOUBLE, SQL_DOUBLE,
                          0, 0, &amount, 0, nullptr);
-        SQLBindParameter(hStmt, 4, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_VARCHAR,
+        SQLBindParameter(hStmt, 3, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_VARCHAR,
                          10, 0, (SQLPOINTER)paymentDate.c_str(), 0, &dateLen);
-        SQLBindParameter(hStmt, 5, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_VARCHAR,
+        SQLBindParameter(hStmt, 4, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_VARCHAR,
                          20, 0, (SQLPOINTER)status.c_str(), 0, &statusLen);
 
         if (SQLExecute(hStmt) == SQL_SUCCESS)
@@ -499,7 +489,7 @@ private:
             return;
         }
 
-        const char *query = "INSERT INTO result (stdId, courseId, gotNumber, grade) VALUES (?, ?, ?, ?)";
+        const char *query = "INSERT INTO result (stdId, courseId, gotNumber, grade, isPass) VALUES (?, ?, ?, ?, ?)";
 
         if (SQLPrepare(hStmt, (SQLCHAR *)query, SQL_NTS) != SQL_SUCCESS)
         {
@@ -512,6 +502,7 @@ private:
         SQLINTEGER courseId = result.getCourseId();
         SQLDOUBLE gotNumber = result.getGotNumber();
         std::string grade = truncateToSize(sanitizeForSQL(result.getGrade()), 2);
+        SQLCHAR isPass = result.isPass();
 
         SQLLEN gradeLen = grade.empty() ? SQL_NULL_DATA : SQL_NTS;
 
@@ -523,6 +514,8 @@ private:
                          0, 0, &gotNumber, 0, nullptr);
         SQLBindParameter(hStmt, 4, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_VARCHAR,
                          2, 0, (SQLPOINTER)grade.c_str(), 0, &gradeLen);
+        SQLBindParameter(hStmt, 5, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_VARCHAR,
+                         1, 0, &isPass, 0, nullptr);
 
         if (SQLExecute(hStmt) == SQL_SUCCESS)
             std::cout << "Result inserted successfully." << std::endl;

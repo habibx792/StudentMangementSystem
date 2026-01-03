@@ -1,4 +1,4 @@
-use ; 
+use SM_System; 
 SELECT * FROM adminTab;
 GO
 
