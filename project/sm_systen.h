@@ -1734,6 +1734,11 @@ private:
             break;
         }
     }
+    void univerSalDbInsetion()
+    {
+        cout<<"Please Wait Enter New Entity To Database.........\n";
+        
+    }
 
     // ================= Deletion UI Methods =================
     void deleteStudent()
