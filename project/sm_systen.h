@@ -1887,31 +1887,114 @@ private:
             cout << "Database connection failed." << endl;
             return;
         }
+
         SQLHSTMT hStmt = nullptr;
         SQLRETURN ret = SQLAllocHandle(SQL_HANDLE_STMT, db.returnDb(), &hStmt);
+
         if (ret != SQL_SUCCESS && ret != SQL_SUCCESS_WITH_INFO)
         {
-            cout << "Failed to prepare statement." << endl;
+            cout << "Failed to allocate statement handle." << endl;
             return;
         }
-        string quer = "DELETE FROM student WHERE stdId = ?";
-        if (SQLPrepare(hStmt, (SQLCHAR *)quer.c_str(), SQL_NTS) != SQL_SUCCESS)
+
+        // First, check if student exists
+        string checkQuery = "SELECT COUNT(*) FROM student WHERE stdId = ?";
+        if (SQLPrepare(hStmt, (SQLCHAR *)checkQuery.c_str(), SQL_NTS) != SQL_SUCCESS)
         {
-            cout << "Failed to prepare statement." << endl;
+            cout << "Failed to prepare check statement." << endl;
             SQLFreeHandle(SQL_HANDLE_STMT, hStmt);
             return;
         }
+
         SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, 10, 0, &stdId, 0, NULL);
+
         ret = SQLExecute(hStmt);
+        if (ret == SQL_SUCCESS || ret == SQL_SUCCESS_WITH_INFO)
+        {
+            SQLLEN count = 0; // Changed from SQLINTEGER to SQLLEN
+            SQLLEN indicator; // Changed from SQLINTEGER to SQLLEN
+
+            // Fetch the result
+            ret = SQLFetch(hStmt);
+            if (ret == SQL_SUCCESS || ret == SQL_SUCCESS_WITH_INFO)
+            {
+                SQLGetData(hStmt, 1, SQL_C_LONG, &count, 0, &indicator);
+
+                if (count == 0)
+                {
+                    cout << "Student with ID " << stdId << " does not exist." << endl;
+                    SQLFreeHandle(SQL_HANDLE_STMT, hStmt);
+                    return;
+                }
+            }
+        }
+
+        // Free the previous statement handle
+        SQLFreeHandle(SQL_HANDLE_STMT, hStmt);
+
+        // Now try to delete
+        hStmt = nullptr;
+        ret = SQLAllocHandle(SQL_HANDLE_STMT, db.returnDb(), &hStmt);
+
         if (ret != SQL_SUCCESS && ret != SQL_SUCCESS_WITH_INFO)
         {
-            cout << "Failed to execute statement." << endl;
+            cout << "Failed to allocate delete statement handle." << endl;
             return;
+        }
+
+        string deleteQuery = "DELETE FROM student WHERE stdId = ?";
+
+        if (SQLPrepare(hStmt, (SQLCHAR *)deleteQuery.c_str(), SQL_NTS) != SQL_SUCCESS)
+        {
+            cout << "Failed to prepare delete statement." << endl;
+            SQLFreeHandle(SQL_HANDLE_STMT, hStmt);
+            return;
+        }
+
+        SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, 10, 0, &stdId, 0, NULL);
+
+        ret = SQLExecute(hStmt);
+
+        if (ret != SQL_SUCCESS && ret != SQL_SUCCESS_WITH_INFO)
+        {
+            // Get detailed error information
+            SQLCHAR sqlState[6];
+            SQLCHAR errorMsg[SQL_MAX_MESSAGE_LENGTH];
+            SQLINTEGER nativeError;
+            SQLSMALLINT msgLength;
+
+            SQLGetDiagRec(SQL_HANDLE_STMT, hStmt, 1, sqlState, &nativeError,
+                          errorMsg, sizeof(errorMsg), &msgLength);
+
+            cout << "Failed to delete student. Error: " << errorMsg << endl;
+            cout << "SQL State: " << sqlState << ", Native Error: " << nativeError << endl;
+
+            // Check for foreign key constraint violation
+            string errorMsgStr = (char *)errorMsg;
+            if (errorMsgStr.find("foreign key constraint") != string::npos ||
+                errorMsgStr.find("FK__") != string::npos)
+            {
+                cout << "\nCannot delete student. There are related records in other tables." << endl;
+                cout << "Consider deleting related records first or use cascade delete." << endl;
+            }
         }
         else
         {
-            cout << "Student deleted successfully." << endl;
+            // Check how many rows were affected
+            SQLLEN rowCount = 0; // Changed from SQLLEN to SQLINTEGER if needed
+            SQLRowCount(hStmt, &rowCount);
+
+            if (rowCount > 0)
+            {
+                cout << "Student with ID " << stdId << " deleted successfully." << endl;
+            }
+            else
+            {
+                cout << "No student found with ID " << stdId << "." << endl;
+            }
         }
+
+        SQLFreeHandle(SQL_HANDLE_STMT, hStmt);
     }
     void deleteCourseFromDB(int courseId)
     {
@@ -2097,7 +2180,7 @@ private:
             cout << "Failed to prepare statement." << endl;
             return;
         }
-        string quer = "DELETE FROM Result WHERE stdId = ? AND courseId = ?";
+        string quer = "DELETE FROM result WHERE stdId = ? AND courseId = ?";
         if (SQLPrepare(hStmt, (SQLCHAR *)quer.c_str(), SQL_NTS) != SQL_SUCCESS)
         {
             cout << "Failed to prepare statement." << endl;
@@ -2153,52 +2236,48 @@ private:
     }
     void restartSystemToDeleteData()
     {
-        char choice;
-        cout << "For deletion, do you want to restart the system? (y/n): ";
-        cin >> choice;
-        if (choice == 'y' || choice == 'Y')
+
+        // Restart the system
+        cout << "Restarting system..." << endl;
+        while (!delQueue.isEmpty())
         {
-            // Restart the system
-            cout << "Restarting system..." << endl;
-            while (delQueue.isEmpty())
+            cout << "Enter The loop\n";
+            deleteNode *nod = delQueue.dequeue();
+            pair<pair<int, int>, string> metaData = nod->getMetaData();
+            int delId = metaData.first.first;
+            int delIdTwo = metaData.first.second;
+            string table = metaData.second;
+            if (table == "student")
             {
-                deleteNode *nod = delQueue.dequeue();
-                pair<pair<int, int>, string> metaData = nod->getMetaData();
-                int delId = metaData.first.first;
-                int delIdTwo = metaData.first.second;
-                string table = metaData.second;
-                if (table == "Student")
-                {
-                    deleteStudentFromDB(delId);
-                }
-                else if (table == "Course")
-                {
-                    deleteCourseFromDB(delId);
-                }
-                else if (table == "FieldStudy")
-                {
-                    deleteFieldFromDB(delId);
-                }
-                else if (table == "Attendance")
-                {
-                    deleteAttendanceFromDB(delId, delIdTwo);
-                }
-                else if (table == "courseRegStd")
-                {
-                    deleteCourseRegFromDB(delId, delIdTwo);
-                }
-                else if (table == "StudentFees")
-                {
-                    deleteStdFeeFromDB(delId, delIdTwo);
-                }
-                else if (table == "Result")
-                {
-                    deleteResultFromDB(delId, delIdTwo);
-                }
-                else if (table == "Admin")
-                {
-                    deleteAdminFromDB(delId);
-                }
+                deleteStudentFromDB(delId);
+            }
+            else if (table == "course")
+            {
+                deleteCourseFromDB(delId);
+            }
+            else if (table == "fieldStudy")
+            {
+                deleteFieldFromDB(delId);
+            }
+            else if (table == "Attendance")
+            {
+                deleteAttendanceFromDB(delId, delIdTwo);
+            }
+            else if (table == "courseRegStd")
+            {
+                deleteCourseRegFromDB(delId, delIdTwo);
+            }
+            else if (table == "StudentFees")
+            {
+                deleteStdFeeFromDB(delId, delIdTwo);
+            }
+            else if (table == "result")
+            {
+                deleteResultFromDB(delId, delIdTwo);
+            }
+            else if (table == "adminTab")
+            {
+                deleteAdminFromDB(delId);
             }
         }
     }
@@ -2324,12 +2403,14 @@ public:
                     {
                         // clearScreen();
                         cout << left << setw(20) << "=== DELETE STUDENT ===" << endl;
-                        // Delete Student
-                        int stdId;
-                        cout << left << setw(20) << "Enter Student ID to delete: ";
-                        cin >> stdId;
-                        // Add delete logic here
-                        // pause();
+                        deleteStudent();
+                        char reset;
+                        cout << "Do you want to delete this student? (y/n): ";
+                        cin >> reset;
+                        if (reset == 'y' || reset == 'Y')
+                        {
+                            restartSystemToDeleteData();
+                        }
                     }
                     else if (stdChoice == 4)
                     {
@@ -2422,12 +2503,14 @@ public:
                     {
                         // clearScreen();
                         cout << left << setw(20) << "=== DELETE COURSE ===" << endl;
-                        // Delete Course
-                        int courseId;
-                        cout << left << setw(20) << "Enter Course ID to delete: ";
-                        cin >> courseId;
-                        // Add delete logic here
-                        // pause();
+                       deleteCourse();
+                       char reschoic;
+                       cout << "Do you want to delete this course? (y/n): ";
+                       cin >> reschoic;
+                       if (reschoic == 'y' || reschoic == 'Y')
+                       {
+                           restartSystemToDeleteData();
+                       }
                     }
                     else if (courseChoice == 4)
                     {
@@ -2500,12 +2583,14 @@ public:
                     {
                         // clearScreen();
                         cout << left << setw(20) << "=== DELETE ADMIN ===" << endl;
-                        // Delete Admin
-                        int adminId;
-                        cout << left << setw(20) << "Enter Admin ID to delete: ";
-                        cin >> adminId;
-                        // Add delete logic here
-                        // pause();
+                        deleteAdmin();
+                        char restChoic;
+                        cout << "Do you want to delete this admin? (y/n): ";
+                        cin >> restChoic;
+                        if (restChoic == 'y' || restChoic == 'Y')
+                        {
+                            restartSystemToDeleteData();
+                        }
                     }
                     else if (adminChoice == 4)
                     {
@@ -3086,11 +3171,15 @@ public:
             cout << left << setw(20) << "Thank you for using Student Management System!" << endl;
             // pause();
         }
+        cout<<"Please wait while the system restarts...";
         db.printStatus();
         loadAllDataFromDB();
+        UniVersalInsertionMethod();
         restartSystemToDeleteData();
         universalUPdation(updateQueue);
         UniVersalInsertionMethod();
+        cout<<"All Data Update.....\n";
+        cout<<left<<setw(30)<<"Thank you for using Student Management System!"<<endl;
     }
 };
 
