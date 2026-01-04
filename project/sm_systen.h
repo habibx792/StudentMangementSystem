@@ -2383,13 +2383,24 @@ public:
 
                     if (stdChoice == 1)
                     {
-                        // clearScreen();
-                        cout << left << setw(20) << "=== ADD STUDENT ===" << endl;
-                        // Add Student
-                        addNewStudent();
-                        cout
-                            << left << setw(20) << "\nStudent Added Successfully!" << std::endl;
-                        // pause();
+                        int stdInse = 0;
+                        while (stdInse != -1)
+                        {
+                            // clearScreen();
+                            cout << left << setw(20) << "=== ADD STUDENT ===" << endl;
+                            // Add Student
+                            addNewStudent();
+                            cout
+                                << left << setw(20) << "\nStudent Added Successfully!" << std::endl;
+                            // pause();
+                            char locChoice;
+                            cout << "Do you want to add another student? (y/n): ";
+                            cin >> locChoice;
+                            if (locChoice == 'y' || locChoice == 'Y')
+                                stdInse = 1;
+                            else
+                                stdInse = -1;
+                        }
                     }
                     else if (stdChoice == 2)
                     {
@@ -2403,6 +2414,7 @@ public:
                     {
                         // clearScreen();
                         cout << left << setw(20) << "=== DELETE STUDENT ===" << endl;
+<<<<<<< HEAD
                         deleteStudent();
                         char reset;
                         cout << "Do you want to delete this student? (y/n): ";
@@ -2411,6 +2423,32 @@ public:
                         {
                             restartSystemToDeleteData();
                         }
+=======
+                        int delchoi = 1;
+                        while (delchoi != 0)
+                        {
+                            int stdId;
+                            deleteStudent();
+                            cout << "Do you want to delete another student? (y/n): ";
+                            char locChoice;
+                            cin >> locChoice;
+                            if (locChoice == 'y' || locChoice == 'Y')
+                                delchoi = 1;
+                            else
+                                delchoi = 0;
+                        }
+                        char dbLocChoic;
+                        cout << "Do you Want to excute Query \n";
+                        cin >> dbLocChoic;
+                        if (dbLocChoic == 'y' || dbLocChoic == 'Y')
+                        {
+                            restartSystemToDeleteData();
+                        }
+                        else
+                        {
+                            cout << "When System Restart Data Student will be Deleted\n";
+                        }
+>>>>>>> cb654da56260caeb61a8f59b091db6172779649d
                     }
                     else if (stdChoice == 4)
                     {
@@ -2487,9 +2525,23 @@ public:
                         // clearScreen();
                         cout << left << setw(20) << "=== ADD COURSE ===" << endl;
                         // Add Course
-                        addNewCourse();
-                        cout << left << setw(20) << "Course Added Successfully!" << std::endl;
-                        // pause();
+                        int locCourseChoic = 0;
+                        while (locCourseChoic != 1)
+                        {
+                            addNewCourse();
+                            cout << left << setw(20) << "Course Added Successfully!" << std::endl;
+                            char loPChar;
+                            cout << left << setw(20) << "Do you want to add another course? (y/n): ";
+                            cin >> loPChar;
+                            if (loPChar == 'y' || loPChar == 'Y')
+                            {
+                                locCourseChoic = 0;
+                            }
+                            else
+                            {
+                                locCourseChoic = 1;
+                            }
+                        }
                     }
                     else if (courseChoice == 2)
                     {
@@ -2503,6 +2555,7 @@ public:
                     {
                         // clearScreen();
                         cout << left << setw(20) << "=== DELETE COURSE ===" << endl;
+<<<<<<< HEAD
                        deleteCourse();
                        char reschoic;
                        cout << "Do you want to delete this course? (y/n): ";
@@ -2511,6 +2564,38 @@ public:
                        {
                            restartSystemToDeleteData();
                        }
+=======
+                        // Delete Course
+                        int delChoic = 0;
+                        while (delChoic != 1)
+                        {
+                            deleteCourse();
+                            cout << left << setw(20) << "Course Deleted Successfully!" << std::endl;
+                            char loPChar;
+                            cout << left << setw(20) << "Do you want to delete another course? (y/n): ";
+                            cin >> loPChar;
+                            if (loPChar == 'y' || loPChar == 'Y')
+                            {
+                                delChoic = 0;
+                            }
+                            else
+                            {
+                                delChoic = 1;
+                            }
+                        }
+                        char delChar;
+                        cout << "Do you want to Restart System To Delete Student From Database? (y/n): ";
+                        cin >> delChar;
+                        if (delChar == 'y' || delChar == 'Y')
+                        {
+                            // Restart System courserestartSystemToDeleteData
+                            restartSystemToDeleteData();
+                        }
+                        else
+                        {
+                            cout << "when System will Restart System will Remove this Entity\n";
+                        }
+>>>>>>> cb654da56260caeb61a8f59b091db6172779649d
                     }
                     else if (courseChoice == 4)
                     {
@@ -2583,6 +2668,7 @@ public:
                     {
                         // clearScreen();
                         cout << left << setw(20) << "=== DELETE ADMIN ===" << endl;
+<<<<<<< HEAD
                         deleteAdmin();
                         char restChoic;
                         cout << "Do you want to delete this admin? (y/n): ";
@@ -2590,6 +2676,32 @@ public:
                         if (restChoic == 'y' || restChoic == 'Y')
                         {
                             restartSystemToDeleteData();
+=======
+                        int locChoi = 0;
+                        while (locChoi != 1)
+                        {
+                            deleteAdmin();
+                            cout << "Admin is Putted In deltion Queue \n";
+                            char delAdChar;
+                            cout << "Do You want To del Another Admin \n";
+                            cin >> delAdChar;
+                            if (delAdChar == 'y' || delAdChar == 'Y')
+                            {
+                                locChoi = 0;
+                            }
+                            else
+                            {
+                                locChoi = 1;
+                            }
+                            char dbChar;
+                            cout << "Do You want To Restart System To delete Admins \n";
+                            cin >> dbChar;
+                            if (dbChar == 'y' || dbChar == 'Y')
+                            {
+                                // Restart system logic here
+                                restartSystemToDeleteData();
+                            }
+>>>>>>> cb654da56260caeb61a8f59b091db6172779649d
                         }
                     }
                     else if (adminChoice == 4)
@@ -2658,10 +2770,36 @@ public:
                     {
                         // clearScreen();
                         cout << left << setw(20) << "=== DELETE FEE RECORD ===" << endl;
-                        // Delete Fee Record
-                        cout << left << setw(20) << "Delete Fee Record functionality" << std::endl;
-                        // Add delete logic here
-                        // pause();
+                        int locChoic = 0;
+                        while (locChoic != 1)
+                        {
+                            deleteStdFee();
+                            cout << "Entity Added in Deletion  Queue";
+                            cout
+                                << left << setw(20) << "Do You want To del Another Fee Record \n";
+                            char delFeeChar;
+                            cin >> delFeeChar;
+                            if (delFeeChar == 'y' || delFeeChar == 'Y')
+                            {
+                                locChoic = 0;
+                            }
+                            else
+                            {
+                                locChoic = 1;
+                            }
+                        }
+                        char feeDb;
+                        cout << "Do You want To Restart System To Del Entity \n";
+                        cin >> feeDb;
+                        if (feeDb == 'y' || feeDb == 'Y')
+                        {
+                            // Restart system logic
+                            restartSystemToDeleteData();
+                        }
+                        else
+                        {
+                            cout << "When System Restarted Entity Will will Be Deleted";
+                        }
                     }
                     else if (feeChoice == 4)
                     {
@@ -2788,43 +2926,231 @@ public:
                     // Add update functionality here
                     if (updateChoice == 1)
                     {
-                        upDateStudent();
-                        universalUPdation(updateQueue);
+                        int locChoi = 0;
+                        while (locChoi != 1)
+                        {
+                            upDateStudent();
+                            cout << "Student Add In updation Queue \n";
+                            cin >> locChoi;
+                            char locUp;
+                            cout << "Do You Want To Update More Student Records (y/n): ";
+                            cin >> locUp;
+                            if (locUp == 'y' || locUp == 'Y')
+                            {
+                                locChoi = 0;
+                            }
+                            else
+                            {
+                                locChoi = 1;
+                            }
+                        }
+                        char locDb;
+                        cout << "Do You Want restart system\n";
+                        cin >> locDb;
+                        if (locDb == 'y' || locDb == 'Y')
+                        {
+                            universalUPdation(updateQueue);
+                        }
+                        else
+                        {
+                            cout << " When System Restarted  all Entity Will BeUpdated\n";
+                        }
                     }
                     else if (updateChoice == 2)
                     {
-                        upDateCourse();
-                        universalUPdation(updateQueue);
+                        int locChoi = 0;
+                        while (locChoi != 1)
+                        {
+                            upDateCourse();
+                            cout << "Course Add In updation Queue \n";
+                            cin >> locChoi;
+                            char locUp;
+                            cout << "Do You Want To Update More Course Records (y/n): ";
+                            cin >> locUp;
+                            if (locUp == 'y' || locUp == 'Y')
+                            {
+                                locChoi = 0;
+                            }
+                            else
+                            {
+                                locChoi = 1;
+                            }
+                        }
+                        char locDb;
+                        cout << "Do You Want restart system\n";
+                        cin >> locDb;
+                        if (locDb == 'y' || locDb == 'Y')
+                        {
+                            universalUPdation(updateQueue);
+                        }
+                        else
+                        {
+                            cout << " When System Restarted  all Entity Will BeUpdated\n";
+                        }
                     }
                     else if (updateChoice == 3)
                     {
-                        cout << left << setw(20) << "Update Admin functionality" << std::endl;
-                        UpdateAdmin();
-                        universalUPdation(updateQueue);
+                        int locChoi = 0;
+                        while (locChoi != 1)
+                        {
+                            UpdateAdmin();
+                            cout << "Admin Add In updation Queue \n";
+                            cin >> locChoi;
+                            char locUp;
+                            cout << "Do You Want To Update More Admin Records (y/n): ";
+                            cin >> locUp;
+                            if (locUp == 'y' || locUp == 'Y')
+                            {
+                                locChoi = 0;
+                            }
+                            else
+                            {
+                                locChoi = 1;
+                            }
+                        }
+                        char locDb;
+                        cout << "Do You Want restart system\n";
+                        cin >> locDb;
+                        if (locDb == 'y' || locDb == 'Y')
+                        {
+                            universalUPdation(updateQueue);
+                        }
+                        else
+                        {
+                            cout << " When System Restarted  all Entity Will BeUpdated\n";
+                        }
                     }
                     else if (updateChoice == 4)
                     {
                         cout << left << setw(20) << "Update Fee Record functionality" << std::endl;
-                        upStudentFee();
-                        universalUPdation(updateQueue);
+                        int locChoi = 0;
+                        while (locChoi != 1)
+                        {
+                            upStudentFee();
+                            cout << "Fee Add In updation Queue \n";
+                            cin >> locChoi;
+                            char locUp;
+                            cout << "Do You Want To Update More Fee Records (y/n): ";
+                            cin >> locUp;
+                            if (locUp == 'y' || locUp == 'Y')
+                            {
+                                locChoi = 0;
+                            }
+                            else
+                            {
+                                locChoi = 1;
+                            }
+                        }
+                        char locDb;
+                        cout << "Do You Want restart system\n";
+                        cin >> locDb;
+                        if (locDb == 'y' || locDb == 'Y')
+                        {
+                            universalUPdation(updateQueue);
+                        }
+                        else
+                        {
+                            cout << " When System Restarted  all Entity Will BeUpdated\n";
+                        }
                     }
                     else if (updateChoice == 5)
                     {
                         cout << left << setw(20) << "Update Attendance Record functionality" << std::endl;
-                        upUpdateAttendance();
-                        universalUPdation(updateQueue);
+                        int locChoi = 0;
+                        while (locChoi != 1)
+                        {
+                            upUpdateAttendance();
+                            cout << "Attendance Add In updation Queue \n";
+                            cin >> locChoi;
+                            char locUp;
+                            cout << "Do You Want To Update More Attendance Records (y/n): ";
+                            cin >> locUp;
+                            if (locUp == 'y' || locUp == 'Y')
+                            {
+                                locChoi = 0;
+                            }
+                            else
+                            {
+                                locChoi = 1;
+                            }
+                        }
+                        char locDb;
+                        cout << "Do You Want restart system\n";
+                        cin >> locDb;
+                        if (locDb == 'y' || locDb == 'Y')
+                        {
+                            universalUPdation(updateQueue);
+                        }
+                        else
+                        {
+                            cout << " When System Restarted  all Entity Will BeUpdated\n";
+                        }
                     }
                     else if (updateChoice == 6)
                     {
                         cout << left << setw(20) << "Update Field Study Record functionality" << std::endl;
-                        upDateField();
-                        universalUPdation(updateQueue);
+                        int locChoi = 0;
+                        while (locChoi != 1)
+                        {
+                            upDateField();
+                            cout << "Field Study Add In updation Queue \n";
+                            cin >> locChoi;
+                            char locUp;
+                            cout << "Do You Want To Update More Field Study Records (y/n): ";
+                            cin >> locUp;
+                            if (locUp == 'y' || locUp == 'Y')
+                            {
+                                locChoi = 0;
+                            }
+                            else
+                            {
+                                locChoi = 1;
+                            }
+                        }
+                        char locDb;
+                        cout << "Do You Want restart system\n";
+                        cin >> locDb;
+                        if (locDb == 'y' || locDb == 'Y')
+                        {
+                            universalUPdation(updateQueue);
+                        }
+                        else
+                        {
+                            cout << " When System Restarted  all Entity Will BeUpdated\n";
+                        }
                     }
                     else if (updateChoice == 7)
                     {
                         cout << left << setw(20) << "Update Student Register Course functionality" << std::endl;
-                        upStdCourseReg();
-                        universalUPdation(updateQueue);
+                        int locChoi = 0;
+                        while (locChoi != 1)
+                        {
+                            upStdCourseReg();
+                            cout << "Student Course Registration Add In updation Queue \n";
+                            cin >> locChoi;
+                            char locUp;
+                            cout << "Do You Want To Update More Student Course Records (y/n): ";
+                            cin >> locUp;
+                            if (locUp == 'y' || locUp == 'Y')
+                            {
+                                locChoi = 0;
+                            }
+                            else
+                            {
+                                locChoi = 1;
+                            }
+                        }
+                        char locDb;
+                        cout << "Do You Want restart system\n";
+                        cin >> locDb;
+                        if (locDb == 'y' || locDb == 'Y')
+                        {
+                            universalUPdation(updateQueue);
+                        }
+                        else
+                        {
+                            cout << " When System Restarted  all Entity Will BeUpdated\n";
+                        }
                     }
                 }
             }
@@ -2850,111 +3176,210 @@ public:
                     switch (deleteChoice)
                     {
                     case 1: // Delete Student Record
-                        // clearScreen();
-                        cout << left << setw(20) << "=== DELETE STUDENT RECORD ===" << std::endl;
-                        deleteStudent();
-                        char restartChoice;
-                        cout << left << setw(20) << "Do you want to restart the system? (y/n): ";
-                        cin >> restartChoice;
-                        if (restartChoice == 'y' || restartChoice == 'Y')
+                    {
+                        cout << left << setw(20) << "=== DELETE STUDENT RECORD ===" << endl;
+
+                        int stdlochChoi = 0;
+                        while (stdlochChoi != 1)
                         {
-                            restartSystemToDeleteData();
+                            deleteStudent();
+                            cout << "Student Record Deleted\n";
+
+                            char locUp;
+                            cout << "Do You Want To Delete More Student Records (y/n): ";
+                            cin >> locUp;
+
+                            stdlochChoi = (locUp == 'y' || locUp == 'Y') ? 0 : 1;
                         }
-                        // pause();
+
+                        char restartChoice;
+                        cout << "Do you want to restart the system? (y/n): ";
+                        cin >> restartChoice;
+
+                        if (restartChoice == 'y' || restartChoice == 'Y')
+                            restartSystemToDeleteData();
+
                         break;
+                    }
 
                     case 2: // Delete Course Record
-                        // clearScreen();
-                        cout << left << setw(20) << "=== DELETE COURSE RECORD ===" << std::endl;
-                        deleteCourse();
-                        cout << left << setw(20) << "\nDo you want to restart the system? (y/n): ";
-                        cin >> restartChoice;
-                        if (restartChoice == 'y' || restartChoice == 'Y')
+                    {
+                        cout << left << setw(20) << "=== DELETE COURSE RECORD ===" << endl;
+
+                        int dellocChoi = 0;
+                        while (dellocChoi != 1)
                         {
-                            restartSystemToDeleteData();
+                            deleteCourse();
+                            cout << "Course Record Deleted\n";
+
+                            char locUp;
+                            cout << "Do You Want To Delete More Course Records (y/n): ";
+                            cin >> locUp;
+
+                            dellocChoi = (locUp == 'y' || locUp == 'Y') ? 0 : 1;
                         }
-                        // pause();
+
+                        char restartChoice;
+                        cout << "Do you want to restart the system? (y/n): ";
+                        cin >> restartChoice;
+
+                        if (restartChoice == 'y' || restartChoice == 'Y')
+                            restartSystemToDeleteData();
+
                         break;
+                    }
 
                     case 3: // Delete Student Course Record
-                        // clearScreen();
-                        cout << left << setw(20) << "=== DELETE STUDENT COURSE ENROLLMENT ===" << std::endl;
-                        deleteCourse();
-                        cout << left << setw(20) << "\nDo you want to restart the system? (y/n): ";
-                        cin >> restartChoice;
-                        if (restartChoice == 'y' || restartChoice == 'Y')
+                    {
+                        cout << left << setw(20) << "=== DELETE STUDENT COURSE ENROLLMENT ===" << endl;
+
+                        int stdCoulocChoi = 0;
+                        while (stdCoulocChoi != 1)
                         {
-                            restartSystemToDeleteData();
+                            deleteCourseStdReg();
+                            cout << "Student Course Record Deleted\n";
+
+                            char locUp;
+                            cout << "Do You Want To Delete More Student Course Records (y/n): ";
+                            cin >> locUp;
+
+                            stdCoulocChoi = (locUp == 'y' || locUp == 'Y') ? 0 : 1;
                         }
-                        // pause();
+
+                        char restartChoice;
+                        cout << "Do you want to restart the system? (y/n): ";
+                        cin >> restartChoice;
+
+                        if (restartChoice == 'y' || restartChoice == 'Y')
+                            restartSystemToDeleteData();
+
                         break;
+                    }
 
                     case 4: // Delete Admin Record
-                        // clearScreen();
-                        cout << left << setw(20) << "=== DELETE ADMIN RECORD ===" << std::endl;
-                        deleteAdmin();
-                        cout << left << setw(20) << "Do you want to restart the system? (y/n): ";
-                        cin >> restartChoice;
-                        if (restartChoice == 'y' || restartChoice == 'Y')
+                    {
+                        cout << "=== DELETE ADMIN RECORD ===" << endl;
+
+                        int adlocChoi = 0;
+                        while (adlocChoi != 1)
                         {
-                            restartSystemToDeleteData();
+                            deleteAdmin();
+                            cout << "Admin Record Deleted\n";
+
+                            char locUp;
+                            cout << "Do You Want To Delete More Admin Records (y/n): ";
+                            cin >> locUp;
+
+                            adlocChoi = (locUp == 'y' || locUp == 'Y') ? 0 : 1;
                         }
-                        // pause();
+
+                        char restartChoice;
+                        cout << "Do you want to restart the system? (y/n): ";
+                        cin >> restartChoice;
+
+                        if (restartChoice == 'y' || restartChoice == 'Y')
+                            restartSystemToDeleteData();
+
                         break;
+                    }
 
                     case 5: // Delete Fee Record
-                        // clearScreen();
-                        cout << left << setw(20) << "=== DELETE FEE RECORD ===" << std::endl;
-                        deleteStdFee();
-                        cout << left << setw(20) << "\nDo you want to restart the system? (y/n): ";
-                        cin >> restartChoice;
-                        if (restartChoice == 'y' || restartChoice == 'Y')
+                    {
+                        cout << left << setw(20) << "=== DELETE FEE RECORD ===" << endl;
+
+                        int feelocChoi = 0;
+                        while (feelocChoi != 1)
                         {
-                            restartSystemToDeleteData();
+                            deleteStdFee();
+                            cout << "Fee Record Deleted\n";
+
+                            char locUp;
+                            cout << "Do You Want To Delete More Fee Records (y/n): ";
+                            cin >> locUp;
+
+                            feelocChoi = (locUp == 'y' || locUp == 'Y') ? 0 : 1;
                         }
-                        // pause();
+
+                        char restartChoice;
+                        cout << "Do you want to restart the system? (y/n): ";
+                        cin >> restartChoice;
+
+                        if (restartChoice == 'y' || restartChoice == 'Y')
+                            restartSystemToDeleteData();
+
                         break;
+                    }
 
                     case 6: // Delete Attendance Record
-                        // clearScreen();
-                        cout << left << setw(20) << "=== DELETE ATTENDANCE RECORD ===" << std::endl;
-                        deleteAttendance();
-                        cout << left << setw(20) << "\nDo you want to restart the system? (y/n): ";
-                        cin >> restartChoice;
-                        if (restartChoice == 'y' || restartChoice == 'Y')
+                    {
+                        cout << "=== DELETE ATTENDANCE RECORD ===" << endl;
+
+                        int attlocChoi = 0;
+                        while (attlocChoi != 1)
                         {
-                            restartSystemToDeleteData();
+                            deleteAttendance();
+                            cout << "Attendance Record Deleted\n";
+
+                            char locUp;
+                            cout << "Do You Want To Delete More Attendance Records (y/n): ";
+                            cin >> locUp;
+
+                            attlocChoi = (locUp == 'y' || locUp == 'Y') ? 0 : 1;
                         }
-                        // pause();/
+
+                        char restartChoice;
+                        cout << "Do you want to restart the system? (y/n): ";
+                        cin >> restartChoice;
+
+                        if (restartChoice == 'y' || restartChoice == 'Y')
+                            restartSystemToDeleteData();
+
                         break;
+                    }
 
                     case 7: // Delete Result Record
-                        // clearScreen();
-                        cout << left << setw(20) << "=== DELETE RESULT RECORD ===" << std::endl;
-                        deleteResult();
-                        cout << left << setw(20) << "\nDo you want to restart the system? (y/n): ";
-                        cin >> restartChoice;
-                        if (restartChoice == 'y' || restartChoice == 'Y')
+                    {
+                        cout << left << setw(20) << "=== DELETE RESULT RECORD ===" << endl;
+
+                        int reslocChoi = 0;
+                        while (reslocChoi != 1)
                         {
-                            restartSystemToDeleteData();
+                            deleteResult();
+                            cout << "Result Record Deleted\n";
+
+                            char locUp;
+                            cout << "Do You Want To Delete More Result Records (y/n): ";
+                            cin >> locUp;
+
+                            reslocChoi = (locUp == 'y' || locUp == 'Y') ? 0 : 1;
                         }
-                        // pause();
-                        break;
 
-                    case 8: // View Deletion Queue
-                        // clearScreen();
-                        cout << left << setw(20) << "=== DELETION QUEUE ===" << std::endl;
-                        // viewDeletionQueue();
-                        // pause();
-                        break;
+                        char restartChoice;
+                        cout << "Do you want to restart the system? (y/n): ";
+                        cin >> restartChoice;
 
-                    case 9: // Back to Main Menu
-                        cout << left << setw(20) << "Returning to Main Menu..." << std::endl;
+                        if (restartChoice == 'y' || restartChoice == 'Y')
+                            restartSystemToDeleteData();
+
                         break;
+                    }
+
+                    case 8:
+                    {
+                        cout << left << setw(20) << "=== DELETION QUEUE ===" << endl;
+                        break;
+                    }
+
+                    case 9:
+                    {
+                        cout << left << setw(20) << "Returning to Main Menu..." << endl;
+                        break;
+                    }
 
                     default:
-                        cout << left << setw(20) << "Invalid choice! Please try again." << std::endl;
-                        // pause();
+                    {
+                        cout << left << setw(20) << "Invalid choice! Please try again." << endl;
+                    }
                     }
                 }
             }
@@ -3169,8 +3594,10 @@ public:
             // Process any pending updates before exiting
 
             cout << left << setw(20) << "Thank you for using Student Management System!" << endl;
+
             // pause();
         }
+<<<<<<< HEAD
         cout<<"Please wait while the system restarts...";
         db.printStatus();
         loadAllDataFromDB();
@@ -3180,7 +3607,16 @@ public:
         UniVersalInsertionMethod();
         cout<<"All Data Update.....\n";
         cout<<left<<setw(30)<<"Thank you for using Student Management System!"<<endl;
+=======
+         db.printStatus();
+    loadAllDataFromDB();
+    restartSystemToDeleteData();
+    universalUPdation(updateQueue);
+    UniVersalInsertionMethod();
+>>>>>>> cb654da56260caeb61a8f59b091db6172779649d
     }
+
+   
 };
 
 #endif // SMSSYSTEM_H

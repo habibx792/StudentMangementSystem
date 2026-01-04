@@ -16,7 +16,7 @@ int main()
 {
     clearScreen();
     SMSSystem &system = SMSSystem::getInstance(); // Changed from SmsSytem to SMSSystem
-    system.run();
+    system.run();    
     return 0;
-    cout<<"No print\n";
+   
 }
