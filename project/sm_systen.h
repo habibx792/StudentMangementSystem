@@ -2414,16 +2414,6 @@ public:
                     {
                         // clearScreen();
                         cout << left << setw(20) << "=== DELETE STUDENT ===" << endl;
-<<<<<<< HEAD
-                        deleteStudent();
-                        char reset;
-                        cout << "Do you want to delete this student? (y/n): ";
-                        cin >> reset;
-                        if (reset == 'y' || reset == 'Y')
-                        {
-                            restartSystemToDeleteData();
-                        }
-=======
                         int delchoi = 1;
                         while (delchoi != 0)
                         {
@@ -2448,7 +2438,6 @@ public:
                         {
                             cout << "When System Restart Data Student will be Deleted\n";
                         }
->>>>>>> cb654da56260caeb61a8f59b091db6172779649d
                     }
                     else if (stdChoice == 4)
                     {
@@ -2555,16 +2544,7 @@ public:
                     {
                         // clearScreen();
                         cout << left << setw(20) << "=== DELETE COURSE ===" << endl;
-<<<<<<< HEAD
-                       deleteCourse();
-                       char reschoic;
-                       cout << "Do you want to delete this course? (y/n): ";
-                       cin >> reschoic;
-                       if (reschoic == 'y' || reschoic == 'Y')
-                       {
-                           restartSystemToDeleteData();
-                       }
-=======
+
                         // Delete Course
                         int delChoic = 0;
                         while (delChoic != 1)
@@ -2595,7 +2575,6 @@ public:
                         {
                             cout << "when System will Restart System will Remove this Entity\n";
                         }
->>>>>>> cb654da56260caeb61a8f59b091db6172779649d
                     }
                     else if (courseChoice == 4)
                     {
@@ -2668,15 +2647,6 @@ public:
                     {
                         // clearScreen();
                         cout << left << setw(20) << "=== DELETE ADMIN ===" << endl;
-<<<<<<< HEAD
-                        deleteAdmin();
-                        char restChoic;
-                        cout << "Do you want to delete this admin? (y/n): ";
-                        cin >> restChoic;
-                        if (restChoic == 'y' || restChoic == 'Y')
-                        {
-                            restartSystemToDeleteData();
-=======
                         int locChoi = 0;
                         while (locChoi != 1)
                         {
@@ -2701,7 +2671,6 @@ public:
                                 // Restart system logic here
                                 restartSystemToDeleteData();
                             }
->>>>>>> cb654da56260caeb61a8f59b091db6172779649d
                         }
                     }
                     else if (adminChoice == 4)
@@ -3597,26 +3566,16 @@ public:
 
             // pause();
         }
-<<<<<<< HEAD
-        cout<<"Please wait while the system restarts...";
+        cout << "Please wait while the system restarts...";
         db.printStatus();
         loadAllDataFromDB();
         UniVersalInsertionMethod();
         restartSystemToDeleteData();
         universalUPdation(updateQueue);
         UniVersalInsertionMethod();
-        cout<<"All Data Update.....\n";
-        cout<<left<<setw(30)<<"Thank you for using Student Management System!"<<endl;
-=======
-         db.printStatus();
-    loadAllDataFromDB();
-    restartSystemToDeleteData();
-    universalUPdation(updateQueue);
-    UniVersalInsertionMethod();
->>>>>>> cb654da56260caeb61a8f59b091db6172779649d
+        cout << "All Data Update.....\n";
+        cout << left << setw(30) << "Thank you for using Student Management System!" << endl;
     }
-
-   
 };
 
 #endif // SMSSYSTEM_H
