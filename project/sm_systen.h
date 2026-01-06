@@ -85,7 +85,6 @@ private:
         std::string result;
         for (char c : input)
         {
-            // Allow ASCII 32-126 (printable characters)
             if (c >= 32 && c <= 126)
                 result += c;
             else if (c == '\t' || c == '\n' || c == '\r')

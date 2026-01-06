@@ -1,7 +1,5 @@
-// main.cpp - CORRECT ORDER
-#define _HAS_STD_BYTE 0 // Define it first
+#define _HAS_STD_BYTE 0 
 #include <windows.h>    // Include Windows headers second
-// Now include C++ standard and your project headers
 #include <iostream>
 #include "sm_systen.h"
 void clearScreen()
@@ -15,7 +13,7 @@ void clearScreen()
 int main()
 {
     clearScreen();
-    SMSSystem &system = SMSSystem::getInstance(); // Changed from SmsSytem to SMSSystem
+    SMSSystem &system = SMSSystem::getInstance(); 
     system.run();    
     return 0;
    
