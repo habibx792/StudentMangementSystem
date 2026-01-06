@@ -14,9 +14,7 @@ void clearScreen()
 }
 int main()
 {
-    clearScreen()
-    
-    ;
+    clearScreen();
     SMSSystem &system = SMSSystem::getInstance(); // Changed from SmsSytem to SMSSystem
     system.run();    
     return 0;
