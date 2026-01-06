@@ -15,6 +15,7 @@ void clearScreen()
 int main()
 {
     clearScreen();
+    cout<<"I am Abdul Smaad " <<endl;
     SMSSystem &system = SMSSystem::getInstance(); // Changed from SmsSytem to SMSSystem
     system.run();    
     return 0;
